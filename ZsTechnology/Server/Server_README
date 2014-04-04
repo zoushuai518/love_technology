@@ -1,0 +1,38 @@
+服务器:
+
+Centos:
+{
+
+
+}
+
+Ubuntu:
+{
+
+
+}
+
+
+Linux:
+{
+
+}
+
+DB:
+{
+
+	Mysql:
+	{
+	
+	}
+
+
+}
+
+
+Tools:
+{
+	LuManager    
+	Webmin
+    
+}
