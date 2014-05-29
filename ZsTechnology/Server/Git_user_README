@@ -33,7 +33,7 @@ git reflog show
 
 克隆：
 zs-20140214
-git clone git@izenesoft.cn:cms-web.git 	| git clone git@izenesoft.cn:ads-marketing.git ./ad
+git clone git@izenesoft.cn:cms-web.git 	| git clone git@izenesoft.cn:ads-marketing.git ./ad |#注: ./ad为文件目录名
 
 
 ==========
@@ -55,14 +55,14 @@ rebase完成流程：
 a、git checkout dev
 b、git rebase master  || 出错,没有 rebase成功 ；git rebase --abort {跳出rebase} || git rebase --skip {忽略一次commit}
 [
-解决 git rebase master 出错;一般是解决冲突 {git add .[冲突解决之后,运行 git add . 标记为已解决] -> git rebase --continue}  ||直到 git rebase 成功 ; git commit -m'log' ; git push origin master[分支名] 
+解决 git rebase master 出错;一般是解决冲突 {git add .[冲突解决之后,运行 git add . 标记为已解决] -> git rebase --continue}  ||直到 git rebase 成功 ; git commit -m'log' ; git push origin master[分支名]
 {
 	解决冲突的技巧：
 	<<<<<<<< HEAD
 	远端
 	==========
 	本地
-	>>>>>>>> 
+	>>>>>>>>
 
 	--> 一般 删除 远端|本地 全部！
 	*****
@@ -106,7 +106,7 @@ git stash pop 如果只缓存了一次，直接 pop出即可  || 如果 缓存�
 ==========
 
 1. 配置
- 
+
 git config --global user.name "your name"
 git config --global user.email  mail@box.com
 git config --global color.ui true
@@ -165,7 +165,7 @@ git commit 命令的-a 选项可只将所有被修改或者已删除的且已经
 git add .命令除了能够判断出当前目录（包括其子目录）所有被修改或者已删除的文档，还能判断用户所添加的新文档，并将其信息追加到索引中。
 另外，要注意的问题是，Git 不会主动记录你对文档进行的更新，除非你对它发号施令（比如通过git add命令）
 
-git commit -am "init" 提交并且加注释 
+git commit -am "init" 提交并且加注释
 
 ]
 
@@ -193,7 +193,7 @@ git commit -m "log message"
 git commit -m'log name'   ****
 推荐 git commit -a || 此命令 会以 vi编辑器打开文件;第一行 写 head,第二行 写 content  **
 
-=== 
+===
 回到 上一次 commit版本 **    || 仅供参考！ 可废弃！
 git reset HEAD protected/modules/zdm/controllers/PortalController.php  || 回到上一个 commit版本
 git checkout -- protected/modules/zdm/controllers/PortalController.php || 取消 对 当前文件的修改！
@@ -245,7 +245,7 @@ git log -2 -p   显示最近两次commit的log 和 diff
 git log --author="Author Name" 筛选特定作者的log
 git log --since="2012-2-23" --before="2012-2-24" 筛选时间段
 git log --grep="key word" 在commit 的message中查找关键字
-git log branch --not master 查看在branch上的，但不在master上的记录。 
+git log branch --not master 查看在branch上的，但不在master上的记录。
 
 git log -S"func_name"  查找某个字符出现，或者移出的commit。 比如可以查找一个函数是什么时候添加，或者删除的。
 
@@ -285,10 +285,10 @@ git diff:
 显示所做的改动
 git diff
 显示所有的改动。 没有add到index中的。
- 
+
 git diff --staged或者 git diff --cached
 显示staged改动，也就是add的东东，也就是将要commit的东东。
- 
+
 git diff commit1 commit2
 显示这两个commit之间的变动， 从commit1到commit2的变动。
 
@@ -307,9 +307,9 @@ git diff A...B 和 git diff $(git-merge-base A B) B一样。 就是显示 在B�
                       有时候这个命令是，git merge-base A B
 
 在一个branch上，但不在另一个branch上
-git log local_copy ^kernel 
+git log local_copy ^kernel
 这样可以再merge前，看看都有哪些东西要commit.
-这个命令用来看，在local_copy branch上，但是不在kernel branch上的。 
+这个命令用来看，在local_copy branch上，但是不在kernel branch上的。
 ]
 
 git blame:
@@ -317,7 +317,7 @@ git blame:
 git blame -C file1.c
 显示文件具体的改动。。。。恩，好像是用来找是谁的错？
 
-git blame -Ln,m file1.c 
+git blame -Ln,m file1.c
 查看n,m两行间的改动。
 
 git blame commit1~1 -Ln,m file1.c
@@ -344,20 +344,20 @@ apply & patch:
 [
 应用patch
 git apply patch-file
-这样做从patch-file中应用这个patch。 效果和patch命令类似。 
+这样做从patch-file中应用这个patch。 效果和patch命令类似。
 但是好处是，git apply要么成功，要么不成功。不想patch，有可能有部分的patch打上了，但是有的没有打上。
-git apply后，并没有自动生成一个commit. 
+git apply后，并没有自动生成一个commit.
 
 git apply --check  可以用来检测这个patch 是不是会产生冲突或者失败。
 
 git am patch-file
-这是专门为git 设计的命令。 patch-file是通过git format-patch 生成的。 
+这是专门为git 设计的命令。 patch-file是通过git format-patch 生成的。
 其中包含了作者信息和简单描述。
 git am后，会自动的生成一个commit.
 
 git am --resolved
 git am 过程中可能会有conflict. 如过遇到conflict， 那就需要手动修改code， git add 后
-用git am --resolved 
+用git am --resolved
 ]
 
 git 制作patch:
@@ -380,11 +380,11 @@ Remote Repository：暂时不看
 
 https://github.com/ 这个网上可以提供建立一个免费的git的repo
 remote repo是用来多个人合作的。恩。。。，比较高级。
- 
+
 显示remote repo的信息
 git remote
 git remote -v : 查看git地址
-git remote show origin : 显示远程库origin里的资源 
+git remote show origin : 显示远程库origin里的资源
 git remote show : 查看远程库
 
 添加别的remote 库
@@ -407,11 +407,11 @@ git push origin master
 意思是push到 origin这个远端树的master 分支上
 git push origin :dev
 是删除remote的dev分支
- 
+
 下载别的更新？
 git pull
 下载了更新就直接merge了
- 
+
 当本地的git仓库更新后，我们需要与远端server上的仓库同步。
 一般这么做
 git fetch   将同步一下状态
@@ -474,7 +474,7 @@ git branch -r -d branchname 删除远程branchname分支  || [git push origin :�
 
 git checkout:
 [
-git checkout -b dev origin/dev {当前在 master分支}  -> 从master分支 切换出 dev分支，并pull远端dev分支代码[跟踪远端dev分支]  *** 
+git checkout -b dev origin/dev {当前在 master分支}  -> 从master分支 切换出 dev分支，并pull远端dev分支代码[跟踪远端dev分支]  ***
 git checkout --track origin/dev 切换到远程dev分支
 ]
 
@@ -509,7 +509,7 @@ git ls-tree <commit_id>  用来查看tree对象
 GIT:
 常用操作流程：
 
-start>、git status || 
+start>、git status ||
 
 1>、git add . || git add -A
 
@@ -568,7 +568,7 @@ git branch -d newName  ||  git branch -D newName
 git branch   || git branch -r  || git branch -a[查看全部分支：本地 和 远端]
 
 
--- 
+--
 git 撤销上次的commit：
 git log
 git reset --hard <commit_id>
@@ -613,7 +613,7 @@ git tag -a v1.2 SHA
 
 git push origin v1.2
 git push origin --tags
-默认情况下是不会将tag的信息送到远端的。 
+默认情况下是不会将tag的信息送到远端的。
 第一的命令将某个指定的tag送到远端。
 第二个命令将所有的tag送到远端。
 
