@@ -1,0 +1,666 @@
+常用命令：
+git stash  暂存   ***
+
+git tag      ***
+
+git rebase   ***
+
+git help branch  [git help 命令名]   *
+
+git ls-files 看已经被提交的
+git rm [file name] 删除一个文件
+
+git diff 查看尚未暂存的更新
+
+git rm -f a.a 强行移除修改后文件(从暂存区和工作区中删除)
+
+git stash push 将文件给push到一个临时空间中
+git stash pop 将文件从临时空间pop下来
+
+git init本地初始化
+
+
+touch README
+git add README添加文件
+git remote add origin git@github.com:daixu/WebApp.git	增加一个远程服务器端   | 命令会增加URL地址为'git@github.com:daixu/WebApp.git'，名称为origin的远程服务器库，以后提交代码的时候只需要使用 origin别名即可
+
+
+git revert --abort
+
+
+格式化查看日志：
+git reflog show
+
+克隆：
+zs-20140214
+git clone git@izenesoft.cn:cms-web.git 	| git clone git@izenesoft.cn:ads-marketing.git ./ad |#注: ./ad为文件目录名
+
+
+==========
+
+git 命令 使用重点：
+[
+git rebase master  || [在 功能 开发 分支  rebase master 分支]
+git merge 功能分支   || [在 master分支]
+--
+可防止 冲突 [git merge冲突解决：{git checkout dev -> git merge master |{冲突} -> git add .&git commit -m'log' -> git push origin dev} |zs-20140213]
+--
+git rebase --abort   || 跳出   [很有用！]  ***
+--
+git  rebase & merge 命令的 区别 ！！！
+
+=====>|
+2013-11-01 - 2013-11-07   ** zs
+rebase完成流程：
+a、git checkout dev
+b、git rebase master  || 出错,没有 rebase成功 ；git rebase --abort {跳出rebase} || git rebase --skip {忽略一次commit}
+[
+解决 git rebase master 出错;一般是解决冲突 {git add .[冲突解决之后,运行 git add . 标记为已解决] -> git rebase --continue}  ||直到 git rebase 成功 ; git commit -m'log' ; git push origin master[分支名]
+{
+	解决冲突的技巧：
+	<<<<<<<< HEAD
+	远端
+	==========
+	本地
+	>>>>>>>>
+
+	--> 一般 删除 远端|本地 全部！
+	*****
+	参考 ./ Git常用命令解说.doc
+}
+]
+|<=====
+
+git rebase master  || rebase 成功
+c、git push origin :dev
+d、git push origin dev:dev  || git push origin dev
+{可以 拉 此功能 分支，|此分支 已经与 master(线上)合并}
+->
+e、git checkout master
+git merge dev          || dev 分支 合并 到 master分支
+==
+
+2013-11-07
+其他分支切换提交：
+git commit -a -m'logname'    | feature/a 分支
+git checkout dev
+git merge feature/a
+git push origin dev
+
+]
+
+
+git stash:
+[
+git stash 暂存当前修改的文件
+取出 暂存
+git stash list 查看暂存状态
+git stash pop 如果只缓存了一次，直接 pop出即可  || 如果 缓存多次用 其他命令！
+]
+
+
+==========
+
+
+{ 来自互联网：
+==========
+
+1. 配置
+
+git config --global user.name "your name"
+git config --global user.email  mail@box.com
+git config --global color.ui true
+git config --global core.editor vi
+git config --global alias.lol "log --graph --all"    设置alias，这样lol就是自己新的命令了。
+
+2.基本使用
+1.显示当前的配置信息
+git config --list  看所有用户
+
+==========
+
+Git 命令描述：
+
+git add:
+[
+git commit  -m "提交的描述信息"
+如果我们这里不用-m参数的话，git将调到一个文本编译器（通常是vim）来让你输入提交的描述信息
+可能一天下来，你对工作树中的许多文档都进行了更新（文档添加、修改、删除），但是我忘记了它们的名字，此时若将所做的全部更新添加到索引中，比较轻省的做法就是：
+git commit -a -m "提交的描述信息"
+git commit 命令的-a 选项可只将所有被修改或者已删除的且已经被git管理的文档提交倒仓库中。如果只是修改或者删除了已被Git 管理的文档，是没必要使用git add 命令的。
+git add .命令除了能够判断出当前目录（包括其子目录）所有被修改或者已删除的文档，还能判断用户所添加的新文档，并将其信息追加到索引中。
+另外，要注意的问题是，Git 不会主动记录你对文档进行的更新，除非你对它发号施令（比如通过git add命令）
+
+
+--->|
+如果有多个文件被修改：[只需要提交单个文件] 流程
+git add ./protected/components/widgets/views/front_header/she.php   提交[git add]单个文件。
+
+[git status 查看状态]
+
+git commit -m'she file log'
+
+git push origin master
+|<---
+
+]
+
+
+git commit:
+[
+git commit --amend 可以修改最后一次 commit ；完成后 :wq 退出
+
+git rebase -i master~1 //最后一次 || 查看修改
+git rebase -i master~5 //最后五次 || 查看修改
+
+git rebase --continue 完成操作
+
+===
+执行git commit命令，将索引内容添加到仓库中
+git commit  -m "提交的描述信息"
+如果我们这里不用-m参数的话，git将调到一个文本编译器（通常是vim）来让你输入提交的描述信息
+可能一天下来，你对工作树中的许多文档都进行了更新（文档添加、修改、删除），但是我忘记了它们的名字，此时若将所做的全部更新添加到索引中，比较轻省的做法就是：
+git commit -a -m "提交的描述信息"
+git commit 命令的-a 选项可只将所有被修改或者已删除的且已经被git管理的文档提交倒仓库中。如果只是修改或者删除了已被Git 管理的文档，是没必要使用git add 命令的。
+git add .命令除了能够判断出当前目录（包括其子目录）所有被修改或者已删除的文档，还能判断用户所添加的新文档，并将其信息追加到索引中。
+另外，要注意的问题是，Git 不会主动记录你对文档进行的更新，除非你对它发号施令（比如通过git add命令）
+
+git commit -am "init" 提交并且加注释
+
+]
+
+
+reset:
+[
+如果不小心commit了一个不需要commit的文件，可以对其进行撤销:
+git log 查看 commit日志
+git reset --hard <commit_id>    ||  [demo:git reset --hard b1ad4b4e9d95c53ba0093535e9ea4ab1f9ac06d9  -| 回滚到commit_id版本]
+git push origin HEAD --force
+--
+根据–soft –mixed –hard，会对working tree和index和HEAD进行重置:
+git reset –mixed：此为默认方式，不带任何参数的git reset，即时这种方式，它回退到某个版本，只保留源码，回退commit和index信息
+git reset –soft：回退到某个版本，只回退了commit的信息，不会恢复到index file一级。如果还要提交，直接commit即可
+git reset –hard：彻底回退到某个版本，本地的源码也会变为上一个版本的内容
+
+--
+commit
+git add file.1 file.2 先增加文件，增加到index中。这样commit的时候才知道要commit哪些文件。
+或者
+git add -p   用来interactively选择哪些改变需要被commit
+git commit -m "log message"
+-----
+
+git commit -m'log name'   ****
+推荐 git commit -a || 此命令 会以 vi编辑器打开文件;第一行 写 head,第二行 写 content  **
+
+===
+回到 上一次 commit版本 **    || 仅供参考！ 可废弃！
+git reset HEAD protected/modules/zdm/controllers/PortalController.php  || 回到上一个 commit版本
+git checkout -- protected/modules/zdm/controllers/PortalController.php || 取消 对 当前文件的修改！
+]
+
+
+
+git archive:   || 导出增量包 | zs为测试此命令
+[
+
+Git 打包导出项目：
+
+git archive v0.1 | gzip > site.tgz
+这是把标签为v0.1的项目文档重定向给gzip生成一个gz文件。
+
+看起来不错，不过如果这样频繁向其他人传递文件，可能造成混淆。可以考虑把Git的特征值加到文件名中，比如这样：
+git archive –format zip -o site-$(git log –pretty=format:”%h” -1).zip HEAD
+这样生成的文件名类似这样：
+site-87424a7.zip
+--
+如果你的 tag 名是 1.0，可以按照如下方式导出。
+1. 导出并压缩为 zip 格式:
+$ git archive --format=zip --output=v1.0.zip 1.0
+
+2. 导出并压缩为 tar.bz2 格式:
+$ git archive 1.0 | bzip2 > v1.0.tar.bz2
+
+3. 导出并压缩为 tar.gz 格式:
+$ git archive --format=tar 1.0 | gzip > v1.0.tar.gz
+
+]
+
+
+git log:
+[
+git log 输出格式
+git log
+git log -p       显示patch
+git log --stat   显示改动的一个总结
+git log --graph  只显示当前branch的
+git log --graph --all    显示所有branch的
+git log --graph --all --decorate 显示branch的名字
+
+git log --pretty=oneline, short, full, fuller  输出的log 形式不同
+git log --pretty=format:"%h - %an, %ar : %s"   按照指定的格式输出。
+--
+git log的筛选
+git log -2 -p   显示最近两次commit的log 和 diff
+git log --author="Author Name" 筛选特定作者的log
+git log --since="2012-2-23" --before="2012-2-24" 筛选时间段
+git log --grep="key word" 在commit 的message中查找关键字
+git log branch --not master 查看在branch上的，但不在master上的记录。
+
+git log -S"func_name"  查找某个字符出现，或者移出的commit。 比如可以查找一个函数是什么时候添加，或者删除的。
+
+git show sha1   这个sha1是每个commit的sha1，这样显示某个commit的完全信息，包括diff
+]
+
+
+revert:
+[
+撤销改动:
+git checkout -- file.1
+撤销了file.1的这次改动。只是撤销了没有staged的改动.
+中间的 -- 表明了这是一个文件 而不是一个branch的名字
+
+git reset --hard HEAD
+撤销了所有没有commit的改动，包括了stage的和没有stage的。
+这条命令的结果一样
+git checkout HEAD file.1
+包括了staged 和没有staged的都会清除。
+
+有时候我们发现，之前做个一个commit有问题，不想要，想要去掉。
+git revert HEAD      自动得重新做一个commit，将最后一次的commit返回回来。
+git revert HEAD^     自动得重新做一个commit，将最后第二次的commit 返回回来。
+
+删除一个commit
+git reset --hard HEAD~1
+删除了最近的commit
+
+修改最近的一个commit
+git commit --amend
+]
+
+
+
+git diff:
+[
+显示所做的改动
+git diff
+显示所有的改动。 没有add到index中的。
+
+git diff --staged或者 git diff --cached
+显示staged改动，也就是add的东东，也就是将要commit的东东。
+
+git diff commit1 commit2
+显示这两个commit之间的变动， 从commit1到commit2的变动。
+
+git diff commit1..commit2
+两个点，效果跟上面的一样
+
+git diff commit1...commit2
+三个点，表示的是发生在commit2分支，一直到commit1和commit2共同父亲的变化。
+
+--
+git diff目的是比较两个commit之间的区别。
+
+git diff A B 和 git diff A..B 是一样的，就是显示这两个之间的区别。
+
+git diff A...B 和 git diff $(git-merge-base A B) B一样。 就是显示 在B这个分支上，做了什么改动。
+                      有时候这个命令是，git merge-base A B
+
+在一个branch上，但不在另一个branch上
+git log local_copy ^kernel
+这样可以再merge前，看看都有哪些东西要commit.
+这个命令用来看，在local_copy branch上，但是不在kernel branch上的。
+]
+
+git blame:
+[
+git blame -C file1.c
+显示文件具体的改动。。。。恩，好像是用来找是谁的错？
+
+git blame -Ln,m file1.c
+查看n,m两行间的改动。
+
+git blame commit1~1 -Ln,m file1.c
+查看commit1版本前的改动. 追查之前的log。
+
+git blame commit1~1 -Ln,m -- old/file.c
+如果这个文件被重命名过，或者移动过位置，就要输入旧的文件的名字。
+而且一定要加上 -- ， 一定。
+]
+
+git rm:
+[
+删除某个文件
+git rm file-name
+从库和当前的working directory中删掉这个文件
+git rm --cached file-name
+只从库中删除，保留当前的本地文件。
+
+重命名一个文件
+git mv file file-new
+]
+
+apply & patch:
+[
+应用patch
+git apply patch-file
+这样做从patch-file中应用这个patch。 效果和patch命令类似。
+但是好处是，git apply要么成功，要么不成功。不想patch，有可能有部分的patch打上了，但是有的没有打上。
+git apply后，并没有自动生成一个commit.
+
+git apply --check  可以用来检测这个patch 是不是会产生冲突或者失败。
+
+git am patch-file
+这是专门为git 设计的命令。 patch-file是通过git format-patch 生成的。
+其中包含了作者信息和简单描述。
+git am后，会自动的生成一个commit.
+
+git am --resolved
+git am 过程中可能会有conflict. 如过遇到conflict， 那就需要手动修改code， git add 后
+用git am --resolved
+]
+
+git 制作patch:
+[
+
+]
+
+处理conflict:
+[
+处理conflict
+在merge的过程中一般会遇到conflict.
+先用git status查看哪些文件产生的冲突。
+可以逐一修改文件，也可以用git mergetool 来进行修改。
+当所有的都修改好， 使用git commit
+]
+
+
+Remote Repository：暂时不看
+[
+
+https://github.com/ 这个网上可以提供建立一个免费的git的repo
+remote repo是用来多个人合作的。恩。。。，比较高级。
+
+显示remote repo的信息
+git remote
+git remote -v : 查看git地址
+git remote show origin : 显示远程库origin里的资源
+git remote show : 查看远程库
+
+添加别的remote 库
+git remote add localname URL
+也就是用这个localname 来代表URL
+
+然后就可以从remote中下载代码
+git fetch localname
+
+默认glone后local的HEAD是track在origin/master上的，
+所以如果你想要work on别的branch，需要先在本地建立一个branch
+git branch --track feature origin/feature
+这个意思是本地有个叫feature的branch，这个是track origin/feature的。
+
+查看remote的情况
+git remote show origin
+
+上传changes,如果你有权限，你可以上传自己的更新到remote
+git push origin master
+意思是push到 origin这个远端树的master 分支上
+git push origin :dev
+是删除remote的dev分支
+
+下载别的更新？
+git pull
+下载了更新就直接merge了
+
+当本地的git仓库更新后，我们需要与远端server上的仓库同步。
+一般这么做
+git fetch   将同步一下状态
+git fetch -p 可以清空远端已经不用的分支
+git branch -v 可以看到本地仓库中分支的状态。
+git branch -av 可以看到远端和本地分支的状态
+git checkout branchname 换到你想要更新的local branch上
+git rebase origin/branchname 这样可以将本地做的commit 取下，并重新apply到最新的地方。
+]
+
+git发patch：暂时不看
+[
+
+]
+
+
+cleanup:
+[
+git用得时间多了，会变慢。 那么可以用下面的命令优化一下。
+git gc   - Cleanup unnecessary files and optimize the local repository
+git-repack - Pack unpacked objects in a repository
+]
+
+
+
+==========
+
+git flow  [A successful Git branching model]  | [介绍一个成功的 Git 分支模型]
+http://nvie.com/posts/a-successful-git-branching-model/
+-
+git flow 插件：
+https://github.com/nvie/gitflow
+
+==========
+
+
+git branch:
+[
+git branch newName   ||  git checkout -b newName   ||  git branch branch_0.1 master 从主分支master创建branch_0.1分支
+
+git branch -d newName  ||  git branch -D newName
+
+git branch   || git branch -r  || git branch -a[查看全部分支：本地 和 远端]  **
+--
+git branch -m | -M oldbranch newbranch 重命名分支，如果newbranch名字分支已经存在，则需要使用-M强制重命名，否则，使用-m进行重命名。
+{
+git branch -m <old_branch_name> <new_branch_name>  重命名分支名称
+git branch -m <old_name> <new_name> 改名字 (如果有同名會失敗，改用 -M 可以強制覆蓋)
+|
+git checkout gzx-bak -> git branch -m gzx | zs-20140213
+}
+git branch -d | -D branchname 删除本地branchname分支
+
+git branch -r -d branchname 删除远程branchname分支  || [git push origin :远程分支名称 {demo:git push origin :tuan110118}]
+
+]
+
+
+==========
+
+git checkout:
+[
+git checkout -b dev origin/dev {当前在 master分支}  -> 从master分支 切换出 dev分支，并pull远端dev分支代码[跟踪远端dev分支]  ***
+git checkout --track origin/dev 切换到远程dev分支
+]
+
+
+==========
+
+git show:[
+git show 查看最近一次提交的 commit修改
+git show <commit_id> 查看指定 commit的修改
+]
+
+
+=========
+
+git ls-tree:
+[
+git ls-tree <commit_id>  用来查看tree对象
+]
+
+
+
+==========
+：来自互联网 }
+
+
+
+
+
+{ zs Git 使用心得：
+
+
+GIT:
+常用操作流程：
+
+start>、git status ||
+
+1>、git add . || git add -A
+
+2>、git commit -m 'log name'
+
+[1、2两步骤 合并  git commit -a -m'log name']
+
+
+3>、git checkout 分支名称
+
+
+4>、git pull origin 远程分支名   [拉去 远程分支 代码 到 当前分支]
+
+
+5>、git rebase master dev  || [git rebase origin/dev [当前在 master分支] - 批量操作  || zs]  ||  [git rebase --continue]
+
+
+6>、git merge dev
+
+
+7>、git push origin master
+
+end>、gitk   || gitk --all
+
+
+----||
+{
+ 2013-10-31 垃圾：
+ git flow:
+ git commit -a -m'log name'; | guang
+ git merge guang |没问题 | dev
+ git merge dev |没问题 | master
+ git push origin master| master | OK  [注意 rebase操作：git rebase master dev -> git merge dev]  | [如果不执行此步骤,其它开发人员获取不到最新代码，谨记！]
+}
+
+
+{
+2013-10-31 ***
+git 打包:
+git archive master | gzip  > master.tar.gz
+把master这个branch打包了。
+}
+||----
+
+
+
+
+^_^    Git 流程之外 其它常用操作 -- zs    ^_^
+
+--
+
+git branch newName   ||  git checkout -b newName
+
+git branch -d newName  ||  git branch -D newName
+
+git branch   || git branch -r  || git branch -a[查看全部分支：本地 和 远端]
+
+
+--
+git 撤销上次的commit：
+git log
+git reset --hard <commit_id>
+
+--
+
+pull 远程分支 到本地：
+
+git checkout 本地分支名
+Git pull origin 远程分支
+{git checkout --track origin/2.0.1.20120806 [zs git1.6.4]}
+
+push 本地 分支 到 远程：
+git push origin <local_branch_name>:<remote_branch_name>   **
+[git push origin local_branch_name]
+
+删除 远程分支：
+git push origin :serverfix //这个语法用于删除(远程分支),只要把分号前留空  **
+
+--
+
+git stash  暂存  [git stash list]
+
+--
+
+git tag 添加标记  **
+[
+创建tag：
+git tag -a v1.4 -m "my version 1.4"
+git tag -s v1.5 -m "my version 1.5"
+这个将会加上pgp的签名
+
+对于一个-s的tag， 你可以
+git tag -v v1.5
+来验证这个tag, 当然你需要有对方的PGP公钥。
+
+git tag v1.4-lw
+这个是轻量级的tag。
+
+git tag -a v1.2 SHA
+对某个指定的SHA打tag，默认是HEAD
+
+git push origin v1.2
+git push origin --tags
+默认情况下是不会将tag的信息送到远端的。
+第一的命令将某个指定的tag送到远端。
+第二个命令将所有的tag送到远端。
+
+--
+
+匹配显示：
+$ git tag -l v3.0*
+show结果：
+v3.0
+v3.0-rc1
+v3.0-rc2
+v3.0-rc3
+v3.0-rc4
+v3.0-rc5
+v3.0-rc6
+v3.0-rc7
+
+显示某个tag的详细信息：
+git show v3.0
+]
+
+--
+
+单个文件，文件夹 提交：
+
+--
+
+取消 对当前所有 文件的修改：
+git checkout .
+
+取消 对指定文件 的修改：
+git checkout branchName -- filename   ||  [git checkout branchname -- filepath(|filename|filepath/filename)]
+
+
+
+zs Git 使用心得}
+
+--
+
+Git 仓库初始化:
+{
+cd cms-zixun
+git init
+git add .
+git commit -m 'Initializing CMS资讯站 repository'
+git remote add origin git@izenesoft.cn:cms-zixun.git
+git push origin master
+}
+
+
