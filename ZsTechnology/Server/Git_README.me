@@ -39,7 +39,7 @@
 git 命令 使用重点：
 {
 
-	zs-20140213		|zz
+	zs-20140811		|zz
 	rebase合并分支完整流程：
 	{
 		1.git checkout dev
@@ -135,6 +135,19 @@ git 命令 使用重点：
 			git commit -m'she file log'
 
 			git push origin master
+
+			---
+			git add		在提交你修改的文件之前，你需要把它们添加到暂存区。如果该文件是新创建的，你可以执行将该文件添加到暂存区
+			git add .	Git会递归地将你执行命令时所在的目录中的所有文件添加上去，所以如果你将当前的工作目录作为参数，它就会追踪那儿的所有文件
+			git add -u	使用-u参数调用了git add命令，会将本地有改动（包括删除和修改）的已经追踪的文件标记到暂存区中。
+			git add -A	使用-A参数会将添加所有改动的已跟踪文件和未跟踪文件。
+			git add -i	交互式的方式进行添加。
+		}
+
+		git status:
+		{
+			git status	查看你的代码在缓存与当前工作目录的状态
+			git status -s	将结果以简短的形式输出
 		}
 
 		git commit:
