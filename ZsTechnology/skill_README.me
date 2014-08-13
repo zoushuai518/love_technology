@@ -13,36 +13,211 @@ Skill
 {
 	后端:
 	{
-		php
-		mysql
-		mongoDb
 
-		php ext
+		php
 		{
-			yii
-			memcache
-			redis
+			php framework
+			{
+				1.Laravel					|http://laravel.com/,http://www.golaravel.com/
+
+				2.Phalcon					|http://phalconphp.com/zh/,http://phalcon.5iunix.net/
+
+				3.Symfony	|Symfony2		|http://symfony.com/
+
+				5.yii1	|yii2				|http://www.yiiframework.com/,http://www.yiichina.com/
+
+				10.Kohana
+
+
+				----
+				Swoole						|http://www.swoole.com/
+
+				----
+
+			}
+
+			php ClassLibrary
+			{
+				DB
+				{
+					RedBean						|http://www.redbeanphp.com/
+					fluentpdo					|http://fluentpdo.com/,https://github.com/zoushuai518/fluentpdo
+				}
+
+				Logging
+				{
+					log4php						|http://logging.apache.org/,http://logging.apache.org/log4php/
+				}
+
+				debug|Performance
+				{
+					xdebug
+					APD
+					xhprof
+
+					--
+					phpunit
+				}
+
+				other
+				{
+					phpjs						|http://phpjs.org/,https://github.com/zoushuai518/phpjs
+				}
+			
+			}
+
+			php ext
+			{
+				outside
+				{
+					memcache
+					redis
+
+					----
+					composer					|https://getcomposer.org/,http://composer.golaravel.com/
+				}
+
+				inside
+				{
+					Image Processing
+					{
+						ImageMagick				|http://php.net/manual/en/book.imagick.php
+						GD						|http://php.net/manual/en/book.image.php
+						Exif					|http://php.net/manual/zh/book.exif.php
+						Cairo					|http://php.net/manual/zh/ref.cairo.php
+					}
+				}
+
+				---
+				other
+				{
+						php://					|http://php.net/manual/zh/wrappers.php.php;php输入输出流
+				}
+			}
+
+			php PEAR
+			{
+			
+			}
 		}
+
+		mysql
+		{
+		
+		}
+
+		mongoDb
+		{
+		
+		}
+
 	}
+
 
 	Linux:
 	{
 
 	}
 
+
 	前端:
 	{
+		
+		前端构建工具
+		{
+			yeoman								|http://yeoman.io/
+			fis									|http://fis.baidu.com/
+			grunt,gruntjs								|http://gruntjs.com/,http://gruntjs.cn
+		}
+
 		js
+		{
+			js plug|Library
+			{
+				sea.js							|http://seajs.org/docs/
+				jquery							|http://jquery.com/
+				angularjs						|http://angularjs.org/
+				emberjs							|http://www.emberjs.cn/guides/
+				Backbone						|http://backbonejs.org/
+				requirejs						|http://www.requirejs.org/
+				sizzlejs						|http://sizzlejs.com/
+				raphaeljs						|http://raphaeljs.com/
+				handlebarsjs					|http://handlebarsjs.com/
+				graphael						|http://graphael.cs.arizona.edu/
+				zeptojs							|http://zeptojs.com/
+				
+
+				--
+				JSLint							|http://www.jslint.com/
+			}
+
+		}
+
 		html5
+
 		css3
 
 		ext
 		{
-			jquery
-			nodejs		|express|
-			CoffeeScript
-			sea.js
+			CoffeeScript						|http://coffee-script.org/,http://coffeescript.org/
 			浏览器端图表渲染技术SVG, VML HTML Canvas
+		}
+
+		nodejs									|http://nodejs.org/,http://cnodejs.org/,http://www.nodenpm.com/
+		{
+			swig								|https://www.npmjs.org/package/swig,http://paularmstrong.github.io/swig/
+			npm									|https://www.npmjs.org/doc/
+			express3.0							|http://expressjs.com/,http://blog.fens.me/nodejs-express3/,https://github.com/bsspirit/nodejs-demo
+			pm2									|https://github.com/Unitech/pm2
+
+			--
+			npm
+			{
+
+			}
+
+			--
+			Supervisor							|https://github.com/zoushuai518/node-supervisor; nodejs的保姆 (supervisor)，supervisor这个小工具可以解决开发中的调试问题
+			{
+				以往我们在开发php程序调试的时候,每修改一次,可以直接去浏览器浏览，不需要重启服务。但是在开发nodejs程序，调试的时候，无论你修改了代码的哪一部分，都需要重启服务才能生效。这是因为 Node.js 只有在第一次引用到某部份时才会去解析脚
+				本文件，以后都会直接访问内存，避免重复载入。。Node.js的这种设计虽然有利于提高性能，却不利于开发调试，因为我们在开发过程中总是希望修改后立即看到效果，而不是每次都要终止进程并重启。supervisor 可以帮助你实现这个功能，它会监视你对代码的改动，并自动重启 Node.js。
+
+				supervisor的安装也很简单：
+
+				直接用npm安装既可，键入命令: npm -g install supervisor
+
+				这里注意一点的就是，supervisor必须安装到全局，如果你不安装到全局，错误命令会提示你安装到全局。
+
+				如果不想安装到默认的全局,也可以自己修改全局路径到当前路径
+
+				npm config set prefix "路径"
+				
+				安装完以后就可以用supervisor 来启动服务了。
+				
+				supervisor app.js
+			}
+
+			--
+			nodejs资料
+			{
+				NodeJS专业中文社区： http://cnodejs.org
+				官方API文档： http://cnodejs.org/api/
+				一个靠谱的nodejs学习笔记： http://blog.csdn.net/zhangxin09/category/726487.aspx?PageNumber=2
+				用node写MVC框架： http://www.cnblogs.com/QLeelulu/archive/2011/01/28/nodejs_into_and_n2mvc.html
+
+				-
+				官方网站： http://nodejs.org/
+				英文文档： http://nodejs.org/docs/v0.3.5/api/all.html
+				node包管理器： http://npmjs.org/
+				官方介绍： http://nodejs.org/jsconf2010.pdf
+				Node的模块大全，必阅读： https://github.com/ry/node/wiki/modules
+				一个Node入门网站： http://howtonode.org
+				一个不错的Node博客： http://blog.nodejitsu.com/
+				包含了不少node信息的前端blog: http://dailyjs.com/
+				如何写Node.JS的插件： https://www.cloudkick.com/blog/2010/aug/23/writing-nodejs-native-extensions/
+				打造在线监控系统： http://blog.new-bamboo.co.uk/2009/12/7/real-time-online-activity-monitor-example-with-node-js-and-websocket
+				搭建一个webservice： http://blog.nodejitsu.com/a-simple-webservice-in-nodejs
+			}
 		}
 	}
 }
