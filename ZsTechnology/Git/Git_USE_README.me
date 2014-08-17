@@ -76,6 +76,8 @@ git 命令 使用重点：
 
 		git rebase --abort   || 跳出   [很有用！]  ***
 
+		rebase 经常冲突, 大部分时间使用 merge来合并分支,是一个比较好的替代方案。。 git合并分支流程,有待于继续探索
+
 	}
 
 	git rebase|merge:
@@ -103,7 +105,7 @@ git 命令 使用重点：
 	配置:
 	{
 		git config --global user.name "your name"
-		git config --global user.email  mail@box.com
+		git config --global user.email 'mail@box.com'
 		git config --global color.ui true
 		git config --global core.editor vi
 		git config --global alias.lol "log --graph --all"    设置alias，这样lol就是自己新的命令了。
@@ -588,14 +590,63 @@ zs Git 使用心得：
 }
 
 
-Git 仓库初始化:
+Git Tool:
 {
-	cd cms-zixun
-	git init
-	git add .
-	git commit -m 'Initializing CMS资讯站 repository'
-	git remote add origin git@izenesoft.cn:cms-zixun.git
-	git push origin master
+
+	windows平台:
+	{
+		1.Git-1.9.4-preview		命令行工具
+		2.TortoiseGit			图形工具
+		3.SourceTree			图形工具,集成git flow
+	}
+
+	Linux |Ubuntu平台:
+	{
+		1.sudo apt-get install git |sudo apt-get install gitk
+	}
+
+	tool use ext:
+	{
+		1.SourceTree|windows平台|以下用Github为demo
+		{
+			1>.安装 SourceTree
+			2>.生成 密钥,命令行执行
+			ssh-keygen -t rsa -C "zoushuai518@gmail.com" -f ~/.ssh/zoushuai-github
+			3>.将SSH公钥添加到git服务器上
+			{
+				将 SSH 公钥添加到 Github
+				登录 Github 帐号，找到帐号设置 -> SSH Keys
+				点击 Add New SSH Key
+				将本地生成的公钥文件（zoushuai518-github.pub）中的文字全选复制到 key 栏，点击 add key 保存。
+			}
+			4>.本地添加SSH别名
+			{
+				本地添加 SSH 别名
+				如果本机有其它密钥，连接 github 时可能不会自动使用刚生成的密钥，需要设置别名：
+
+				$ sudo vi ~/.ssh/config
+				加入类似的一段代码：
+				host csser-github
+				user git
+				hostname github.com
+				port 22
+				identityfile ~/.ssh/zoushuai518-github
+				保存退出。
+			}
+			5>.测试连接
+			{
+				$ssh -T zoushuai518-github 
+				Hi zoushuai518! You've successfully authenticated, but GitHub does not provide shell access.
+				表示设置的 SSH Keys 认证通过，但 Github 不提供 shell 访问。
+				此时就可以正常使用 Github 了'
+			}
+			6>.打开SourceTree -> 工具->选项, SSH客户端选择 OpenSSH,倒入本地密钥,zoushuai518-github
+			--
+			如果,SSH客户端选择 PuTTY/Plink,需要用 PuTTY生成密钥,然后把PuTTy生成的公钥保存到Git服务器上,保存PuTTy的密钥,方可。windows平台推荐用PuTTy
+			--
+			zs验证了OpenSSH方式,PuTTY方式未验证
+		}
+	}
 }
 
 
@@ -658,7 +709,7 @@ github使用技巧:
 	}
 	
 
-	git init:
+	git init|仓库初始化:
 	{
 		touch README.md
 		git init
