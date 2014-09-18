@@ -554,12 +554,18 @@ zs Git 使用心得：
 		git tag -a v1.2 SHA
 		对某个指定的SHA打tag，默认是HEAD
 
-		tag推送到远程
 		git push origin v1.2
 		git push origin --tags
 		默认情况下是不会将tag的信息送到远端的。
 		第一的命令将某个指定的tag送到远端。
 		第二个命令将所有的tag送到远端。
+
+		删除tag,并推送一个空tag到远程tag
+		git tag -d <tagname>
+		git push origin :refs/tags/<tagname>
+
+		获取远程tag
+		git fetch origin tag <tagname>
 
 		--
 
