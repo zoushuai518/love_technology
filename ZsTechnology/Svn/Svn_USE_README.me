@@ -1,17 +1,89 @@
-
-svn use
-
 常用命令：
 {
 
-	查看帮助：svn --help
-	查看具体命令帮助：svn help revert
+    查看帮助：svn --help
 
+    查看具体命令帮助：svn help revert
+
+    --
+
+    更新到某个版本：svn update -r m path
+
+    加锁/解锁： svn lock -m "LockMessage" [--force] PATH / svn unlock PATH
+
+    将服务器上的代码checkout到本地：svn checkout path
+
+    往版本库中添加新的文件：svn add file
+
+    将改动的文件提交到版本库：svn commit -m "LogMessage" [-N] [--no-unlock] PATH(如果选择了保持锁，就使用–no-unlock开关)
+
+    更新到某个版本：svn update -r m path
+
+    查看日志：svn log path
+
+    查看文件目录状态：svn status
+
+    删除文件： svn delete path -m "delete test fle"
+
+    查看文件详细信息： svn info path
+
+    比较差异： svn diff path
+
+    将两个版本之间的差异合并到当前文件：svn merge -r m:n path
+}
+
+zs svn 开发使用流程：
+{
+    1.更新最新代码到本地: svn up
+    2.查看状态：svn status
+    3.把新添加的文件加入到本地svn版本库：svn add * | svn add test.php
+    4.把修改的文件提交到远程svn版本库：svn commit -m “add test file for my test“ test.php
 }
 
 zs use:
 {
 	svn revert -R ./*	#commit之前,批量撤销修改
+
+    svn log --xml -l 3  #已xml格式,显示最近3条日志信息
+    ----
+
+    linux svn图形客户端：
+    1.pysvn
+    pysvn(PySVN Extension Source kits|PySVN Workbench Source kits)
+    http://pysvn.barrys-emacs.org/
+    http://pysvn.tigris.org/
+    -
+    2.RabbitVCS
+        2.1 RabbitVCS SVN |zs useing
+        {
+            启动：nautilus -q
+            install：http://wiki.rabbitvcs.org/wiki/install/ubuntu
+        }
+        2.2 RabbitVCS Git
+        2.3 RabbitVCS Hg
+    ----
+
+    http://www.cnblogs.com/ylqmf/archive/2011/09/13/2174429.html
+
+    http://www.linuxidc.com/Linux/2011-06/36784.htm
+    http://www.ossxp.com/doc/pysvnmanager/dev-guide/dev-guide.html
+
+    http://www.cnblogs.com/qumao5736/archive/2012/07/18/2597621.html
+
+    http://blog.chinaunix.net/uid-23544240-id-4379520.html
+}
+
+svn 常见状态,及标识：
+{
+    A：add，新增
+    C：conflict，冲突
+    D：delete，删除
+    M：modify，本地已经修改
+    G：modify and merGed，本地文件修改并且和服务器的进行合并
+    U：update，从服务器更新
+    R：replace，从服务器替换
+    I：ignored，忽略
+    ?：尚未加入到svn版本库,一般是新添加的文件
 }
 
 
