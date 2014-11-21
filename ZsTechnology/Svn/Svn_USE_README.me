@@ -34,15 +34,30 @@
 
 zs svn 开发使用流程：
 {
-    1.更新最新代码到本地: svn up
+    1.checkout文件到本地：svn checkout svn://192.168.1.1/pro/domain
     2.查看状态：svn status
     3.把新添加的文件加入到本地svn版本库：svn add * | svn add test.php
-    4.把修改的文件提交到远程svn版本库：svn commit -m “add test file for my test“ test.php
+    4.把修改的文件提交到远程svn版本库：svn commit -m "add test file for my test" test.php
+    5.删除文件：svn delete svn://192.168.1.1/pro/domain/test.php -m "delete test file"
+    6.更新最新代码到本地: svn update
+
+    7.查看日志：svn log --xml l 3
+    8.查看文件信息：svn info test.php
+    9.比较差异：svn diff test.php | svn diff -r 200:201 test.php
+    10.将两个版本之间的差异合并到当前文件：svn merge -r 200:205 test.php
+    11.版本库下的文件和目录列表：svn list path 显示path目录下的所有属于版本库的文件和目录
+    12.创建纳入版本控制下的新目录：svn mkdir
+    13.恢复原始未改变的工作副本文件：svn revert test.php | svn revert -R ./*
+    14.代码 库URL变更：svn switch
+    15.svn resolved: 移除工作副本的目录或文件的“冲突”状态。| 用法: resolved PATH
+    16.输出指定文件或URL的内容：svn cat 目标[@版本]…如果指定了版本，将从指定的版本开始查找。
+        svn cat -r PREV filename > filename (PREV 是上一版本,也可以写具体版本号,这样输出结果是可以提交的)
+    17.拷贝用户的一个未被版本化的目录树到版本库：svn import
 }
 
 zs use:
 {
-	svn revert -R ./*	#commit之前,批量撤销修改
+    svn revert -R ./*   #commit之前,批量撤销修改
 
     svn log --xml -l 3  #已xml格式,显示最近3条日志信息
     ----
@@ -63,14 +78,6 @@ zs use:
         2.3 RabbitVCS Hg
     ----
 
-    http://www.cnblogs.com/ylqmf/archive/2011/09/13/2174429.html
-
-    http://www.linuxidc.com/Linux/2011-06/36784.htm
-    http://www.ossxp.com/doc/pysvnmanager/dev-guide/dev-guide.html
-
-    http://www.cnblogs.com/qumao5736/archive/2012/07/18/2597621.html
-
-    http://blog.chinaunix.net/uid-23544240-id-4379520.html
 }
 
 svn 常见状态,及标识：
@@ -89,49 +96,46 @@ svn 常见状态,及标识：
 
 1.SVN代码回滚命令 即取消对代码的修改
 {
+    1.1：改动没有被提交（commit）。
+        这种情况下，使用svn revert就能取消之前的修改。
+        svn revert用法如下：
+        #svn revert [-R] something
+        其中something可以是（目录或文件的）相对路径也可以是绝对路径。
+        当something为单个文件时，直接svn revert something就行了；当something为目录时，需要加上参数-R(Recursive,递归)，否则只会将something这个目录的改动。
+        在这种情况下也可以使用svn update命令来取消对之前的修改，但不建议使用。因为svn update会去连接仓库服务器，耗费时间。
+        注意：svn revert本身有固有的危险，因为它的目的是放弃未提交的修改。一旦你选择了恢复，Subversion没有方法找回未提交的修改。
 
-1.1：改动没有被提交（commit）。
-这种情况下，使用svn revert就能取消之前的修改。
-svn revert用法如下：
-#svn revert [-R] something
-其中something可以是（目录或文件的）相对路径也可以是绝对路径。
-当something为单个文件时，直接svn revert something就行了；当something为目录时，需要加上参数-R(Recursive,递归)，否则只会将something这个目录的改动。
-在这种情况下也可以使用svn update命令来取消对之前的修改，但不建议使用。因为svn update会去连接仓库服务器，耗费时间。
-注意：svn revert本身有固有的危险，因为它的目的是放弃未提交的修改。一旦你选择了恢复，Subversion没有方法找回未提交的修改。
- 
-1.2：改动已经被提交（commit）。
-这种情况下，用svn merge命令来进行回滚。 
-回滚的操作过程如下： 
-1.2.1 保证我们拿到的是最新代码： 
-		svn update 
-		假设最新版本号是28。 
-1.2.2 然后找出要回滚的确切版本号： 
-		svn log [something]
-		假设根据svn log日志查出要回滚的版本号是25，此处的something可以是文件、目录或整个项目
-		如果想要更详细的了解情况，可以使用svn diff -r 28:25 [something]
-1.2.3 回滚到版本号25：
-		svn merge -r 28:25 something
-		为了保险起见，再次确认回滚的结果：
-		svn diff [something]
-		发现正确无误，提交。
-1.2.4 提交回滚：
-		svn commit -m "Revert revision from r28 to r25,because of ..." 
-		提交后版本变成了29。
+    1.2：改动已经被提交（commit）。
+        这种情况下，用svn merge命令来进行回滚。 
+        回滚的操作过程如下： 
+    1.2.1 保证我们拿到的是最新代码： 
+        svn update 
+        假设最新版本号是28。 
+    1.2.2 然后找出要回滚的确切版本号： 
+        svn log [something]
+        假设根据svn log日志查出要回滚的版本号是25，此处的something可以是文件、目录或整个项目
+        如果想要更详细的了解情况，可以使用svn diff -r 28:25 [something]
+    1.2.3 回滚到版本号25：
+        svn merge -r 28:25 something
+        为了保险起见，再次确认回滚的结果：
+        svn diff [something]
+        发现正确无误，提交。
+    1.2.4 提交回滚：
+        svn commit -m "Revert revision from r28 to r25,because of ..." 
+        提交后版本变成了29。
 
-1.3将以上操作总结为三条如下：
-1.3.1 svn update，svn log，找到最新版本（latest revision）
-1.3.2 找到自己想要回滚的版本号（rollbak revision）
-1.3.3 用svn merge来回滚： svn merge -r : something
-
+    1.3将以上操作总结为三条如下：
+    1.3.1 svn update，svn log，找到最新版本（latest revision）
+    1.3.2 找到自己想要回滚的版本号（rollbak revision）
+    1.3.3 用svn merge来回滚： svn merge -r : something
 }
 
 2.查看历史信息
 {
-	
-	svn log 用来展示svn 的版本作者、日期、路径等等
-	svn diff 用来显示特定修改的行级详细信息
-	svn cat 取得在特定版本的某文件显示在当前屏幕
-	svn list 显示一个目录或某一版本存在的文件
+    svn log 用来展示svn 的版本作者、日期、路径等等
+    svn diff 用来显示特定修改的行级详细信息
+    svn cat 取得在特定版本的某文件显示在当前屏幕
+    svn list 显示一个目录或某一版本存在的文件
 
 }
 
