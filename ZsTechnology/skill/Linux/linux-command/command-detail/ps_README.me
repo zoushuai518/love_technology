@@ -1,0 +1,199 @@
+ps命令:
+
+要对系统中进程进行监测控制，查看状态，内存，CPU的使用情况，使用命令：/bin/ps
+{
+	ext:
+	1.ps ：是显示瞬间进程的状态，并不动态连续； |配合kill使用
+    2.top：如果想对进程运行时间监控，应该用 top 命令；
+	3.kill 用于杀死进程或者给进程发送信号；
+
+	--help 显示帮助信息. | man ps
+	--version 显示该命令地版本信息.
+	{
+		l 长格式输出；
+		u 按用户名和启动时间的顺序来显示进程；
+		j 用任务格式来显示进程；
+		f 用树形格式来显示进程；
+		a 显示所有用户的所有进程（包括其它用户）；
+		x 显示无控制终端的进程；
+		r 显示运行中的进程；
+		ww 避免详细参数被截断；
+
+		-A 列出所有的进程
+		-w 显示加宽可以显示较多的资讯
+		-au 显示较详细的资讯
+		-aux 显示所有包含其他使用者的进程
+		-e 显示所有进程,环境变量
+		-f 全格式
+		-h 不显示标题
+		-l 长格式
+		-w 宽输出
+		a   显示终端上地所有进程,包括其他用户地进程
+		r   只显示正在运行地进程
+		x   显示没有控制终端地进程
+		我们常用的选项是组合是 aux 或 lax，还有参数 f 的应用
+	}
+
+	{
+		========================================ps aux 或 lax 输出的解释=========================
+		1.ps aux 或 lax 输出的解释
+		au(x) 输出格式 :
+		USER PID %CPU %MEM VSZ RSS TTY STAT START TIME COMMAND
+
+		USER: 进程所有者
+		PID: 进程ID
+		%CPU: 占用的 CPU 使用率
+		%MEM: 占用的内存使用率
+		VSZ: 占用的虚拟内存大小
+		RSS: 占用的内存大小
+		TTY: 终端的次要装置号码 (minor device number of tty)
+		STAT: 进程状态:
+		START: 启动进程的时间；
+		TIME: 进程消耗CPU的时间；
+		COMMAND:命令的名称和参数；
+		=========================================进程STAT状态==================================
+		D 无法中断的休眠状态（通常 IO 的进程）；
+		R 正在运行，在可中断队列中；
+		S 处于休眠状态，静止状态；
+		T 停止或被追踪，暂停执行；
+		W 进入内存交换（从内核2.6开始无效）；
+		X 死掉的进程；
+		Z 僵尸进程不存在但暂时无法消除；
+		W: 没有足够的记忆体分页可分配
+		WCHAN 正在等待的进程资源；
+		<: 高优先级进程
+		N: 低优先序进程
+		L: 有记忆体分页分配并锁在记忆体内 (即时系统或捱A I/O)，即,有些页被锁进内存
+
+		s 进程的领导者（在它之下有子进程）；
+		l 多进程的（使用 CLONE_THREAD, 类似 NPTL pthreads）；
+		+ 位于后台的进程组；
+	}
+
+}
+
+{
+	#zs注:
+	# ps aux
+	# ps aux|grep 服务名称|端口号
+	# ps -ef|grep 服务名称|端口号
+	ps aux|grep php		| ps -ef|grep php
+}
+
+{
+	#来自 鸟哥的私房菜
+
+	ps：将某个时间点的程序运作情况撷取下来
+
+	[root@linux ~]# ps aux
+	[root@linux ~]# ps -lA
+	[root@linux ~]# ps axjf
+	参数：
+	-A ：所有的 process 均显示出来，与 -e 具有同样的效用；
+	-a ：不与 terminal 有关的所有 process ；
+	-u ：有效使用者 (effective user) 相关的 process ；
+	x ：通常与 a 这个参数一起使用，可列出较完整信息。
+	输出格式规划：
+	l ：较长、较详细的将该 PID 的的信息列出；
+	j ：工作的格式 (jobs format)
+	-f ：做一个更为完整的输出。
+	特别说明：
+	由于 ps 能够支持的 OS 类型相当的多，所以他的参数多的离谱！
+	而且有没有加上 - 差很多！详细的用法应该要参考 man ps 喔！
+
+
+		范例1：将目前属于您自己这次登入的 PID 与相关信息列示出来
+
+		[root@linux ~]# ps -l
+		F S UID PID PPID C PRI NI ADDR SZ WCHAN TTY TIME CMD
+		0 S 0 5881 5654 0 76 0 - 1303 wait pts/0 00:00:00 su
+		4 S 0 5882 5881 0 75 0 - 1349 wait pts/0 00:00:00 bash
+		4 R 0 6037 5882 0 76 0 - 1111 - pts/0 00:00:00 ps
+
+
+	# 上面这个信息其实很多喔！各相关信息的意义为：
+	# F 代表这个程序的旗标 (flag)， 4 代表使用者为 super user；
+	# S 代表这个程序的状态 (STAT)，关于各 STAT 的意义将在内文介绍；
+	# PID 没问题吧！？就是这个程序的 ID 啊！底下的 PPID 则上父程序的 ID；
+	# C CPU 使用的资源百分比
+	# PRI 这个是 Priority (优先执行序) 的缩写，详细后面介绍；
+	# NI 这个是 Nice 值，在下一小节我们会持续介绍。
+	# ADDR 这个是 kernel function，指出该程序在内存的那个部分。如果是个 running
+	# 的程序，一般就是『 - 』的啦！
+	# SZ 使用掉的内存大小；
+	# WCHAN 目前这个程序是否正在运作当中，若为 - 表示正在运作；
+	# TTY 登入者的终端机位置啰；
+	# TIME 使用掉的 CPU 时间。
+	# CMD 所下达的指令为何！？
+	# 仔细看到每一个程序的 PID 与 PPID 的相关性为何喔！上头列出的三个程序中，
+	# 彼此间可是有相关性的吶！
+
+
+		范例2：列出目前所有的正在内存当中的程序
+
+		[root@linux ~]# ps aux
+		USER PID %CPU %MEM VSZ RSS TTY STAT START TIME COMMAND
+		root 1 0.0 0.1 1740 540 ? S Jul25 0:01 init [3]
+		root 2 0.0 0.0 0 0 ? SN Jul25 0:00 [ksoftirqd/0]
+		root 3 0.0 0.0 0 0 ? S< Jul25 0:00 [events/0]
+		.....中间省略.....
+		root 5881 0.0 0.3 5212 1204 pts/0 S 10:22 0:00 su
+		root 5882 0.0 0.3 5396 1524 pts/0 S 10:22 0:00 bash
+		root 6142 0.0 0.2 4488 916 pts/0 R+ 11:45 0:00 ps aux
+
+
+		• USER：该 process 属于那个使用者账号的？
+		• PID ：该 process 的号码。
+		• %CPU：该 process 使用掉的 CPU 资源百分比；
+		• %MEM：该 process 所占用的物理内存百分比；
+		• VSZ ：该 process 使用掉的虚拟内存量 (Kbytes)
+	• RSS ：该 process 占用的固定的内存量 (Kbytes)
+		• TTY ：该 process 是在那个终端机上面运作，若与终端机无关，则显示 ?，另外， tty1-tty6 是本机上面的登入者程序，若为 pts/0 等等的，则表示为由网络连接进主机的程序。
+		• STAT：该程序目前的状态，主要的状态有：
+		o R ：该程序目前正在运作，或者是可被运作；
+		o S ：该程序目前正在睡眠当中 (可说是 idle 状态啦！)，但可被某些讯号 (signal) 唤醒。
+		o T ：该程序目前正在侦测或者是停止了；
+		o Z ：该程序应该已经终止，但是其父程序却无法正常的终止他，造成 zombie (疆尸) 程序的状态
+		• START：该 process 被触发启动的时间；
+		• TIME ：该 process 实际使用 CPU 运作的时间。
+		• COMMAND：该程序的实际指令为何？
+
+
+
+		范例3：以范例一的显示内容，显示出所有的程序
+
+		[root@linux ~]# ps -lA
+		F S UID PID PPID C PRI NI ADDR SZ WCHAN TTY TIME CMD
+		4 S 0 1 0 0 76 0 - 435 - ? 00:00:01 init
+		1 S 0 2 1 0 94 19 - 0 ksofti ? 00:00:00 ksoftirqd/0
+		1 S 0 3 1 0 70 -5 - 0 worker ? 00:00:00 events/0
+		.....以下省略.....
+
+
+		范例4：列出类似程序树的程序显示
+
+		[root@linux ~]# ps -axjf
+		PPID PID PGID SID TTY TPGID STAT UID TIME COMMAND
+		0 1 0 0 ? -1 S 0 0:01 init [3]
+		1 2 0 0 ? -1 SN 0 0:00 [ksoftirqd/0]
+		.....中间省略.....
+		1 5281 5281 5281 ? -1 Ss 0 0:00 /usr/sbin/sshd
+		5281 5651 5651 5651 ? -1 Ss 0 0:00 \_ sshd: dmtsai [priv]
+		5651 5653 5651 5651 ? -1 S 500 0:00 \_ sshd: dmtsai@pts/0
+		5653 5654 5654 5654 pts/0 6151 Ss 500 0:00 \_ -bash
+		5654 5881 5881 5654 pts/0 6151 S 0 0:00 \_ su
+		5881 5882 5882 5654 pts/0 6151 S 0 0:00 \_ bash
+		5882 6151 6151 5654 pts/0 6151 R+ 0 0:00 \_ ps -axjf
+
+
+		范例5：找出与 cron 与 syslog 这两个服务有关的 PID 号码
+
+		[root@linux ~]# ps aux | egrep '(cron|syslog)'
+		root 1539 0.0 0.1 1616 616 ? Ss Jul25 0:03 syslogd -m 0
+		root 1676 0.0 0.2 4544 1128 ? Ss Jul25 0:00 crond
+	root 6157 0.0 0.1 3764 664 pts/0 R+ 12:10 0:00 egrep (cron|syslog)
+
+
+	在预设的情况下， ps 仅会列出与目前所在的 bash shell 有关的 PID 而已，所以， 当我使用 ps -l 的时候，只有三个 PID (范例一)。
+}
+

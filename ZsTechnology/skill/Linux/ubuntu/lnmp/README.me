@@ -1,0 +1,137 @@
+Ubuntu+Nginx+PHP5(FastCGI)
+{
+	Nginx是俄罗斯人编写的十分轻量级的HTTP服务器，以事件驱动的方式编写，所以有非常好的性能，同时也是一个非常高效的反向代理、负载平衡。其拥有匹配Lighttpd的性能，同时还没有Lighttpd的内存泄漏问题，而且Lighttpd的mod_proxy也有一些问题并且很久没有更新。
+
+	因此我打算用其替代Apache应用于Linux服务器上。但是Nginx并不支持cgi方式运行，原因是可以减少因此带来的一些程序上的漏洞。那么我们必须使用FastCGI方式来执行PHP程序。
+
+	下面是我成功地配置Nginx + PHP5 FastCGI的过程
+	首先安装或编译Nginx
+	安装Nginx
+	源码包可以在官方主页上下载。Ubuntu 7.10可以直接通过apt安装，也可以从这里下载最新的deb包：
+
+	sudo apt-get install nginx
+	如果要自己编译的话，需要确保自己已经有编译器和PCRE的库(用于Nginx的rewrite模块，如果不需要这个模块可以在configure时使用./configure ?without-rewrite),编译方法如下：
+
+	wget http://sysoev.ru/nginx/nginx-0.5.34.tar.gz
+	tar zxvf nginx-0.5.34.tar.gz
+	cd nginx-0.5.34
+	./configure #默认配置安装路径为/usr/local/nginx 可以追加--prefix=/usr设置到/usr
+	make && make install  # install要求有root权限
+	Ubuntu安装之后的文件结构大致为：
+
+	所有的配置文件都在/etc/nginx下，并且每个虚拟主机已经安排在了/etc/nginx/sites-available下
+
+	程序文件在/usr/sbin/nginx
+
+	日志放在了/var/log/nginx中
+
+	并已经在/etc/init.d/下创建了启动脚本nginx
+
+	默认的虚拟主机的目录设置在了/var/www/nginx-default
+
+	而自己利用默认配置编译的，则放在/usr/local/nginx下，以下是目录结构：
+
+	/usr/local/nginx/conf 配置目录
+	/usr/local/nginx/html 默认的网站根目录
+	/usr/local/nginx/logs 日志和pid文件目录
+	/usr/local/nginx/sbin 执行文件目录
+	下面可以启动nginx来看看效果（请确保80端口没有其他服务在使用）：
+	Ubuntu请运行：
+
+	sudo /etc/init.d/nginx start
+	其他请运行：
+	/usr/local/nginx/sbin/nginx
+	然后就可以通过http://localhost/来看看效果了。
+
+	要配置nginx的自动运行，可以将/usr/local/nginx/sbin/nginx添加到/etc/rc.local中，Ubuntu可以执行
+	update-rc.d nginx defaults
+
+	安装PHP5
+	至于如何在Linux上安装PHP，有很多文章，甚至很多平台上都有现成的软件包，无需自己编译。
+
+	PHP5的CGI方式的一大优势是内置了FastCGI的支持，只需指明绑定的地址和端口参数便可以以FastCGI的方式运行，如下：
+
+	php-cgi -b 127.0.0.1:9000
+
+	如何配置其与nginx一起运行呢？
+
+	配置Nginx的PHP FastCGI
+
+	请将以下内容保存为fastcgi_params文件，保存于/usr/local/nginx/conf下（Ubuntu可保存于/etc/nginx下），他为我们的FastCGI模块设置了基本的环境变量：
+
+	#fastcgi_params
+	fastcgi_param  GATEWAY_INTERFACE  CGI/1.1;
+	fastcgi_param  SERVER_SOFTWARE    nginx;
+	fastcgi_param  QUERY_STRING       $query_string;
+	fastcgi_param  REQUEST_METHOD     $request_method;
+	fastcgi_param  CONTENT_TYPE       $content_type;
+	fastcgi_param  CONTENT_LENGTH     $content_length;
+	fastcgi_param  SCRIPT_FILENAME    $document_root$fastcgi_script_name;
+	fastcgi_param  SCRIPT_NAME        $fastcgi_script_name;
+	fastcgi_param  REQUEST_URI        $request_uri;
+	fastcgi_param  DOCUMENT_URI       $document_uri;
+	fastcgi_param  DOCUMENT_ROOT      $document_root;
+	fastcgi_param  SERVER_PROTOCOL    $server_protocol;
+	fastcgi_param  REMOTE_ADDR        $remote_addr;
+	fastcgi_param  REMOTE_PORT        $remote_port;
+	fastcgi_param  SERVER_ADDR        $server_addr;
+	fastcgi_param  SERVER_PORT        $server_port;
+	fastcgi_param  SERVER_NAME        $server_name;
+	# PHP only, required if PHP was built with --enable-force-cgi-redirect
+	fastcgi_param  REDIRECT_STATUS    200;
+	请特别注意”fastcgi_script_name”一行，PHP-CGI特别需要此行信息来确定PHP文件的位置。
+
+	另外需要在PHP-CGI的配置文件（Ubuntu 上此配置文件位于/etc/php5/cgi/php.ini）中，打开cgi.fix_pathinfo选项：
+
+	cgi.fix_pathinfo=1;
+	这样php-cgi方能正常使用SCRIPT_FILENAME这个变量。
+
+	接下来在nginx的配置中针对php文件配置其利用FastCGI进程来执行：
+
+	server {
+		index index.php;
+		root  /usr/local/nginx/html;
+		location ~ .*.php$ {
+			include /usr/local/nginx/conf/fastcgi_params;  #请根据自己保存的路径进行设置
+			fastcgi_index index.php;
+			fastcgi_pass  127.0.0.1:9000; #请根据自己的FastCGI绑定的地址和端口进行配置
+			}
+		}
+	通知Nginx重新载入配置:
+
+	kill -HUP `cat /usr/local/nginx/logs/nginx.pid`
+	Ubuntu用户可以使用init脚本：sudo /etc/init.d/nginx reload
+
+	然后启动php-cgi -b 127.0.0.1:9000
+
+	假设你在文档根目录放了index.php，并包含”phpinfo();”的内容，现在再看http://localhost/index.php便应该能看到php的调试信息了。
+
+	配置php进程
+
+	直接使用php-cgi的FastCGI运行方式有两个问题（貌似应该有解决方案，如果知道的话可以教教我）：
+
+	1.如果进程崩溃，难以配置重新启动
+	2.单进程的效率低
+	因此，我们可以利用Lighttpd的spawn-fcgi来控制进程的运行。获得spawn-fcgi的方法如下：
+
+	wget http://www.lighttpd.net/download/lighttpd-1.4.18.tar.bz2 #获取Lighttpd的源码包
+	tar -xvjf lighttpd-1.4.18.tar.bz2
+	cd lighttpd-1.4.18
+	./configure  #编译
+	make
+	cp src/spawn-fcgi /usr/local/bin/spawn-fcgi #取出spawn-fcgi的程序
+	下面我们就可以使用 spawn-fcgi 来控制php-cgi的FastCGI进程了
+
+	/usr/local/bin/spawn-fcgi -a 127.0.0.1 -p 9000 -C 5 -u www-data -g www-data -f /usr/bin/php-cgi
+	参数含义如下
+
+	-f <fcgiapp> 指定调用FastCGI的进程的执行程序位置，根据系统上所装的PHP的情况具体设置
+	-a <addr> 绑定到地址addr
+	-p <port> 绑定到端口port
+	-s <path> 绑定到unix socket的路径path
+	-C <childs> 指定产生的FastCGI的进程数，默认为5（仅用于PHP）
+	-P <path> 指定产生的进程的PID文件路径
+	-u和-g FastCGI使用什么身份（-u 用户 -g 用户组）运行，Ubuntu下可以使用www-data，其他的根据情况配置，如nobody、apache等
+	然后我们可以将这行代码加入到/etc/rc.local文件底部，这样系统启动的时候也可以同时启动PHP的FastCGI进程。
+
+}

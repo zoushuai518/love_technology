@@ -1,0 +1,31 @@
+ubuntu vbox
+
+{
+	1.安装 VirtualBox
+
+	2.创建 虚拟机 安装 win7 OS | winxp OS
+
+	3.ubuntu install VirtualBox:
+	sudo apt-cache search virtualbox
+	sudo apt-get install virtualbox-guest-*		|安装对应版本的 vbox增强包,注意 x86|x64
+
+	4.安装增强功能；增强功能安装完成后，最大化后，即可自适应大小
+	winxp |2014-11-06
+	{
+		虚拟机管理界面 -> 设备 -> 安装增强功能(如果没有VBoxGuestAdditions.iso，vbox会提示从网络下载，安装即可)
+		进入 ubuntu -> mkdir /home/zs/share_winxp -> 虚拟机管理界面 -> 选中指定虚拟机(winxp) -> 设置 -> 共享文件夹 -> 添加共享文件夹 | 指定路径{即:/home/zs/share_winxp};共享文件夹名称:winxp | 选着:自动挂载,只读分配
+		我的电脑 -> 工具 -> 映射网络驱动器 -> VirtualBox Shared Folders -> \\Vboxsvr -> \\VBOXSVR\winxp
+	}
+	win7 |2014-11-16
+	{
+		挂载 win7.iso
+		虚拟机管理界面 -> 设备 -> 安装增强功能 -> 进入虚拟机 -> 我的电脑 -> VirtualBox Guest Additions(光驱已经加载)双击安装 -> 直到成功
+		进入 ubuntu -> mkdir /home/weiyan/share_win7 -> 打开虚拟主机窗口 -> 鼠标右击右下角 共享文件夹图标 -> 添加共享文件夹 | 指定路径{即:/home/weiyan/share_win7};共享文件夹名称:win7 | 选着:自动挂载,固定分配 [注意不要选择, "只读分配" 否则虚拟机中的文件无法写入到共享文件夹中] [此步骤也可在 虚拟机管理界面 -> 设备(菜单中进行)] [可以参考 winxp的配置来进行]
+		我的电脑 -> 映射网络驱动器 -> \\VBOXSVR\win7
+	}
+
+	#==
+	VirtualBox -> 选中win7|winxp -> 设置 -> 常规 -> 高级TAB -> 共享粘帖板|双向 - 托放|双向
+
+	OK! 到此 你的 ubuntu & 虚拟机中的win7|winxp 系统 可以 实现 {文件共享|虚拟机窗口自适应大小|ubuntu & 虚拟机中win7|winxp双向复制}
+}

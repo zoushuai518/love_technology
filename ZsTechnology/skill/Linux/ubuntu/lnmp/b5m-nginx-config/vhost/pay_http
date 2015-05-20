@@ -1,0 +1,8 @@
+server {
+	listen 80;
+	server_name  pay.b5m.com;
+
+	#url重写
+	rewrite ^(.*) https://$server_name$1 permanent;
+	#rewrite ^/(.*) https://pay.b5m.com/$1 permanent; #关键代码
+}

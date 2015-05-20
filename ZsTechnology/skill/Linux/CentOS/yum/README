@@ -1,0 +1,2 @@
+# centos  yum仓库配置
+# 使用yum软件包管理器安装的软件,会自动加入到 系统服务中，即用yum安装的软件，可以使用 service 包名 start|restart|status命令来进行管理

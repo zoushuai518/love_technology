@@ -1,0 +1,730 @@
+#===
+运行环境 ubuntu 13.04 | 14.04 LTS
+#===
+
+Url : https://sublime.wbond.net/
+Plugins Url : http://www.sublimeplugins.com/
+Packages Contorl : https://sublime.wbond.net/browse
+#===
+
+Sublime Text设置代理:
+
+安装好Package Control之后，下一步是设置Package Control，让它使用代理。
+点击>Preferences > Package Settings > Package Control > Settings Default，或者按下快捷键Command + Shift + P(Mac)或是Ctrl + Shift + P(Windows)，找到Preferences: Package Control Settings - Default
+搜索proxy部分，设置你的代理设置
+#===
+
+安装 sublime:
+{
+
+    安装sublime Text 3方式 之.deb:
+    {
+        下载 .deb包直接双击安装，即可
+        使用：Ctrl+Alt+t 在终端输入 subl即可打开 sublime编辑器
+    }
+
+    安装sublime Text 3方式1:
+    {
+        Sublime Text是一款很流行的源代码文本编辑器，托Webupd8团队的PPA仓库之福，我们现在能通过PPA安装Sublime Text 3，适用于ST的注册用户和未注册用户。
+        安装Sublime Text 3
+        打开终端(Ctrl + Alt +T), 键入并运行下列命令:
+        $sudo add-apt-repository ppa:webupd8team/sublime-text-3
+        $sudo apt-get update
+        $sudo apt-get install sublime-text-installer
+    }
+
+    安装sublime text 3 方式2：
+    {
+        1、在官方下载相应的版本（我的是Ubuntu64位系统）得到.tar.bz2文件，然后解压：
+
+        tar xf Sublime\ Text\ 2\ Build\ 2181\ x64.tar.bz2
+        2、减压后得到Sublime Text 2文件夹，不用什么编译make了，其实它就可以运行了，然后直接把它移动端/usr/lib/下面去：
+
+        sudo mv Sublime\ Text\ 2 /usr/lib/
+        3、在终端中，添加sublime快捷命令：
+
+        sudo ln -s /usr/lib/Sublime\ Text\ 2/sublime_text /usr/bin/sublime
+        4、现在我们可以在终端中输入：sublime打开sublime了，下面我们添加一个图标吧(/usr/share/applications)：
+
+        sudo sublime /usr/share/applications/sublime.desktop
+        加入一下内容:
+
+        [Desktop Entry]
+        Version=1.0
+        Name=Sublime Text 2
+        # Only KDE 4 seems to use GenericName, so we reuse the KDE strings.
+        # From Ubuntu's language-pack-kde-XX-base packages, version 9.04-20090413.
+        GenericName=Text Editor
+
+        Exec=sublime
+        Terminal=false
+        Icon=/usr/lib/Sublime Text 2/Icon/48x48/sublime_text.png
+        Type=Application
+        Categories=TextEditor;IDE;Development
+        X-Ayatana-Desktop-Shortcuts=NewWindow
+
+        [NewWindow Shortcut Group]
+        Name=New Window
+        Exec=sublime -n
+        TargetEnvironment=Unity
+        现在可以在所有程序里面找到，sublime text 2了，如果想拖动到sublime桌面或者其他地方，it's up to you…
+    }
+}
+
+
+sublime text 3 install Package Contorl
+{
+    1.ctrl + `
+    2.https://sublime.wbond.net/installation    Package Contorl 安装参考地址
+    3.输入https://sublime.wbond.net/installation中的字符串参数
+    4.重启 sublime
+    如果在Perferences->package settings中看到package control这一项，则安装成功
+}
+
+
+用Package Control安装插件的方法：
+{
+    按下Ctrl+Shift+P调出命令面板
+    输入install 调出 Install Package 选项并回车，然后在列表中选中要安装的插件
+    list Package列出安装的插件列表
+}
+
+
+ubuntu Sublime的插件目录 ~/.config/sublime-text-2/Packages
+{
+    Sublime插件安装方式:
+    1.通过 Package Control
+    2.直接下载插件包到 Sublime的插件根目录
+}
+
+Sublime vim模式：
+{
+    在Reference-> User Settings 选项，点击进入配置文件编辑状态，添加如下一行配置。按 Esc即可进入vim模式
+    "ignored_packages": []
+}
+
+Sublime 自动换行:
+{
+    //设置自动换行
+    "word_wrap": true,
+    //行宽80
+    //"wrap_width": 80
+}
+
+sublime text 常用插件列表
+{
+    CTags扩展：
+    {
+        Ctrl + Shift + p    ->  install Package ->  Ctags   ->  Enter
+        |
+        cd 项目根目录下 ->  ctags -R -f .tags命令
+        |
+        Ctrl + Shift + 鼠标左键   追踪到代码源  ;   Ctrl + Shift + 鼠标右键  返回追踪前的位置
+        |
+        自定义快捷键：
+        在后面加上以下代码，注意先在最后一行上加上逗号，再加以下代码
+        {"keys": ["ctrl+shift+b"], "command": "jump_back"},                 // 从函数定义处跳到使用处  
+        {"keys": ["ctrl+b"], "command": "navigate_to_definition"}           // 跳转到函数定义处  
+
+        zs备注：sublime text 3不再需要此插件，按F12即可实现代码的追踪
+    }
+
+    Abacus:
+    {
+        对齐代码中 = 号两端
+        配合 Alignment使用，效果更好
+
+        usaged
+    }
+
+    Alignment:
+    {
+        功能：”=”号对齐
+        简介：变量定义太多，长短不一，可一键对齐
+        使用：默认快捷键Ctrl+Alt+A和QQ截屏冲突，可设置其他快捷键如：Ctrl+Shift+Alt+A；先选择要对齐的文本
+        Git Url : https://github.com/kevinsperrine/sublime_alignment
+
+        usaged
+    }
+
+    All Autocomplete:
+    {
+
+    }
+
+    AutoFileName:
+    {
+        功能：快捷输入文件名
+        简介：自动完成文件名的输入，如图片选取
+        使用：输入”/”即可看到相对于本项目文件夹的其他文件
+
+        usaged
+    }
+
+    Bracket Highlighter:
+    {
+        功能：代码匹配
+        简介：可匹配[[ (( {}, “”, ”, <tag></tag>，高亮标记，便于查看起始和结束标记
+        使用：点击对应代码即可
+        Git Url : https://github.com/facelessuser/BracketHighlighter/tree/BH2ST3
+
+        usaged
+    }
+
+    Browser Refresh:
+    {
+
+    }
+
+    ChangeQuotes:
+    {
+        这个插件转换单引号和双引号，但是保持正确的escape
+
+        usaged
+    }
+
+    DocBlockr:
+    {
+        功能：生成优美注释
+        简介：标准的注释，包括函数名、参数、返回值等，并以多行显示，手动写比较麻烦
+        使用：输入/*、/**然后回车，还有很多用法，请参照
+        https://sublime.wbond.net/packages/DocBlockr
+
+        DocBlockr可以自动生成PHPDoc风格的注释。它支持的语言有Javascript, PHP, ActionScript, CoffeeScript, Java, Objective C, C, C++ 
+        use:
+        在 funtion 上一行 输入:
+        /**[光标所在位置] 按Tab  |  /**[光标所在位置]*/ 按Enter
+
+        usaged
+
+    }
+
+    ConvertToUTF8:
+    {
+        功能：文件转码成utf-8
+        简介：通过本插件，您可以编辑并保存目前编码不被 Sublime Text 支持的文件，特别是中日韩用户使用的 GB2312，GBK，BIG5，EUC-KR，EUC-JP ，ANSI等。ConvertToUTF8 同时支持 Sublime Text 2 和 3。
+        使用：安装插件后自动转换为utf-8格式
+
+        usaged
+    }
+
+    GBK Encoding Support:
+    {
+        功能：中文识别
+        简介：Sublime Text 2可识别UTF-8格式的中文，不识别GBK和ANSI，因此打开很多含中文的文档都会出现乱码。可以通过安装插件GBK Support,来识别GBK和ANSI。
+        使用：
+        Open a GBK File
+        Save file with GBK encoding
+        Change file encoding from utf8 to GBK or GBK to utf8
+    }
+
+    gbk4subl:
+    {
+        gbk4subl:支持GBK编码    
+        sublime text一个遗憾是不支持中文GBK编码，在编辑一些GBK编码的文件时就会出现乱码，还好sublime text 2有很多可以支持GBK编码的插件，可惜大多在sublime text 3下都不能工作，在github找了下，还好还有gbk4subl这款能让sublime text 3支持GBK编码的插件
+        Git Url : https://github.com/jeewood/gbk4subl
+    }
+
+    Trailing Spaces:
+    {
+        功能：检测并一键去除代码中多余的空格
+        简介：还在纠结代码中有多余的空格而显得代码不规范？或是有处女座情节？次插件帮你实现发现多余空格、一键删除空格、保存时自动删除多余空格，让你的代码规范清爽起来
+        使用：安装插件并重启，即可自动提示多余空格。一键删除多余空格：CTRL+SHITF+T（需配置），更多配置请点击标题
+
+        TrailingSpacer:高亮显示多余的空格和Tab
+        有时候在代码结尾打多了几个空格或Tab，一般不会察觉，TrailingSpacer这款插件能高亮显示多余的空格和Tab，并可以一键删除它们，有代码洁癖的朋友应该会喜欢这个插件
+
+        Git Url : https://github.com/SublimeText/TrailingSpaces
+        注意，在github上下载的插件缺少了一个设置快捷键的文件，可以新建一个名字和后缀为Default (Windows).sublime-keymap的文件，添加以下代码，即可设置“删除多余空格”和“是否开启TrailingSpacer ”的快捷键了。
+        [
+            { "keys": ["ctrl+alt+d"], "command": "delete_trailing_spaces" },
+            { "keys": ["ctrl+alt+o"], "command": "toggle_trailing_spaces" }
+        ]
+
+        usaged
+    }
+
+    FileDiffs:
+    {
+        功能：强大的比较代码不同工具
+        简介：比较当前文件与选中的代码、剪切板中代码、另一文件、未保存文件之间的差别。可配置为显示差别在外部比较工具，精确到行。
+        使用：右键标签页，出现FileDiffs Menu或者Diff with Tab…选择对应文件比较即可
+
+        usaged
+    }
+
+    IMESupport:
+    {
+        功能：sublime中文输入法
+        简介：还在纠结 Sublime Text 中文输入法不能跟随光标吗？试试「IMESupport 」这个插件吧！目前只支持 Windows，在搜索等界面不能很好的跟随光标。
+        使用：Ctrl + Shift + P → 输入pci → 输入IMESupport → 回车
+    }
+
+    InputHelper:
+    {
+        ubuntu sublime text 3 输入中文插件，没有配置成功
+    }
+
+    Git:
+    {
+        功能：git管理
+        简介：插件基本上实现了git的所有功能
+        使用：https://github.com/kemayo/sublime-text-git/wiki
+    }
+
+    svn:
+    {
+        功能：svn管理
+        简介：插件基本上实现了svn的所有功能
+    }
+
+    MarkdownEditing(MarkDown):
+    {
+
+    }
+
+    SideBarEnhancements:
+    {
+        SideBarEnhancements:侧边栏增强
+        SideBarEnhancements本是增强侧边栏的插件，这里将教大家如何用来做sublime text 3浏览器预览插件，并可自定义浏览器预览的快捷键
+
+        安装此插件，点击工具栏的preferences > package setting > side bar > Key Building-User，键入以下代码，这里设置按Ctrl+Shift+C复制文件路径，按F1~F5分别在firefox，chrome，IE，safari，opera浏览器预览效果，当然你也可以自己定义喜欢的快捷键，最后注意代码中的浏览器路径要以自己电脑里的文件路径为准
+        [
+            { "keys": ["ctrl+shift+c"], "command": "copy_path" },
+            //firefox
+            { "keys": ["f1"], "command": "side_bar_files_open_with",
+                "args": {
+                    "paths": [],
+                    "application": "C:\\software\\Browser\\Mozilla Firefox\\firefox.exe",
+                    "extensions":".*" //匹配任何文件类型
+                }
+            },
+            //chrome
+            { "keys": ["f2"], "command": "side_bar_files_open_with",
+                "args": {
+                    "paths": [],
+                    "application": "C:\\Users\\Mr.DenGo\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe",
+                    "extensions":".*"
+                }
+            },
+            //ie
+            { "keys": ["f3"], "command": "side_bar_files_open_with",
+                "args": {
+                    "paths": [],
+                    "application": "C:\\Program Files\\Internet Explorer\\iexplore.exe",
+                    "extensions":".*"
+                }
+            },
+            //safari
+            { "keys": ["f4"], "command": "side_bar_files_open_with",
+                "args": {
+                    "paths": [],
+                    "application": "C:\\software\\Browser\\Safari\\safari.exe",
+                    "extensions":".*"
+                }
+            },
+            //opera
+            { "keys": ["f5"], "command": "side_bar_files_open_with",
+                "args": {
+                    "paths": [],
+                    "application": "C:\\software\\Browser\\opera\\opera.exe",
+                    "extensions":".*"
+                }
+            }
+        ]
+
+    }
+
+    SublimeCodeIntel:
+    {
+        Sublime CodeIntel是我最喜欢的插件，它提供了很多IDE提供的功能，例如代码自动补齐，快速跳转到变量定义，在状态栏显示函数快捷信息等
+        它支持的语言有：PHP, Python, RHTML, JavaScript, Smarty, Mason, Node.js, XBL, Tcl, HTML, HTML5, TemplateToolkit, XUL, Django, Perl, Ruby, Python3
+
+        usaged
+    }
+
+    SublimeLinter:
+    {
+        sublimeLinter:代码错误提示
+        好话写在前面：sublimeLinter是少数几个能在sublime text 3工作的代码检查插件，sublimeLinter能检查html、css、javascript、php等众多语言的错误代码并给出提示，前提是需要配置相应语言的环境，要检查js代码需要安装node.js，检查php代码需要安装php并配置环境等，用这个插件能及时帮我们纠正代码的错误，并培养我们良好的编码习惯和风格。
+        丑话说在后面：对这货“强制性”的代码风格检查有点不爽，有意义无意义的代码提示经常打乱我敲代码的节奏，并且在后台运行检查机制造成sublime text 3有点小卡顿，虽然部分问题可以设置sublimeLinter来解决，用了sublimeLinter一小段时间后还是放弃了，觉得代码提示对我应该没必要了
+        Git Url : https://github.com/SublimeLinter/SublimeLinter-for-ST2/tree/sublime-text-3
+
+        usaged
+    }
+
+    SublimePeek:
+    {
+
+    }
+
+    SublimeTmpl:
+    {
+        SublimeTmpl:快速生成文件模板
+        一直都很奇怪为什么sublime text 3没有新建文件模板的功能，像html头部的DTD声明每次都要复制粘贴。用SublimeTmpl这款插件终于可以解脱了，SublimeTmpl能新建html、css、javascript、php、python、ruby六种类型的文件模板，所有的文件模板都在插件目录的templates文件夹里，可以自定义编辑文件模板。
+
+        SublimeTmpl默认的快捷键
+        ctrl+alt+h html
+        ctrl+alt+j javascript
+        ctrl+alt+c css
+        ctrl+alt+p php
+        ctrl+alt+r ruby
+        ctrl+alt+shift+p python
+        如果想要新建其他类型的文件模板的话，先自定义文件模板方在templates文件夹里，再分别打开Default (Windows).sublime-keymap、Default.sublime-commands、Main.sublime-menu、SublimeTmpl.sublime-settings这四个文件照着里面的格式自定义想要新建的类型，这里就详细介绍了，请各位自己折腾哈~
+        Git Url : https://github.com/kairyou/SublimeTmpl
+
+        usaged
+    }
+
+    Theme - Soda:
+    {
+        User - setting
+        {
+            "color_scheme": "Packages/User/Monokai (SL).tmTheme",
+            //"font_face": "YaHei Consolas Hybrid",     //Windows
+            "font_size": 14,
+            "ignored_packages":
+                [
+                "Markdown"
+                ],
+            "soda_classic_tabs": true,
+            "soda_folder_icons": true,
+            "theme": "Soda Dark.sublime-theme",
+            //tab转换为Spaces
+            "translate_tabs_to_spaces": true
+            //一个tab用四个Spaces代替
+            "tab_size": 4,
+            //设置自动换行
+            "word_wrap": true,
+            //行宽80
+            //"wrap_width": 80
+        }
+
+        usaged
+    }
+
+    Theme - Flatland:
+    {
+        User - setting
+        {
+            //"color_scheme": "Packages/User/Monokai (SL).tmTheme",
+            "theme": "Flatland Dark.sublime-theme"
+            "color_scheme": "Packages/Theme - Flatland/Flatland Dark.tmTheme",
+            "font_face": "YaHei Consolas Hybrid",
+            "font_size": 14,
+            "ignored_packages":
+                [
+                "Markdown"
+                ],
+            "soda_classic_tabs": true,
+            "soda_folder_icons": true,
+            "tab_size": 4,
+            //"theme": "Soda Dark.sublime-theme",
+            "translate_tabs_to_spaces": true
+        }
+
+    }
+
+    Dayle Rees主题:
+    {
+        Git Url : https://github.com/daylerees/colour-schemes
+        Use:
+        Preferences -> Color Scheme -> Dayle Rees Color Schemes -> 
+    }
+
+    PhpDoc:
+    {
+        PHP API 
+
+        usaged
+    }
+
+    PHPTity:
+    {
+        php代码自动排序．装完了重启后ctrl+alt+t
+    }
+
+    phpfmt:
+    {
+        php格式化插件
+        url : https://sublime.wbond.net/packages/phpfmt
+
+        usaged
+    }
+
+    phpcs:(php code sniffer)
+    {
+        php语法错误提示插件
+        url : https://sublime.wbond.net/packages/SublimeLinter-phpcs
+        zs:插件已安装,尚未使用,对于php开发很好
+    }
+
+    PhpUint:
+    {
+        sublime 集成 PhpUnit单元测试
+
+        Ctrl + Shift + p -> install Package
+        依次安装 RubyTest / PHPUnit 插件 [注：PHPUnit基于RubyTest]
+
+        配置：Preferences -> Package Settings -> PHPUnit -> Settings - User
+        path_to_phpunit:phpunit安装路径
+        {
+            "path_to_phpunit":"D:/xampp/php/phpunit"
+        }
+        zs注释: linux系统,不需要此配置,只需要把phpunit加入到(ubuntu [/usr/local/bin])全局可执行即可
+
+        要想在 sublime中使用 phpunit,还需要在项目根目录下 有 phpunit.xml | phpunit.xml.dist文件
+        phpunit.xml文件的具体配置，请参考 phpunit官网  http://phpunit.de/manual/current/zh_cn/organizing-tests.html
+
+        鼠标右键 PHPUnit -> Run Tests 进行测试  |  Ctrl+Shift+p -> 输入 PHPUnit: 在下拉列表里选择 要进行什么类型的单元测试 
+
+        url: https://sublime.wbond.net/packages/PHPUnit
+        phpunit.xml config url:
+        {
+            https://phpunit.de/manual/current/zh_cn/organizing-tests.html#organizing-tests.xml-configuration
+            https://phpunit.de/manual/current/zh_cn/appendixes.configuration.html
+        }
+
+        usaged
+
+    }
+
+    tag:
+    {
+        html代码格式化
+        Ctrl + Shift + f
+
+        usaged
+    }
+
+    CSScomb:
+    {
+        CSS属性排序
+        Git Url : https://github.com/csscomb/CSScomb-for-Sublime
+
+        usaged
+    }
+
+    CSS Compact Expand CSS:
+    {
+        CSS Compact Expand CSS属性展开收缩
+
+        CSS Compact Expand这个插件将CSS格式化一下，按 Ctrl+Alt+[ 收缩CSS代码为一行显示，按 Ctrl+Alt+] 展开CSS代码为多行显示，此插件由sublime textQQ群里一个牛人封装
+    }
+
+    ColorPicker:
+    {
+        功能：调色板
+        简介：需要输入颜色时，可直接选取颜色
+        使用：快捷键Windows: ctrl+shift+c
+    }
+
+    Gutter Color:
+    {
+        当你的css代码文件中有颜色代码时，Gutter Color能够为你在编辑器行号左侧显示该代码颜色预览
+
+        Gutter Color安装完成后，如果你的系统上没有安装ImageMagick，需要使用brew来进行安装获得convert这个工具
+        完成ImageMagick的安装后需要在设置中加上convert_path的路径定义
+        {
+            preferences -> package settings -> GutterColor -> settings - User
+            添加:
+            "convert_path" : "/usr/local/bin/convert"
+        }
+
+        Sublime text 2不支持, Sublime text 3支持
+    }
+
+    Emmet:
+    {
+
+    }
+
+    Haml:
+    {
+
+    }
+
+    JavaScript Console:
+    {
+
+    }
+
+    sublime v8:
+    {
+        该插件提供jshint 及 v8引擎的js解析器console，jshint是JS语法校验器，较严格， v8则跟chrome里控制台一样
+    }
+
+    html5:
+    {
+
+    }
+
+    Nodejs:
+    {
+        功能：node代码提示
+        教程：https://sublime.wbond.net/packages/Nodejs
+    }
+
+    Js Format:
+    {
+        JavaScript格式化插件
+
+        usaged
+    }
+
+    JsMinifier:
+    {
+        将文件优化到最小大小，再部署到服务器是一种很好的实践。这个插件采用Goolgle Closure编译器来最小化你的JavaScript代码
+        Git Url : https://github.com/cgutierrez/JsMinifier
+    }
+
+    javascript-API-Completions:
+    {
+        支持Javascript、JQuery、Twitter Bootstrap框架、HTML5标签属性提示的插件，是少数支持sublime text 3的后缀提示的插件，HTML5标签提示sublime text 3自带，不过JQuery提示还是很有用处的，也可设置要提示的语言。
+    }
+
+    javascript Patterns:
+    {
+        支持Javascript、JQuery、Twitter Bootstrap框架、HTML5标签属性提示的插件，是少数支持sublime text 3的后缀提示的插件，HTML5标签提示sublime text 3自带，不过JQuery提示还是很有用处的，也可设置要提示的语言。
+        
+        Url : https://sublime.wbond.net/packages/JavaScript%20Patterns
+    }
+
+    LESS:
+    {
+        功能：LESS高亮插件
+        简介：用LESS的同学都知道，sublime没有支持less的语法高亮，所以这个插件可以帮上我们
+        使用：打开.less文件或者设置为less格式
+    }
+
+    Less2CSS:
+    {
+        功能：编译Less
+        简介：监测到文件改动时，编译保存为.css文件
+        使用：打开.less文件，编写代码保存即可看到同时生成.css的文件，如果没有则需要安装node。不推荐用这种方法编译，要么用koala，要么就用grunt编译。
+    }
+
+    sublime-autoprefixer:
+    {
+        功能：CSS添加私有前缀
+        简介：CSS还未标准化，所以要给各大浏览器一个前缀以解决兼容问题
+        使用：Ctrl+Shift+P，选择autoprefixer即可。需要安装node.js。
+        其他设置如快捷键请参考：https://sublime.wbond.net/packages/Autoprefixer
+    }
+
+    Placeholders:
+    {
+        我经常觉得插入占位符或是某个内容是项非常繁琐的事情。有了这个插件，你可以很容易的插入占位符和HTML了
+        Git Url : https://github.com/mrmartineau/Placeholders
+    }
+
+    Nettuts Fetch:
+    {
+        Nettuts Fetch帮你下载某个文件最新的版本，仅仅动一下手指敲个快捷键便可以做到，它会向你设定的URL发出curl请求。对于新的项目来说，它非常有用，因为你使用的都是最新的版本
+        Git Url : https://github.com/weslly/Nettuts-Fetch
+    }
+
+    JSLint:
+    {
+        JSLint是一个Javascript代码质量检测工具。它可以告诉你代码的什么地方需要改进。虽然你也可以在网上检测，但这个插件能让你不打开浏览器，直接在Sublime里面检测 
+        use:
+        按下Shift + Command + P(Mac)或是Shift + Ctrl + P(Windows)调出命令面板，找到JSLint: Run JSLint，按下Enter，JSLint会输出结果到状态栏
+    }
+
+    JSHint:
+    {
+
+    }
+
+    jQuery:
+    {
+        功能：jQ函数提示
+        简介：快捷输入jQ函数，是偷懒的好方法
+
+        usaged
+    }
+
+    jQueryDocs:
+    {
+        jQuery API
+
+        usaged
+    }
+
+    ToggleQuotes:
+    {
+
+    }
+
+    WordCount:
+    {
+
+    }
+
+    Xdebug [Client]:
+    {
+        http://www.cnblogs.com/liuzhushiqiang/p/3415768.html
+
+        https://github.com/zoushuai518/SublimeTextXdebug
+        http://www.sitepoint.com/debugging-xdebug-sublime-text-3/?utm_source=tuicool
+        http://jingyan.baidu.com/article/c1465413b160c00bfcfc4cf3.html
+        http://lobert.iteye.com/blog/2068638
+    }
+
+    formatSQL:
+    {
+
+    }
+
+    sql beautifier:
+    {
+        sql 格式化插件
+
+        选中需要格式化的sql语句 -> Ctrl + Shift + p -> sql beautifier 无异常,即可成功格式化sql语句
+
+        usaged
+    }
+
+    Indent XML:
+    {
+
+    }
+
+    YUI Compressor:
+    {
+
+    }
+
+    Stackoverflow:
+    {
+        Url : http://www.ericmartel.com/2012/01/12/sublime-text-2-stack-overflow-plugin/
+        Use:
+        Ctrl + Shift + p -> StackOverflow
+    }
+
+    Pretty JSON:
+    {
+
+    }
+
+    PyV8:
+    {
+
+    }
+
+    RubyTest:
+    {
+
+    }
+
+
+    10个常用插件：http://www.ladyloveit.com/sublime/developers-commonly-used-10-sublime-text-plugin/
+
+}
+
+
+sublime config:
+{
+
+}
+

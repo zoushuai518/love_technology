@@ -1,0 +1,81 @@
+CentOS
+#===
+CentOS yum:
+CentOS自带yum软件包管理器[rpm软件包. rpm -qa |grep yum;用rpm查看yum是否安装]
+#===
+CentOS下一般使用 yum & ./configure [--help] -> make && make install [编译] 安装两种方式来安装软件.  | [一般yum & 编译安装两种方式可以混合使用]
+|[{php后期安装扩展,都是通过编译安装}ag: yum install php 之后要装 php xhprof性能测试扩展;可以使用 ./configure [php编译安装扩展需要先执行,phpize] 编译安装方式进行安装xhprof,如果编译xhprof过程中,提示缺少一些依赖[ag:gcc/autoconf等],还是可以用yum install gcc 来安装,之后在继续 ./configure编译安装xhprof,直到成功为止]
+
+#===
+CentOS 安装中文语言包 [配置中文]
+
+CentOS中如何支持显示中文；中文支持：
+
+安装中文语言包：
+
+yum groupinstall chinese-support
+
+修改字符编码配置，没有这个文件就创建它：
+
+vim /etc/sysconfig/i18n
+
+修改后内容如下：
+
+LANG=”zh_CN.GB18030″
+
+SUPPORTED=”zh_CN.UTF-8:zh_CN:zh:en_US.UTF-8:en_US:en”
+
+SYSFONT=”latarcyrheb-sun16″
+
+i18n文件是用来设置系统语言，比如：zh_CN.UTF-8、zh_CN.GB18030、zh_TW.Big5、en_US.UTF-8等。
+
+i18n中三个环境变量：
+
+LANG变量，设置系统语言。
+
+SUPPORTED变量决定系统支持的语言，即系统能够显示的语言。
+
+SYSFONT变量表示系统字体。
+
+最后重启服务器：
+
+reboot
+
+这样在字符界面命令交互中就会出现中文了，但是有些翻译的不全。
+
+使用locale命令查看系统语言设置：
+
+locale
+
+LANG=zh_CN.GB18030
+
+LC_CTYPE=”zh_CN.GB18030″
+
+LC_NUMERIC=”zh_CN.GB18030″
+
+LC_TIME=”zh_CN.GB18030″
+
+LC_COLLATE=”zh_CN.GB18030″
+
+LC_MONETARY=”zh_CN.GB18030″
+
+LC_MESSAGES=”zh_CN.GB18030″
+
+LC_PAPER=”zh_CN.GB18030″
+
+LC_NAME=”zh_CN.GB18030″
+
+LC_ADDRESS=”zh_CN.GB18030″
+
+LC_TELEPHONE=”zh_CN.GB18030″
+
+LC_MEASUREMENT=”zh_CN.GB18030″
+
+LC_IDENTIFICATION=”zh_CN.GB18030″
+
+LC_ALL=
+
+默认语言为en_US.UTF-8或POSIX，设置后为zh_CN.GB18030。
+
+#===
+

@@ -1,0 +1,6 @@
+# /etc/sysconfig/network
+
+NETWORKING=yes			#系统是否使用网络,一般设置为yes,如果设置为no,则不能使用网络,而且很多系统服务程序将无法启动
+HOSTNAME=lcalhost		#设置本机的主机名，这里设置的主机名要和/etc/hosts中设置的主机名对应
+GATEWAY=192.168.0.1		#设置网关地址
+

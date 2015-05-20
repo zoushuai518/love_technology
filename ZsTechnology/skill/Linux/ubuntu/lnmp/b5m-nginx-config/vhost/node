@@ -1,0 +1,50 @@
+#zs-config
+    server {
+        listen       80;
+		server_name  node.b5m.com;
+		set $web_root /var/www/html/node;
+
+
+        location / {
+            #root   html;
+            root   $web_root;
+            index  index.html;
+			# nginx 方向代理,到 node.js 8081端口
+			proxy_pass http://127.0.0.1:8081;
+        }
+
+        #error_page  404              /404.html;
+
+        # redirect server error pages to the static page /50x.html
+        #
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   html;
+        }
+
+        # proxy the PHP scripts to Apache listening on 127.0.0.1:80
+        #
+        #location ~ \.php$ {
+        #    proxy_pass   http://127.0.0.1;
+        #}
+
+        # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+        # zs-config
+        location ~ \.php$ {
+            root   $web_root;
+            fastcgi_pass   127.0.0.1:9000;
+            #fastcgi_index  index.php;
+            fastcgi_index  new.php;
+	    fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            include        fastcgi_params;
+
+        }
+
+        # deny access to .htaccess files, if Apache's document root
+        # concurs with nginx's one
+        #
+        #location ~ /\.ht {
+        #    deny  all;
+        #}
+
+    }

@@ -1,0 +1,91 @@
+ubuntu
+#===
+ubuntu 常用命令
+
+#===
+ubuntu 软件包管理工具
+
+apt-get
+dpkg
+
+dpkg -l 包名
+{
+	查看SSH 是否安装 dpkg -l | grep ssh
+}
+
+{
+	管理 ubuntu启动选项：
+	小工具：rcconf
+	#sudo apt-get rcconf
+	#sudo apt-get install rcconf
+	root下运行：#sudo rcconf
+	#--
+	功能更全的工具：sysv-rc-conf
+	#sudo apt-get update
+	#sudo apt-get install sysv-rc-conf
+	运行：#sudo sysv-rc-conf
+	#--
+	触雷使用 rcconf[sysv-rc-conf]之外，还可以使用 Ubuntu自带的 update-rc.d
+}
+
+#===
+
+服务管理:
+{
+	重启网络:
+	sudo /etc/init.d/networking restart
+}
+
+{
+	SSH分客户端openssh-client和openssh-server
+	如果你只是想登陆别的机器的SSH只需要安装openssh-client（ubuntu有默认安装，如果没有则sudo 
+	apt-get install openssh-client），如果要使本机开放SSH服务就需要安装openssh-server
+	sudo apt-get install openssh-server
+	然后确认sshserver是否启动了：
+	ps -e |grep ssh
+	如果看到sshd那说明ssh-server已经启动了。
+	如果没有则可以这样启动：sudo /etc/init.d/ssh start 或者 service ssh start
+	ssh-server配置文件位于/etc/ssh/sshd_config，在这里可以定义SSH的服务端口，默认端口是22，你可以自己定义成其他端口号，如222。
+	然后重启SSH服务：
+	sudo 
+	/etc/init.d/ssh stop
+	sudo /etc/init.d/ssh start
+	然后使用以下方式登陆SSH：
+	ssh username@192.168.1.112 username为192.168.1.112 机器上的用户，需要输入密码
+}
+
+#===
+
+Other
+ubuntu忘记root密码
+alt+f2,在弹出的运行窗口中输入：gnome-terminal，回车。
+如果新装的系统还没有设置root密码可以在这个界面输入：sudo passwd root，回车后按提示{先输入当前用户密码;在}输入两次root的密码 (注意，输入时是不会提示*号的，直接输入即可)
+
+
+#===
+
+ubuntu git安装使用:
+apt-get install git
+apt-get install gitk
+
+安装ubuntu 12.04后发现git 命令不能自动补全，不管你按了多少下table键，都没反映
+
+修改地点：
+vim /etc/bash.bashrc
+把下面内容的注释符去掉
+点击(此处)折叠或打开
+if [ -f /etc/bash_completion ] &&! shopt -oq posix; then
+. /etc/bash_completion
+fi
+然后重启终端就ok了
+[
+zs:
+#if ! shopt -oq posix; then
+   if [ -f /usr/share/bash-completion/bash_completion ]; then
+     . /usr/share/bash-completion/bash_completion
+   elif [ -f /etc/bash_completion ]; then
+     . /etc/bash_completion
+   fi
+#fi
+]
+

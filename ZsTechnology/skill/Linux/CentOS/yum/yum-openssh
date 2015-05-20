@@ -1,0 +1,10 @@
+#使用 yum安装ssh服务
+#搜索 openssh按转包程序,如果搜索不到;请更换yum源[如果更换yum源,请搜索"yum源配置"相关文档]
+yum search ssh
+#安装 openssh服务
+yum install openssh-server
+#Openssh安装完成之后会在 /etc/init.d/目录下增加一个名为sshd的服务
+#chkconfig --list sshd #配置sshd服务开机自动启动
+#手动启动sshd服务
+/etc/init.d/sshd start	| service sshd start|restart|status
+

@@ -1,0 +1,50 @@
+{
+
+    1. CentOS开机是否启动图形桌面:
+        编辑/etc/inittab
+        id:5:initdefault: 图形桌面(X Window)
+        id:3:initdefault: 命令行(console)
+
+
+    2. CentOS图形界面与字符界面的切换
+        在LINUX中是有多控制台的，其中前6个是字符界面，第七个是图形界面。  
+        如果你需要切换到字符界面，可以使用CTRL+ALT+Fn来实现，其中Fn是F1-F6中的任何一个。  
+        当然如果你是在字符界面之间互相切换就没必要CTRL了，直接ALT Fn  
+
+        开启: startx
+
+
+    3. CentOS 修改系统默认语言
+    {
+        3.1 进入语言配置文件
+        vi /etc/sysconfig/i18n
+        用vi编辑器修改/etc/sysconfig/i18n文件。
+
+        3.2 修改语言
+        LANG="en_US.UTF-8"
+        "LANG="zh_CH.UTF-8"
+        SYSFONT="latarcyrheb-sun16"
+        保存之后,重新登录既可以显示中文了
+        注意:LANG 设置当前系统的语言环境变量，SYSFONT定义控制台终端字体
+        这样就可以把默认的中文修改为英文。
+
+        --
+        3.3 环境变量的设置
+        vi /etc/profile
+
+        里面可以没有字符集的设置，如果有，应类似如下设置：
+        export LC_ALL="C"
+        #export LANG="zh_CN.UTF-8"
+        设置完成后
+        #source /etc/profile
+        使环境变量生效
+    }
+
+
+    4. 用户管理:
+    {
+        ....
+        vim /etc/passwd
+        vim /etc/shadow
+    }
+}

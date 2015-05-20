@@ -1,0 +1,378 @@
+ubuntu 常用快捷键:
+{
+    zs总结
+    {
+        Ctrl + Alt + t          打开终端
+        Ctrl + Alt + F1
+        Ctrl + r
+
+
+        Ctrl + Shift + t        终端多Tab
+        Ctrl + PgDn             终端多Tab,切换
+        Ctrl + PgUp             终端多Tab,切换
+
+
+        Ctrl + Alt + l          锁定屏幕
+        Ctrl + c                中断
+        Ctrl + Shift + v        粘帖
+        Ctrl + x                中断
+
+
+        Ctrl + Alt + D          显示桌面
+
+
+        Alt + Tab               在不同程序窗口间切换
+        PrintScreen             全屏抓图
+        Alt + PrintScreen       当前窗口抓图
+        Ctrl + l                清楚屏幕
+
+        CTRL + Z: 把当前任务放到后台运行（相当于运行命令时后面加&）
+
+        clear
+        reset
+
+        history:
+        1.运行history，可以得到一个整洁的Linux终端命令历史记录的列表
+        2.运行history -c，可以清除杂乱的历史记录
+        3.运行history -r /home/yajiu/history.txt，可以将history.txt文件存储的常用命令读进来作为当前bash的历史记录
+        (注意：常用命令当成文本写进history.txt必须每个命令占一行)
+
+        grep "关键词" ./* -R
+
+        sudo : "sudo"(super user do)命令允许授权用户执行超级用户或者其它用户的命令。通过在sudoers列表的安全策略来指定。
+
+        删除当前目录下除了js.js文件之外的所有文件
+        ls | grep -v "js.js" | xargs rm -rf *
+
+        ubuntu 挂载 U盘
+
+        快速查看服务器安装时的编译参数：
+        nginx -V    |/usr/local/nginx/ngxin -V
+        php -i |grep configure
+        mysqlbug |grep configure
+        ...
+
+    }
+
+    来自互联网
+    {
+        ubuntu 命令行模式和图形界面切换:
+        {
+            1.按ALT+CTRL+F1切换到字符界面（Linux实体机）
+            如果是VMware虚拟机安装的Linux系统，则切换到字符界面的时候需要以下操作
+            按下ALT+CTRL+SPACE(空格)，ALT+CTRL不松开，再按F1。这样就可以切换到字符界面了。
+
+            2.按ALT+CTRL+F7切换到图形界面（Linux实体机）
+            如果是VMware虚拟机安装的Linux系统，则切换到图形界面的时候需要以下操作
+            按下ALT+CTRL+SPACE(空格)，ALT+CTRL不松开，再按F7。这样就可以切换到图形界面了。
+
+
+            在Linux中一般有ALT+CTRL+F1----F6为字符终端（字符界面），ALT+CTRL+F7为图形界面。不同的发行版本可能有一些差别，但切换方法都是一样的。可以自己试试就可以知道哪些是字符终端，哪些是图形界面。
+
+            如果想 Ubuntu 在每次启动到 command prompt ，可以输入以下指令:
+            $echo “false” | sudo tee /etc/X11/default-display-manager
+
+            当下次开机时，就会以命令行模式启动（text模式，字符界面登录），如果想变回图形界面启动（X windows启动），可以輸入:
+            $echo “/usr/sbin/gdm” | sudo tee /etc/X11/default-display-manager
+
+            如果在Ubuntn以命令行模式启动，在字符终端想回到图形界面的话只需以下命令:
+            $startx
+        }
+
+    }
+}
+
+
+ubuntu 使用心的 & 技巧:
+{
+    apt-get:
+    {
+        apt-cache search 软件包名称 |apt-cache search zlib | grep zlib
+        apt-get install 软件包名称
+        apt-get remove 软件包名称
+        sudo apt-get --purge remove 软件包名称
+
+        系统升级:
+        sudo apt-get update
+        sudo apt-get dist-upgrade
+        reboot
+
+        常用的apt命令参数:
+        apt-cache search package 搜索包
+        apt-cache show package 获取包的相关信息，如说明、大小、版本等
+        sudo apt-get install package 安装包
+        sudo apt-get install package - - reinstall 重新安装包
+        sudo apt-get -f install 修复安装"-f = ——fix-missing"
+        sudo apt-get remove package 删除包
+        sudo apt-get remove package - - purge 删除包，包括删除配置文件等
+        sudo apt-get update 更新源
+        sudo apt-get upgrade 更新已安装的包
+        sudo apt-get dist-upgrade 升级系统
+        sudo apt-get dselect-upgrade 使用 dselect 升级
+        apt-cache depends package 了解使用依赖
+        apt-cache rdepends package 是查看该包被哪些包依赖
+        sudo apt-get build-dep package 安装相关的编译环境
+        apt-get source package 下载该包的源代码
+        sudo apt-get clean && sudo apt-get autoclean 清理无用的包
+        sudo apt-get check 检查是否有损坏的依赖
+
+        屏幕锁定相关命令:
+        gnome-screensaver-command
+
+        zs useing 2015-03-30
+        Eyerest:
+        https://github.com/zoushuai518/eyerest
+        https://github.com/zlbruce/eyerest
+    }
+
+
+    dpkg:
+    {
+        为 “Debian” 专门开发的套件管理系统，方便软件的安装、更新及移除
+    }
+
+
+    Tool:
+    {
+        terminator : 终端多窗口
+        GooglePinyin 汉语, Ubuntu下ibus-sunpinyin       iBus
+        sudo apt-get install ibus-googlepinyin
+        tree:查看目录
+        hardinfo:查看硬件信息
+        alien: 把.rpm文件转换成.deb文件 #sudo apt-get install alien {转换sudo alien --scripts nerolinux-3.5.2.0-x86.rpm执行完毕后会发现同目录下多了一个文件nerolinux_3.5.2.0-2_i386.deb}
+        gparted:磁盘管理工具,相当与windows下的分区魔法师
+        nethogs: 监控当前网络情况, ag:nethogs eth0
+        GNU nano编辑器
+        ubuntu ppa:个人软件包档案
+        GIMP: 图形编辑器
+
+        ubuntu解压zip文件乱码问题:
+        {
+            有2种方式解决问题：
+
+            1. 通过unzip行命令解压，指定字符集
+            unzip -O CP936 xxx.zip (用GBK, GB18030也可以)
+            有趣的是unzip的manual中并无这个选项的说明, unzip --help对这个参数有一行简单的说明。
+
+            2. 在环境变量中，指定unzip参数，总是以指定的字符集显示和解压文件
+            /etc/environment中加入2行
+            UNZIP="-O CP936"
+            ZIPINFO="-O CP936"
+            这样Gnome桌面的归档文件管理器(file-roller)可以正常使用unzip解压中文，但是file-roller本身并不能设置编码传递给unzip。
+
+            zs使用 第一种方式解决
+        }
+
+        ubuntu添加环境变量
+        {
+            全局变量:
+            {
+                设置环境变量
+                sudo gedit /etc/environment
+
+                不需要重启电脑,使其立即生效
+                source /etc/environment
+            }
+
+            当前用户变量:
+            {
+                sudo gedit ~/.bashrc
+                source ~/.bashrc
+            }
+        }
+
+        文本 浏览器:
+        {
+            w3m:
+            sudo apt-get install w3m
+            w3m http://www.google.com
+            使用CTRL + Z退出w3m
+            ---
+            Lynx是一个通用的浏览器      |zzz
+            sudo apt-get install lynx
+            lynx http://www.google.com
+            lynx --source http://www.google.com
+            使用CTRL + Z退出
+            ---
+            Links是一个带有ncurse界面(ncurse是一个虚拟终端中的“类GUI”应用软件工具箱，译注)的文本模式WWW浏览器，支持彩色，正确的table渲染，后台下载，菜单驱动的配置界面和瘦长的字符。
+
+            支持Frame框架。你可以通过外部的访问器来进行不同文件格式的浏览。支持通过外部客户端使用mailto:和telnet:进行浏览
+            sudo apt-get install links
+            links http://www.google.com
+            使用CTRL + Z退出
+        }
+    }
+
+    user 管理:
+    {
+
+    }
+
+    Other:
+    {
+
+        创建 服务 随机启动:
+
+        /etc/init.d/ #ubuntu系统服务目录,此目录下的脚本可以通过 service来进行管理
+        /etc/rcn.d/ #随机启动目录; n为数字,从0开始
+
+        demo:
+        #ln -s 源文件位置(即:启动脚本位置,此启动脚本必须在 /etc/init.d/文件夹下,即:此脚本要用 service服务可以管理方可) 目标文件名(可以自己定义,需要按照 Sn开头,n为数字代表启动顺序)
+        cd /etc/rc2.d/
+        #sudo ln -s /etc/init.d/tengine S99tengine
+        #sudo ln -s /etc/init.d/nginx S99nginx
+        #sudo ln -s /etc/init.d/php-fpm S99php-fpm
+        #sudo ln -s /etc/init.d/mysqld S99mysqld | S99mysql -> /usr/local/mysql/support-files/mysql.server* #仅供参考
+
+
+        #======
+        ubuntu 可执行文件放在以下三个目录,全局可以访问到:
+        /usr/local/bin/
+        /usr/local/sbin
+        /usr/bin
+        /bin
+        /sbin
+
+        #======
+        ls  | grep -v "cms-web" | xargs rm -rf      #删除当前目录下,除了cms-web目录之外的目录
+
+        #======
+        killall ibus-daemon // killall  杀死进程 ， ibus-daemon 进程名
+        ibus-daemon -d // -d 后台运行 | &
+
+        #======
+        ps -ef |grep nginx
+        netstat -lnp|grep httpd
+        kill -9 进程ID | killall -9 正在运行的程序名称
+
+        #======
+        sudo netstat -lnp|grep 9000
+
+        #======
+        重启命令：
+        1、reboot
+        2、shutdown -r now 立刻重启(root用户使用)
+        3、shutdown -r 10 过10分钟自动重启(root用户使用)
+        4、shutdown -r 20:35 在时间为20:35时候重启(root用户使用)
+        如果是通过shutdown命令设置重启的话，可以用shutdown -c命令取消重启
+         
+        关机命令：
+        1、halt 立刻关机
+        2、poweroff 立刻关机
+        3、shutdown -h now 立刻关机(root用户使用)
+        4、shutdown -h 10 10分钟后自动关机
+        如果是通过shutdown命令设置关机的话，可以用shutdown -c命令取消重启
+
+    }
+
+}
+
+
+Mysql
+{
+
+
+    mysql使用|命令行常用操作:
+    {
+        mysql base command:
+        {
+            show tables;                        #显示表
+            show create table tablename [\G];   #显示表创建语句
+            desc tablename [\G];                #显示表结构
+            #创建表
+            CREATE TABLE IF NOT EXISTS `tablename` ( table_column  ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+            #删除表
+            DROP TABLE IF EXISTS tbl_name;
+
+            show databases;                     #显示数据库
+            show create table dbname [\G];      #显示数据库创建语句
+            #创建数据库
+            CREATE DATABASE dbname|CREATE DATABASE `dbname` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+
+            use dbname;     #选择数据库
+            \s          #查看数据库的信息
+
+
+            清空某个mysql表中所有内容
+            delete from 表名;
+            truncate table 表名;
+            不带where参数的delete语句可以删除mysql表中所有内容，使用truncate table也可以清空mysql表中所有内容。效率上truncate比delete快，但truncate删除后不记录mysql日志，不可以恢复数据。
+            delete的效果有点像将mysql表中所有记录一条一条删除到删完，而truncate相当于保留mysql表的结构，重新创建了这个表，所有的状态都相当于新表。
+
+
+
+        }
+
+        #======
+        source命令:
+        {
+            #source导入sql文件
+            mysql>use dbtest;
+            mysql>set names utf8;
+            mysql>source D:/www/sql/back.sql;
+
+            通过source命令导入多个文件，可以新建一个sou.sql文件，里面存放下面的命令
+            例如：
+            source d:/a1.sql;
+            source d:/a2.sql;
+            当你运行
+            这样就可以在一个source命令里面导入多个sql文件了
+        }
+
+    }
+
+
+    Mysql配置相关|EXT:
+    {
+        Mysql开启远程链接:
+        {
+            grant all PRIVILEGES on discuz.* to ted@'123.123.123.123' identified by '123456';
+            flush privileges;
+
+            {
+                格式: grant 权限 on 数据库名.表名 用户@登录主机 identified by "用户密码";
+                grant select,update,insert,delete on *.* to xuys@192.168.88.234 identified by "xuys1234";
+                #==
+                http://blog.chinaunix.net/uid-23215128-id-2951624.html
+            }
+        }
+
+        #======
+        max_binlog_cache_size
+    }
+
+
+    mysql登录异常:
+    {
+        mysql -u root -p
+        输入密码之后，错误提示如下：ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)，意思是root的密码不正确
+        skip-grant-tables                   #免口令登录
+        sudo /etc/init.d/mysql restart
+        mysql -uroot
+        use mysql
+        update user set password=PASSWORD('www.linuxidc.com') where user='root' and host='localhost';           #更新root密码
+        flush privileges;
+
+        #--
+        mysql插入用户:
+        insert into user(host,user,password) values('local',jun,PASSWORD('xxxxxx'));
+        {
+
+        INSERT INTO `user` (`Host`, `User`, `Password`, `Select_priv`, `Insert_priv`, `Update_priv`, `Delete_priv`, `Create_priv`, `Drop_priv`, `Reload_priv`, `Shutdown_priv`, `Process_priv`, `File_priv`, `Grant_priv`, `References_priv`, `Index_priv`, `Alter_priv`, `Show_db_priv`, `Super_priv`, `Create_tmp_table_priv`, `Lock_tables_priv`, `Execute_priv`, `Repl_slave_priv`, `Repl_client_priv`, `Create_view_priv`, `Show_view_priv`, `Create_routine_priv`, `Alter_routine_priv`, `Create_user_priv`, `Event_priv`, `Trigger_priv`, `Create_tablespace_priv`, `ssl_type`, `ssl_cipher`, `x509_issuer`, `x509_subject`, `max_questions`, `max_updates`, `max_connections`, `max_user_connections`, `plugin`, `authentication_string`, `password_expired`) VALUES
+    ('localhost', 'root', '*36614794E82EFEA8F2BD78B4DFAF0DCB7A8C223C', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', '', '', '', '', 0, 0, 0, 0, '', '', 'N'),
+    ('weiyan-PC', 'root', '*36614794E82EFEA8F2BD78B4DFAF0DCB7A8C223C', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', '', '', '', '', 0, 0, 0, 0, '', '', 'N'),
+('127.0.0.1', 'root', '*36614794E82EFEA8F2BD78B4DFAF0DCB7A8C223C', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', '', '', '', '', 0, 0, 0, 0, '', '', 'N'),
+('::1', 'root', '*36614794E82EFEA8F2BD78B4DFAF0DCB7A8C223C', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', '', '', '', '', 0, 0, 0, 0, '', '', 'N');
+
+
+        }
+
+        #--
+        即：mysql的用户都存放在 mysql.user中
+
+    }
+
+
+}
+

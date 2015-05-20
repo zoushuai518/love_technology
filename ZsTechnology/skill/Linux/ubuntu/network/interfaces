@@ -1,0 +1,18 @@
+#/etc/network/interfaces
+#ubuntu上网配置
+# IP Gatewory 设置
+
+# from b5m demo
+
+#自动获取IP
+#auto lo
+#iface lo inet loopback
+
+#手动设置IP
+auto eth0
+iface eth0 inet static
+address 172.16.16.14
+netmask 255.255.255.0
+gateway 172.16.16.254
+
+# from b5m demo

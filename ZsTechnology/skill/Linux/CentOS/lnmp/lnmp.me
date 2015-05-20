@@ -1,0 +1,334 @@
+Nginx+php+mysql+phpadmin@安装系列:
+
+
+centos6.2
+nginx:1.5.4
+php:5.5.3
+mysql:5.6.13
+
+1、环境情况：
+
+操作系统：windows8
+虚拟主机：vmware workstation
+虚拟系统：centos6.2
+操作用户：cwt（注意：非root）
+实现目的：PHP环境
+
+2、安装依赖的库
+
+yum -y install gcc gcc-c++ autoconf libjpeg libjpeg-devel libpng libpng-devel freetype freetype-devel libxml2 libxml2-devel zlib zlib-devel glibc glibc-devel glib2 glib2-devel bzip2 bzip2-devel ncurses ncurses-devel curl curl-devel e2fsprogs e2fsprogs-devel krb5 krb5-devel libidn libidn-devel openssl openssl-devel openldap openldap-devel nss_ldap openldap-clients openldap-servers
+
+NGINX
+yum -y install pcre-devel  zlib-devel
+
+PHP:
+yum -y install gd-devel libjpeg-devel libpng-devel freetype-devel libxml2-devel curl-devel freetype-devel
+
+MYSQL:
+yum -y install bison gcc gcc-c++ autoconf automake zlib* libxml* ncurses-devel libtool-ltdl-devel* mysql-devel
+
+3、下载依赖安装包：
+
+#PHP
+wget http://cn2.php.net/distributions/php-5.5.3.tar.gz
+
+#PHP依赖库
+wget http://ncu.dl.sourceforge.net/project/mcrypt/MCrypt/2.6.8/mcrypt-2.6.8.tar.gz
+wget http://ncu.dl.sourceforge.net/project/mhash/mhash/0.9.9.9/mhash-0.9.9.9.tar.gz
+wget http://ncu.dl.sourceforge.net/project/mcrypt/Libmcrypt/2.5.8/libmcrypt-2.5.8.tar.gz
+wget http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.14.tar.gz
+
+#nginx
+wget http://nginx.org/download/nginx-1.5.4.tar.gz
+
+#nginx依赖包(pcre)
+wget http://jaist.dl.sourceforge.net/project/pcre/pcre/8.33/pcre-8.33.tar.gz
+
+#mysql
+wget http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.13.tar.gz
+
+#mysql(cmake)
+wget http://www.cmake.org/files/v2.8/cmake-2.8.6.tar.gz
+
+4、安装mysql（或参考之前的mysql文档）
+
+a、安装cmake
+tar xvzf cmake-2.8.11.2.tar.gz
+cd cmake-2.8.11.2
+./configure
+gmake
+sudo gmake install
+
+b、安装mysql
+添加组合用户
+sudo useradd -g mysql mysql
+sudo mkdir -p /data/mysql
+sudo chown mysql:mysql /data/mysql
+
+安装msyql
+tar xvzf mysql-5.6.13.tar.gz
+cd mysql-5.6.13
+cmake . -DCMAKE_INSTALL_PREFIX=/usr/local/mysql -DMYSQL_DATADIR=/data/mysql -DSYSCONFDIR=/etc/
+make
+sudo make install
+cd /usr/local/mysql
+sudo cp ./support-files/my-default.cnf /etc/my.cnf
+sudo vim /etc/my.cnf
+#设置Mysql
+#在support-files目录中有五个配置信息文件：
+#my-small.cnf (内存<=64M)
+#my-medium.cnf (内存 128M)
+#my-large.cnf (内存 512M)
+#my-huge.cnf (内存 1G-2G)
+#my-innodb-heavy-4G.cnf (内存 4GB)
+cd /usr/local/mysql
+cp ./support-files/my-medium.cnf /etc/my.cnf
+vi /etc/my.cnf
+#在 [mysqld] 段增加
+datadir = /data/mysql
+wait-timeout = 30
+max_connections = 512
+default-storage-engine = MyISAM
+#在 [mysqld] 段修改
+max_allowed_packet = 16M
+
+#生成授权表
+cd /usr/local/mysql
+./scripts/mysql_install_db –user=mysql
+
+sudo cp mysql.server /etc/init.d/mysql
+cd /usr/local/mysql/scripts
+sudo ./mysql_install_db –user=mysql –basedir=/usr/local/mysql –datadir=/data/mysql
+sudo /usr/local/mysql/bin/mysqld_safe &
+
+#更改密码
+/usr/local/mysql/bin/mysqladmin -u root password cwtnqwjx
+/usr/local/mysql/bin/mysql -u root -p
+
+开机启动：
+sudo vim /etc/rc.d/rc.local
+添加：
+/usr/local/mysql/bin/mysqld_safe &
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+5、安装PHP
+
+a、安装依赖包
+tar xvzf libiconv-1.14.tar.gz
+cd libiconv-1.14
+./configure –prefix=/usr/local
+make
+sudo make install
+
+——————————————————————————————
+tar xvzf libmcrypt-2.5.8.tar.gz
+cd libmcrypt-2.5.8
+./configure
+make
+sudo make install
+——————————————————————————————
+sudo ln -s /usr/local/lib/libmcrypt.la /usr/lib/libmcrypt.la
+sudo ln -s /usr/local/lib/libmcrypt.so /usr/lib/libmcrypt.so
+sudo ln -s /usr/local/lib/libmcrypt.so.4 /usr/lib/libmcrypt.so.4
+sudo ln -s /usr/local/lib/libmcrypt.so.4.4.8 /usr/lib/libmcrypt.so.4.4.8
+sudo ln -s /usr/local/lib/libmhash.a /usr/lib/libmhash.a
+sudo ln -s /usr/local/lib/libmhash.la /usr/lib/libmhash.la
+sudo ln -s /usr/local/lib/libmhash.so /usr/lib/libmhash.so
+sudo ln -s /usr/local/lib/libmhash.so.2 /usr/lib/libmhash.so.2
+sudo ln -s /usr/local/lib/libmhash.so.2.0.1 /usr/lib/libmhash.so.2.0.1
+sudo ln -s /usr/local/bin/libmcrypt-config /usr/bin/libmcrypt-config
+
+——————————————————————————————
+tar xvzf mcrypt-2.6.8.tar.gz
+cd mcrypt-2.6.8
+
+./configure
+这里会有错误：
+configure: error: Don’t know how to define struct flock on this system, set –enable-opcache=no
+解决方法：
+sudo ln -s /usr/local/mysql/lib/libmysqlclient.so /usr/lib/
+sudo ln -s /usr/local/mysql/lib/libmysqlclient.so.18 /usr/lib/libmysqlclient.so.18
+
+make
+make时会报错：
+undefined reference to `libiconv’
+./configure … 之后，修改下 Makefile，找到其中的
+EXTRA_LIBS = -lcrypt -lz -lcrypt -lrt -lmysqlclient -lmcrypt -lldap -llber -lfreetype -lpng -lz -ljpeg -lcurl -lz -lrt -lm -ldl -lnsl -lrt -lxml2 -lz -lm -lssl -lcrypto -ldl -lz -lcurl -ldl -lgssapi_krb5 -lkrb5 -lk5crypto -lcom_err -lidn -lssl -lcrypto -lz -lxml2 -lz -lm -lssl -lcrypto -ldl -lz -lxml2 -lz -lm -lxml2 -lz -lm -lcrypt -lxml2 -lz -lm -lxml2 -lz -lm -lxml2 -lz -lm -lxml2 -lz -lm -lcrypt
+
+后面添加：
+-liconv
+
+添加后效果：
+EXTRA_LIBS = -lcrypt -lz -lcrypt -lrt -lmysqlclient -lmcrypt -lldap -llber -lfreetype -lpng -lz -ljpeg -lcurl -lz -lrt -lm -ldl -lnsl -lrt -lxml2 -lz -lm -lssl -lcrypto -ldl -lz -lcurl -ldl -lgssapi_krb5 -lkrb5 -lk5crypto -lcom_err -lidn -lssl -lcrypto -lz -lxml2 -lz -lm -lssl -lcrypto -ldl -lz -lxml2 -lz -lm -lxml2 -lz -lm -lcrypt -lxml2 -lz -lm -lxml2 -lz -lm -lxml2 -lz -lm -lxml2 -lz -lm -lcrypt -liconv
+
+sudo make install
+
+配置php：
+cd php-5.5.3
+sudo cp php.ini-development /usr/local/php/etc/php.ini
+
+添加用户和组：
+sudo groupadd www
+sudo useradd -g www www
+
+sudo mkdir -p /var/log/nginx
+sudo chmod +w /var/log/nginx
+sudo chown -R www:www /var/log/nginx
+
+更改php-fpm
+sudo cp /usr/local/php/etc/php-fpm.conf.default /usr/local/php/etc/php-fpm.conf
+sudo vim /usr/local/php/etc/php-fpm.conf#修改用户和组
+
+#去掉/更改 配置文件中的;
+pm.max_children = 64
+pm.start_servers = 20
+pm.min_spare_servers = 5
+pm.max_spare_servers = 35
+pm.max_requests = 1024
+user = www
+group = www
+
+#检查语法是否正确
+sudo /usr/local/php/sbin/php-fpm -t
+出现NOTICE: configuration file /usr/local/php/etc/php-fpm.conf test is successful 测试成功
+
+启动：
+sudo /usr/local/php/sbin/php-fpm &
+
+检查是否启动：
+localhost# ps aux | grep php
+root      3363  0.0  0.0   2280   552 pts/0    S+   17:38   0:00 grep php
+root     28831  0.0  0.3  41740  3388 ?        SNs  15:52   0:00 php-fpm: master process (/usr/local/php/etc/php-fpm.conf)
+www      28832  0.0  0.3  41740  3492 ?        SN   15:52   0:00 php-fpm: pool www
+www      28833  0.0  0.3  41740  3492 ?        SN   15:52   0:00 php-fpm: pool www
+www      28834  0.0  0.3  41740  3492 ?        SN   15:52   0:00 php-fpm: pool www
+www      28835  0.0  0.4  41740  4796 ?        SN   15:52   0:00 php-fpm: pool www
+www      28836  0.0  0.2  41740  2884 ?        SN   15:52   0:00 php-fpm: pool www
+www      28837  0.0  0.3  41740  3692 ?        SN   15:52   0:00 php-fpm: pool www
+www      28838  0.0  0.3  41740  3492 ?        SN   15:52   0:00 php-fpm: pool www
+www      28839  0.0  0.3  41740  3692 ?        SN   15:52   0:00 php-fpm: pool www
+www      28840  0.0  0.3  41740  3692 ?        SN   15:52   0:00 php-fpm: pool www
+www      28841  0.0  0.3  41740  3692 ?        SN   15:52   0:00 php-fpm: pool www
+www      28842  0.0  0.4  41740  4800 ?        SN   15:52   0:00 php-fpm: pool www
+www      28843  0.0  0.3  41740  3692 ?        SN   15:52   0:00 php-fpm: pool www
+www      28844  0.0  0.2  41740  2884 ?        SN   15:52   0:00 php-fpm: pool www
+www      28845  0.0  0.4  41740  4800 ?        SN   15:52   0:00 php-fpm: pool www
+www      28846  0.0  0.2  41740  2884 ?        SN   15:52   0:00 php-fpm: pool www
+www      28847  0.0  0.2  41740  2884 ?        SN   15:52   0:00 php-fpm: pool www
+www      28848  0.0  0.2  41740  2884 ?        SN   15:52   0:00 php-fpm: pool www
+www      28849  0.0  0.2  41740  2884 ?        SN   15:52   0:00 php-fpm: pool www
+www      28850  0.0  0.2  41740  2884 ?        SN   15:52   0:00 php-fpm: pool www
+www      28851  0.0  0.2  41740  2884 ?        SN   15:52   0:00 php-fpm: pool www
+
+添加开机启动：
+sudo vim /etc/rc.d/rc.local
+添加
+/usr/local/php/sbin/php-fpm &
+
+——————————————————————————————
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+6、安装Ngin
+
+a、安装依赖包
+tar xvzf pcre-8.33.tar.gz
+cd pcre-8.33
+./configure
+make
+sudo make install
+——————————————————————————————
+
+tar xvzf nginx-1.5.4.tar.gz
+cd nginx-1.5.4
+./configure –user=www –group=www \
+–prefix=/usr/local/nginx \
+–sbin-path=/usr/local/nginx/sbin/nginx \
+–conf-path=/usr/local/nginx/conf/nginx.conf \
+–with-http_stub_status_module \
+–with-http_ssl_module \
+–with-pcre \
+–lock-path=/var/run/nginx.lock \
+–pid-path=/var/run/nginx.pid
+
+make
+sudo make install
+sudo vim /usr/local/nginx/conf/nginx.conf
+
+#修改一些参数,别直接替换文件,这只是一部分
+user www
+
+events {
+use epoll;
+worker_connections  1024;
+}
+
+location ~ \.php$ {
+root           html;
+fastcgi_pass   127.0.0.1:9000;
+fastcgi_index  index.php;
+#fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
+#include        fastcgi_params;
+include        /usr/local/nginx/conf/fastcgi.conf;
+}
+
+#检测配置文件
+sudo /usr/local/nginx/sbin/nginx -t
+#提示表示成功
+#nginx: the configuration file /usr/local/nginx/conf/nginx.conf syntax is ok
+#nginx: configuration file /usr/local/nginx/conf/nginx.conf test is successful
+
+sudo /usr/local/nginx/sbin/nginx &
+
+#平滑重启Nginx
+/usr/local/nginx/sbin/nginx -s reload
+
+#添加开机启动
+sudo vim /etc/rc.d/rc.local
+#最后移行加入
+/usr/local/nginx/sbin/nginx
+
+#测试
+cd /usr/local/nginx/html/
+touch index.php
+vi /usr/local/nginx/html/index.php
+<?php
+phpinfo();
+?>
+
+这个地方会遇到大麻烦了，html可以正常访问，php不能正常访问：
+directory index of “/usr/local/nginx/html/
+这个时候需要修改文件用户组
+
+FastCGI sent in stderr: “Primary script unknown” while reading response header from upstream,
+注意脚本是否加载正确，这是我修改后的路径：
+
+include        /usr/local/nginx/conf/fastcgi.conf;
+
+平滑启动：
+nginx -s reload
+
+wget http://pecl.php.net/get/zendopcache-7.0.2.tgz
+tar xvzf zendopcache-7.0.2.tgz
+;cd zendopcache-7.0.2
+sudo /usr/local/php/bin/phpize
+./configure –with-php-config=/usr/local/php/bin/php-config
+make
+sudo make install
+
+本条目发布于2013 年 9 月 10 日。属于mysql、php分类，被贴了 nginx、php 标签。
+Mac OS X下phpmyadmin配置
+发表回复
+1、下载phpmyadmin
+在~/sites目录下下载
+#cd ~/sites
+#wget http://sourceforge.net/projects/phpmyadmin/files/phpMyAdmin/4.0.3/phpMyAdmin-4.0.3-all-languages.tar.gz/download\#\!md5\!d4c0bdec4ba628fa010393b6c5d077b5 
+#mv download phpadmin.tar.gz
+#tar xvzf phpadmin.tar.gz 
+#mv phpMyAdmin-4.0.3-all-languages phpmyadmin 
+#mkdir -p ~/sites/phpmyadmin/config
+#chmod o+w ~/sites/phpmyadmin/config
+
+2、在浏览器中安装phpmyadmin
+http://localhost/~cwt0408/phpmyadmin/setup/

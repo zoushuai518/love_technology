@@ -1,0 +1,82 @@
+# /etc/sysconfig/network-scripts/ifcfg-eth0
+
+
+# zs config useing from b5m
+#
+# 非dhcp方式 s
+DEVICE=eth0
+BOOTPROTO=static
+NM_CONTROLLED=yes
+ONBOOT=yes
+#TYPE=Ethernet				#是否联网
+IPADDR=172.16.16.250
+GATEWAY=172.16.16.254
+NETMASK=255.255.255.0
+DEFROUTE=yes
+PEERDNS=no					#这个选项可令 /etc/resolv.conf 在系统重启后不会被重写;此法无效的话还要在eth0中添加dns信息; -->添加以下DNS配置之后, service network restart,之后DNS配置会写入 /etc/resolv.conf文件
+DNS1=8.8.8.8
+DNS2=172.16.99.254
+#IPV4_FAILURE_FATAL="yes"
+#IPV6INIT="no"
+#NAME="System eth0"
+#注：以上的配置在 vbox下实现,使用的是vbox的 "桥接联网" 方式[这种方式，主机必须使用有线联网,如果是无线联网,CentOS配置正确也无法上网] | [vbox选择 桥接联网 即可]
+#
+# 非dhcp方式 e
+#
+#
+# dhcp方式
+DEVICE=eth0					#描述网卡对应的设备别名
+BOOTPROTO=dhcp
+ONBOOT=yes					#系统启动时是否设置此网络接口,设置为yes时,系统启动时激活此设备
+TYPE=Ethernet				#是否联网
+#
+# zs config useing from b5m
+
+
+
+
+# zs config demo1
+DEVICE=eth0					#描述网卡对应的设备别名
+BOOTPROTO=static			#设置网卡获得ip地址的方式,可能的选项为static,dhcp或bootp;分别对应静态指定的ip地址,通过dhcp/bootp协议获得的ip地址
+#BOOTPROTO=dhcp
+ONBOOT=yes					#系统启动时是否设置此网络接口,设置为yes时,系统启动时激活此设备
+TYPE=Ethernet				#是否联网
+# BOOTPROTO=static 时候,设置下面的选项
+BROADCAST=192.168.0.255		#对应的子网广播地址
+HWADDR=08:00:27:DD:96:B5	#对应的网卡物理地址
+IPADDR=192.168.0.100		#设置网卡的ip地址
+IPV6INIT=no					#
+IPV6_AUTOCONF=no			#
+NETMASK=255.255.255.0		#网卡对应的网络掩码
+NETWORK=192.168.0.0			#网卡对应的网络地址
+# zs config demo1
+
+
+
+
+#比较全的配置DEMO
+#
+#eth0
+DEVICE=eth0
+BOOTPROTO=static
+BROADCAST=192.168.0.255
+HWADDR=00:0C:29:E9:3F:51
+IPADDR=192.168.0.101
+NETMASK=255.255.255.0
+NETWORK=192.168.0.0
+ONBOOT=yes
+GATEWAY=192.168.0.1
+PEERDNS=no
+
+#eth1
+DEVICE=eth1
+BOOTPROTO=static
+BROADCAST=192.168.0.255
+HWADDR=00:0c:29:e9:3f:5b
+IPADDR=192.168.0.144
+NETMASK=255.255.255.0
+NETWORK=192.168.0.0
+GATEWAY=192.168.0.1
+ONBOOT=yes
+PEERDNS=no
+#比较全的配置DEMO

@@ -1,0 +1,48 @@
+#安装一个软件
+yum [-y] install httpd
+
+#安装软件包
+yum [-y] groupinstall chinese-support
+
+#安装多个类是的软件
+yum [-y] install httpd*
+
+#安装多个非类是的软件
+yum [-y] install httpd php php-gd mysql
+
+#卸载一个软件
+yum [-y] remove httpd
+
+#卸载多个软件
+yum [-y] remove httpd*
+
+#卸载多个非类是的软件
+yum [-y] remove httpd php php-gd mysql
+
+#检查下面是不是已经安装
+yum list openldap
+
+
+#====
+#yum搜索安装包;在不知道具体包名的情况下,可以如下使用
+yum search png |grep png
+#就能找到我们想安装的libpng这个名称了
+#
+#
+#注
+yum -y upgrade 和 yum -y update的区别:
+yum -y update 
+#升级所有包，改变软件设置和系统设置,系统版本内核都升级
+yum -y upgrade
+#升级所有包，不改变软件设置和系统设置，系统版本升级，内核不改变
+
+
+# CentOS yum安装软件;zs
+# step 1
+yum search packaged
+# step 2
+yum install packaged
+# 如果搜索不到结果,或者安装失败,请先检查yum源,并配置可用的yum源
+#
+#
+#

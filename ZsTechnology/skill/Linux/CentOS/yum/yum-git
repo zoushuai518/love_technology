@@ -1,0 +1,56 @@
+
+CentOS的yum源中没有git，只能自己编译安装
+1.确保已安装了依赖的包
+yum install curl
+yum install curl-devel
+yum install zlib-devel
+yum install openssl-devel
+yum install perl
+yum install cpio
+yum install expat-devel
+yum install gettext-devel
+
+2.下载最新的git包
+wget http://www.codemonkey.org.uk/projects/git-snapshots/git/git-latest.tar.gz
+tar xzvf git-latest.tar.gz
+cd git-2011-11-30 ＃你的目录可能不是这个
+autoconf
+./configure
+make
+sudo make install
+
+3.检查下安装的版本，大功告成
+git --version
+
+
+
+CentOS下Git命令行自动补全
+在《Git权威指南》一书中看到Git可以配置命令自动补齐功能，真不错，不过按照原书的操作说明，查看了一下，CentOS的etc目录下无bash_completion文件，故没有按照他写的方法操作，而是直接把git提供的bash脚本拷贝到用户的目录下就可以了，具体操作方法：
+
+$ cd git-1.7.7.4
+$ cp ./contrib/completion/git-completion.bash ~/.git-completion.bash
+
+$ vi ~/.bashrc
+最后一行加入
+source ~/.git-completion.bash
+
+关闭SSH终端，再重新登入，检测一下，Git输入的时候，按tab键，Git命令是不是能自动补全了？
+
+另外Debian/Ubuntu里有个包就叫git-completion，这个包安装完成后会自动把这个补全脚本放到/etc/bash_completion.d/下，由bash-compleletion载入执行。
+就是前面那本书中提到的方式
+
+
+
+[
+zs test 可用
+{
+find / -name git-completion.bash
+/home/zs-centos/zs/git-1.8.3.1/contrib/completion/git-completion.bash
+
+cp ./git-1.8.3.1/contrib/completion/git-completion.bash ~/.git-completion.bash  #复制 git-completion.bash 到 ~目录,并且重命名为 ./git-completion.bash
+ 
+vim ~/.bashrc最后一行加入:source ~/.git-completion.bash
+搞定
+}
+]
+

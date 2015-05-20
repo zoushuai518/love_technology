@@ -1,0 +1,11 @@
+wget命令：
+
+1. 下载:
+    wget http://www.basg.com/te/taa.tar.gz
+
+2. 模拟post请求:
+{
+    2.1 新建, /tmp/postdata文件
+    2.2 把 post参数放到 /tmp/postdata文件中
+    2.3 请求 wget --post-file=/tmp/postdata http://10.245.145.155:1020/goodsoud/api/Gservice/GtGodsetilist
+}

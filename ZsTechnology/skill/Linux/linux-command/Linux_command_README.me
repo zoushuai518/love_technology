@@ -1,0 +1,233 @@
+CentOS
+===
+
+{
+    linux 查看命令帮助:
+    你用man 或--help 或者info就可以 比如查看 adduser你就输入
+    man adduser 这个很全 而且有例子
+    adduser --help 这个告诉你一些常用参数
+    info adduesr
+
+     ---
+    chkconfig   ***  chkconfig --help
+    {
+        chkconfig sshd on       [设置服务{sshd}开机启动]
+        chkconfig sshd off
+        chkconfig --list sshd
+        {
+            chkconfig --add mysqld      [mysqld加入到系统服务 : 可以使用 service mysqld start|status|restart|stop 对服务进行管理]
+            chkconfig --level 35 mysql on
+        }
+    }
+    ---
+    rpm -qa|grep 包名字
+    rpm -qi|grep 包名字
+    ---
+    grep 管道命令!
+    ---
+    su root | su -
+    ---
+
+    tar:
+    解压 tar zxvf 文件名.tar.gz|文件名.tgz
+    压缩 tar zcvf 文件名.tar.gz 目标名|./dir
+
+    压缩 tar -Jcvf etc.tar.xz /etc
+    解压 tar -Jxvf etc.tar.xz
+
+    tar常见文件解压法：
+    .gz   - z 小写；
+    .bz2  - j 小写；
+    .xz   - J 大写；
+    .Z    - Z大写；
+
+    ---
+    查找命令:find / -name package-name
+    ---
+    pwd
+    ---
+    ls -lht命令显示当前目录下的所有文件，其中有一列就是显示这个文件的大小; ls -lht | ls -lht ./dir/test.php
+    ll
+    ls -a
+    ---
+    df  &  du
+    df -h | df -h ./ :查看磁盘空间使用情况
+    du -sh ./ :查看文件夹大小   [du -sh ./zs]
+    du -h ./  :遍历显示文件夹下文件大小 [du -h ./zs]
+    ---
+    grep "关键词" ./* -R
+    grep "关键词" ./ -R  |  grep -R '关键词' ./  |  grep -R '100300329_49461' /data/tmp/vd/dataflow_*
+    ---
+    Ctrl + r
+    ---
+}
+
+{
+    linux下查看所有用户及所有用户组：
+    {
+        cat /etc/passwd
+    }
+    查看cpu信息:
+    {
+        cat /proc/cpuinfo
+    }
+    {
+        groups 查看当前登录用户的组内成员
+        groups gliethttp 查看gliethttp用户所在的组,以及组内成员
+        whoami 查看当前登录用户名
+        -
+        /etc/group文件包含所有组
+        /etc/shadow和/etc/passwd系统存在的所有用户名
+        -
+        1./etc/group 解说；
+
+        /etc/group 文件是用户组的配置文件，内容包括用户和用户组，并且能显示出用户是归属哪个用户组或哪几个用户组，因为一个用户可以归属一个或多个不同的用户组；同一用 户组的用户之间具有相似的特征。比如我们把某一用户加入到root用户组，那么这个用户就可以浏览root用户家目录的文件，如果root用户把某个文件 的读写执行权限开放，root用户组的所有用户都可以修改此文件，如果是可执行的文件（比如脚本），root用户组的用户也是可以执行的；
+
+        用户组的特性在系统管理中为系统管理员提供了极大的方便，但安全性也是值得关注的，如某个用户下有对系统管理有最重要的内容，最好让用户拥有独立的用户组，或者是把用户下的文件的权限设置为完全私有；另外root用户组一般不要轻易把普通用户加入进去，
+
+        2./etc/group 内容具体分析
+
+        /etc/group 的内容包括用户组（Group）、用户组口令、GID及该用户组所包含的用户（User），每个用户组一条记录；格式如下：
+
+        group_name:passwd:GID:user_list
+
+        在/etc/group 中的每条记录分四个字段：
+
+        第一字段：用户组名称；
+
+        第二字段：用户组密码；
+
+        第三字段：GID
+
+        第四字段：用户列表，每个用户之间用,号分割；本字段可以为空；如果字段为空表示用户组为GID的用户名；
+    }
+}
+
+
+
+{
+
+    #Linux常用命令列表
+
+    1.rpm               # rpm软件管理包,centos自带 ; rpm -qa[-qi][-ql][-e] |grep package-name[samba
+    2.chkconfig         # 把安装的软件加入到系统服务,这样就可以使用 service命令来进行启动/停止;useing demo:service package[d] start|restart|stop|status ->packaged对应软件的守护进程
+    3.service           # service --status-all,查看linux系统都安装了那些服务[软件]
+    4.top
+    5.curl
+    6.ps                #查看服务进程 ps aux  #用法,有待研究    |ps -ef[aux]|grep memcache|11211
+    7.pstree            #显示进程状态树
+    8.scp
+    9.netstat           #用法,有待研究
+    10.mount            #挂载外接设备
+    11.unzip  | unzip filename -d /usr/share/vim/  [解压 .zip]
+    12.tar    | tar zxf[zxvf] filename[解压 .tar.gz]   |  tar zxvf /bbs.tar.gz -C /zzz/bbs   | tar [-xjf]-vxjf bbs.tar.bz2[tar vxjf pcre-8.34.tar.bz2 -C /usr/local/pcre  | {tar xvf test.tar && mv test 123} ]
+    13.route
+    14.rm       | rm -rf * | rm -rf -R /var/www/html/zs | rm -rf .git .gitignore .gitmodules  |  rm -rf nerdtree/ plugin/  |  rm -rf pre_bean*
+    15.cp       | cp test1 test2  |  cp -R /var/www/html  /usr/local/ [{dir:/home/zs-centos/zs/nerdtree/}{cp -R * /usr/share/vim/vim72}]  | cp -r test  /usr/local/  | cp -r apr-1.4.6 httpd-2.4.3/srclib/apr  | sudo cp -R ./cms-web/* /var/www/html/cms/cms-web/
+    16.mv
+    {
+        移动文件：mv file_1.txt /home/weiyan1
+        移动多个文件：mv file_1.txt file_2.txt /home/weiyan1
+        使用通配符移动文件：mv *.txt /home/weiyan1
+        移动目录：mv calendar/ /home/zs-centos/zs/
+        重命名文件或目录：mv file_1.txt file_2.txt  |   mv directory_1/ directory_2/
+        打印移动信息：$ mv -v *.txt /home/pungki/office
+        使用交互模式：mv -i file_1.txt /home/pungki/office
+        使用更新选项：mv -uv *.txt /home/pungki/office
+        不要覆盖任何已存在的文件：mv -vn *.txt /home/pungki/office
+        移动时创建备份：mv -bv *.txt /home/pungki/office
+        无条件覆盖已经存在的文件： mv -f *.txt /home/pungki/office
+    }
+    17.chmod | chown | chgrp   | chmod 755 -R /var/www/html/ | sudo chmod -R 777 /var/www/html/cms/cms-web/protected/runtime/  | sudo chown weiyan:weiyan -R ./
+    18.whereis  | whereis package-name
+    19.date | [{date}{date -s "19:22:00 2014-01-11"}{date -s "2014-01-11 19:22:00"}]
+    20.mkdir    | [{mkdir dirName}{mkdir -p /usr/local/mysql} |{sudo mkdir -p cms/cms-web}]
+    21.touch    | [touch fileName]
+    22.cat      | [cat ./ip]    |"cat"代表了连结（Concatenation），连接两个或者更多文本文件或者以标准输出形式打印文件的内容
+    23.rsync    | [用法带研究]
+    24.diff | [用法带研究]
+    25.kill | killall  [{简单使用流程:ps -ef |grep apache|80  |  netstat -lnp|grep 80 -> kill -9 进程ID | killall -9 正在运行的程序名称}]
+    26.grep | [搜索:{grep 'search name' dir -R | grep 'tsung' ./ -R }]
+    27.dstat    | Linux 监控工具
+    28.find,locate,whereis,which,type   | Linux五个查找命令
+    29.ln   ln -s ../yii yii
+    30.ls
+    31.test
+    32.tail     |tail 命令从指定点开始将文件写到标准输出.使用tail命令的-f选项可以方便的查阅正在改变的日志文件,tail -f filename会把filename里最尾部的内容显示在屏幕上,并且不但刷新,使你看到最新的文件内容.   tail -f /usr/local/nginx/logs/access.log | tailf /usr/local/nginx/logs/access.log
+    33.lsblk    |"lsblk"就是列出块设备。除了RAM外，以标准的树状输出格式，整齐地显示块设备。
+    34.md5sum   |"md5sum"就是计算和检验MD5信息签名。md5 checksum(通常叫做哈希)使用匹配或者验证文件的文件的完整性，因为文件可能因为传输错误，磁盘错误或者无恶意的干扰等原因而发生改变。
+    35.dd命令   |带研究
+    36.uname    |"uname"命令就是Unix Name的简写。显示机器名，操作系统和内核的详细信息。
+    37.history  |"history"命令就是历史记录。它显示了在终端中所执行过的所有命令的历史。  |注意：按住“CTRL + R”就可以搜索已经执行过的命令，它可以你写命令时自动补全。
+    38.注意：sudo 允许用户借用超级用户的权限，然而"su"命令实际上是允许用户以超级用户登录。所以sudo比su更安全.
+    39.cal      |它用来显示当前月份或者未来或者过去任何年份中的月份
+    40.more     |more命令，功能类似 cat ，cat命令是整个文件的内容从上到下显示在屏幕上。 more会以一页一页的显示方便使用者逐页阅读，而最基本的指令就是按空白键（space）就往下一页显示，按 b 键就会往回（back）一页显示，而且还有搜寻字串的功能 。more命令从前向后读取文件，因此在启动时就加载整个文件
+    41.less     |less 工具也是对文件或其它输出进行分页显示的工具，应该说是linux正统查看文件内容的工具，功能极其强大。less 的用法比起 more 更加的有弹性。在 more 的时候，我们并没有办法向前面翻， 只能往后面看，但若使用了 less 时，就可以使用 [pageup] [pagedown] 等按键的功能来往前往后翻看文件，更容易用来查看一个文件的内容！除此之外，在 less 里头可以拥有更多的搜索功能，不止可以向下搜，也可以向上搜
+    42.sed
+    43.awk
+    44.cut
+    45.strace   strace常用来跟踪进程执行时的系统调用和所接收的信号。 在Linux世界，进程不能直接访问硬件设备，当进程需要访问硬件设备(比如读取磁盘文件，接收网络数据等等)时，必须由用户态模式切换至内核态模式，通 过系统调用访问硬件设备。strace可以跟踪到一个进程产生的系统调用,包括参数，返回值，执行消耗的时间。
+    46.source
+    47.xargs
+    48.last
+    49.wget
+    50.head     | head -n 10030 application.log | tail -n +10000  #输出application.log的10000行至10030行内容
+    51.sar      | sar -n DEV 1 10000
+    52.gdb
+
+}
+
+
+{
+    #Linux命令详解：
+
+    cd /command-detail/
+}
+　　
+
+{
+
+    linux:-bash |error:
+
+    Linux:-bash: ***: command not found:
+    解决方案{环境变量问题}
+
+    Linux:-bash: ***: command not found,系统很多命令都用不了，均提示没有此命令。
+
+    突然之间linux很多命令都用不了，均提示没有此命令。
+
+    这应该是系统环境变量出现了问题导致的。
+
+    解决办法：
+
+    先用：echo $PATH
+    查看path是否含有：/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+    如果没有
+
+    先用临时环境变量（重启后消失）
+#export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+    然后就可以用那些命令了，进去修改永久环境变量：
+
+    1。修改profile文件：（所有用户）
+
+#vi /etc/profile
+    加入：export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+    保存退出。
+
+    2。修改.bashrc文件：（单独用户）
+
+#vi /~/.bashrc （每个用户目录下都有，ls -all）
+    加入：export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+    保存退出。
+
+    重启系统，搞定。
+
+    也可以不用重启，使用命令：#source .bashrc
+    即可使刚刚修改的环境变量生效
+
+}　　
+
+

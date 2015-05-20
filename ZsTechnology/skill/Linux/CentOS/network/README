@@ -1,0 +1,37 @@
+# centos 网络配置
+
+#设置完成之后,重新启动,使网络配置生效
+service network restart  || /etc/init.d/network restart
+
+# =-----
+
+#修改IP地址
+#即时生效
+ifconfig eth0 192.168.0.100 netmask 255.255.255.00
+#启动生效
+修改/etc/sysconfig/network-scripts/ifcfg-eth0
+
+#修改网关
+#即时生效
+route add default gw 192.168.0.1 dev eth0
+#启动生效
+修改/etc/sysconfig/network
+
+#修改DNS
+修改/etc/resolv.conf
+修改后可即时生效,启动同样有效
+
+#修改 host name
+#即时生效
+hostname centos1
+#启动生效
+修改/etc/sysconfig/network
+
+#=================
+Vbox 安装 CentOS
+vbox使用的是"桥接联网"方式[这种方式，主机必须使用有线联网,如果是无线联网,CentOS配置正确也无法上网]。|zs推荐使用,这种方式 可以把虚拟机当作局域网中真实的主机。
+vbox使用的是"NAT"地址转换方式联网[这种联网方式，主机可以使用 有线或者无线方式联网,CentOS使用DHCP方式可以上网;这种方式最简单,且vbox默认使用此方式
+|{此时虚拟主机默认IP为：10.0.2.15{通过route查看网关};{VirtualBox Host-Only Network IP:192.168.56.1}}
+|这种方式如果,需要ssh连接虚拟主机,或者使用虚拟主机提供的Web服务,可以使用端口转发来实现{{ssh TCP 192.168.56.1 2222 10.0.2.15 22}{web TCP 192.168.56.1 80 10.0.2.15 80}}
+]
+

@@ -1,0 +1,64 @@
+1.安装iptables
+很多Linux已经默认安装iptables，可使用后文的查看命令测试是否安装
+CentOS/RedHat下执行：
+yum install iptables
+
+2.Debian/Ubuntu下执行：
+apt-get install iptables
+
+
+3.iptables 配置
+{
+	a.查看现有的iptables规则
+	命令后面的line-number为显示行号（将规则一则一则输出，并显示行号），可选，方便后文的删除指令。
+	iptables -L -n --line-numbers
+
+	b.删除某iptables规则
+	例如，删除第10行的规则，行号可由之前的命令查看
+	iptables -D INPUT 10
+
+	c.清除现有iptables规则
+	iptables -F
+	iptables -X
+	iptables -Z
+
+	d.创建规则
+	{
+		a).开放端口
+		命令iptables -A INPUT -j REJECT将屏蔽其他未授权的端口，因此请务必开放22端口以保障SSH连接正常~
+
+#允许本机访问
+		iptables -A INPUT -s 127.0.0.1 -d 127.0.0.1 -j ACCEPT
+# 允许已建立的或相关连的通行
+		iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+#允许所有本机向外的访问
+		iptables -A OUTPUT -j ACCEPT
+# 允许访问22端口
+		iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+#允许访问80端口
+		iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+#允许FTP服务的21和20端口
+		iptables -A INPUT -p tcp --dport 21 -j ACCEPT
+		iptables -A INPUT -p tcp --dport 20 -j ACCEPT
+#如果有其他端口的话，规则也类似，稍微修改上述语句就行
+#禁止其他未允许的规则访问
+		iptables -A INPUT -j REJECT
+		iptables -A FORWARD -j REJECT
+
+		b).屏蔽ip
+		iptables -I INPUT -s 123.123.123.123 -j DROP
+
+		可通过更换上述ip为ip段来达到屏蔽ip段的目的~
+
+		若需屏蔽整个ip段（123.0.0.1到123.255.255.254）则换为123.0.0.0/8
+		若需屏蔽ip段123.123.0.1到123.123.255.254，则换为123.123.0.0/16
+		若需屏蔽ip段123.123.123.1到123.123.123.254则换为123.123.123.0/24
+	}
+
+	e.设置开机启动
+	一般在安装iptables完成后，开机启动会自动设置成功，但在个别CentOS系统上，貌似还有些问题，可以使用如下命令手动设置
+	chkconfig --level 345 iptables on
+
+	f.保存iptables规则
+	service iptables save
+}

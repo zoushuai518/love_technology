@@ -1,0 +1,247 @@
+#CentOS 6.4环境[以下配置,仅供参考]：
+
+
+CentOS 源码编译安装LAMP(Apache MySQL PHP)
+
+源码编译安装LAMP虽然过程繁琐，但可以根据自己PHP程序的需要配置相应的环境，非常的灵活。对于比较急于配置好LAMP的同学，可以使用lamp一键安装。
+
+卸载yum或rpm安装的lamp软件
+在编译安装lamp之前，首先先卸载已存在的rpm包吧。
+
+---
+rpm -e httpd
+rpm -e mysql
+rpm -e php
+yum -y remove httpd
+yum -y remove php
+yum -y remove mysql-server mysql
+yum -y remove php-mysql
+
+---
+
+禁用SeLinux
+selinux可能会致使编译安装失败，我们先禁用它。
+
+---
+
+sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config //永久禁用，需要重启生效
+setenforce 0 //临时禁用，不需要重启
+
+---
+
+yum安装必要工具
+1、安装编译工具gcc gcc-c++make automake autoconf kernel-devel
+2、安装PHP所需依赖，如libxml2-devel openssl-devel curl-devel libjpeg-devel libpng-devel等
+-
+yum -y install gcc gcc-c++  make automake autoconf kernel-devel ncurses-devel libxml2-devel openssl-devel curl-devel libjpeg-devel libpng-devel  pcre-devel libtool-libs freetype-devel gd zlib-devel file bison patch mlocate flex diffutils   readline-devel glibc-devel glib2-devel bzip2-devel gettext-devel libcap-devel libmcrypt-devel
+
+---
+
+下载所需源码
+apache:http://httpd.apache.org/
+mysql:http://mysql.com/downloads/mysql/
+php:http://php.net/downloads.php
+phpmyadmin:http://www.phpmyadmin.net/home_page/downloads.php
+我们这里选择的版本为：apache-2.2.22,mysql-5.1.62,php-5.2.17,phpmyadmin-3.4.10.2
+-
+cd /tmp
+wget -c http://apache.ziply.com//httpd/httpd-2.2.22.tar.gz
+wget -c http://dev.mysql.com/get/Downloads/MySQL-5.1/mysql-5.1.64.tar.gz/from/http://mysql.he.net/
+wget -c http://us2.php.net/get/php-5.2.17.tar.gz/from/am.php.net/mirror
+wget -c http://iweb.dl.sourceforge.net/project/phpmyadmin/phpMyAdmin/3.4.10.2/phpMyAdmin-3.4.10.2-all-languages.tar.gz
+tar xzf httpd-2.2.22.tar.gz
+tar xzf mysql-5.1.62.tar.gz
+tar xzf php-5.2.17.tar.gz
+tar xzf phpMyAdmin-3.4.10.2-all-languages.tar.gz
+-
+安装apache2.2.22
+cd /tmp/httpd-2.2.22
+./configure --prefix=/usr/local/apache --with-included-apr --enable-so --enable-deflate=shared --enable-expires=shared  --enable-headers=shared --enable-rewrite=shared --enable-static-support
+make
+make install
+-
+编译参数解释：
+--prefix=/usr/local/apache：指定安装目录
+--with-included-apr：在编译时强制使用当前源代码中绑定的APR版本
+--enable-so：允许运行时加载DSO模块
+--enable-deflate=shared:将deflate模块编译为DSO
+--enable-expires=shared:将expires模块编译为DSO
+--enable-headers=shared:将headers模块编译为DSO
+--enable-rewrite=shared:将rewrite模块编译为DSO
+--enable-static-support:使用静态连接(默认为动态连接)编译所有二进制支持程序
+更详细的编译参数解释：http://lamp.linux.gov.cn/Apache/ApacheMenu/programs/configure.html
+[
+cp build/rpm/httpd.init /etc/init.d/httpd //使用init脚本管理httpd
+chmod 755 /etc/init.d/httpd //增加执行权限
+chkconfig --add httpd  //添加httpd到服务项
+chkconfig  httpd on   //设置开机启动
+ln -fs /usr/local/apache/ /etc/httpd
+ln -fs /usr/local/apache/bin/httpd /usr/sbin/httpd
+ln -fs /usr/local/apache/bin/apachectl /usr/sbin/apachectl
+ln -fs /usr/local/apache/logs /var/log/httpd //设置软链接以适应init脚本
+]
+
+---
+
+安装mysql5.1.62
+groupadd mysql
+useradd -g mysql mysql
+cd /tmp/mysql-5.1.62
+./configure --prefix=/usr/local/mysql/ --localstatedir=/usr/local/mysql/data --without-debug --with-unix-socket-path=/tmp/mysql.sock --with-client-ldflags=-all-static --with-mysqld-ldflags=-all-static --enable-assembler --with-extra-charsets=gbk,gb2312,utf8 --with-pthread
+make
+make install
+-
+编译参数解释：
+--prefix=/usr/local/mysql/:指定安装位置
+--localstatedir=/usr/local/mysql/data：指定数据库文件位置
+--without-debug：禁用调用模式
+--with-unix-socket-path=/tmp/mysql.sock:指定sock文件位置
+--with-client-ldflags=-all-static：
+--with-mysqld-ldflags=-all-static:以纯静态方式编译服务端和客户端
+--enable-assembler：使用一些字符函数的汇编版本
+--with-extra-charsets=gbk,gb2312,utf8 ：gbk,gb2312,utf8字符支持
+--with-pthread:强制使用pthread库(posix线程库)
+更多编译参数请执行./configure --help命令查看。
+-
+cp support-files/my-medium.cnf /etc/my.cnf //复制配置文件夹my.cnf
+/usr/local/mysql/bin/mysql_install_db --user=mysql  //初始化数据库
+chown -R root.mysql /usr/local/mysql
+chown -R mysql /usr/local/mysql/data 
+cp /tmp/mysql-5.1.62/support-files/mysql.server /etc/rc.d/init.d/mysqld  //init启动脚本
+chown root.root /etc/rc.d/init.d/mysqld 
+chmod 755 /etc/rc.d/init.d/mysqld
+chkconfig --add mysqld
+chkconfig  mysqld on
+ln -s /usr/local/mysql/bin/mysql /usr/bin
+ln -s /usr/local/mysql/bin/mysqladmin /usr/bin
+service mysqld start
+/usr/local/mysql/bin/mysqladmin -u root password '新密码'   //设置root密码
+
+---
+
+安装PHP5.2.17
+在编译php之前，先要解决两个问题：centos 6上libmcrypt的安装和可能有些系统找不到libiconv导致的错误。
+1、centos 6官方源已经没有libmcrypt的rpm包，我们这里选择编译安装，当然你也可以导入第三方源安装(centos 5略过此步)。
+下载源码：
+cd /tmp
+wget http://superb-dca2.dl.sourceforge.net/project/mcrypt/Libmcrypt/2.5.8/libmcrypt-2.5.8.tar.gz
+wget http://superb-dca2.dl.sourceforge.net/project/mhash/mhash/0.9.9.9/mhash-0.9.9.9.tar.gz
+wget http://superb-sea2.dl.sourceforge.net/project/mcrypt/MCrypt/2.6.8/mcrypt-2.6.8.tar.gz
+tar xzf libmcrypt-2.5.8.tar.gz
+tar xzf mhash-0.9.9.9.tar.gz
+tar xzf mcrypt-2.6.8.tar.gz
+//安装libmcrypt
+cd /tmp/libmcrypt-2.5.8
+./configure --prefix=/usr
+make && make install
+//安装libmcrypt
+cd /tmp/mhash-0.9.9.9
+./configure --prefix=/usr
+make && make install
+//安装mcrypt
+/sbin/ldconfig //搜索出可共享的动态链接库
+cd /tmp/mcrypt-2.6.8
+./configure
+make && make install
+-
+解决可能出现的libiconv错误
+cd /tmp
+wget http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.14.tar.gz
+tar xzf libiconv-1.14.tar.gz
+cd libiconv-1.14
+./configure --prefix=/usr/local/libiconv
+make && make install
+-
+开始安装php-5.2.17:
+cd /tmp/php-5.2.17
+./configure --prefix=/usr/local/php --with-apxs2=/usr/local/apache/bin/apxs --with-config-file-path=/etc --with-config-file-scan-dir=/etc/php.d --with-openssl --with-zlib --enable-bcmath --with-bz2 --with-curl --enable-ftp --with-gd --enable-gd-native-ttf --with-gettext --with-mhash --enable-mbstring --with-mcrypt --enable-soap --enable-zip --with-iconv=/usr/local/libiconv --with-mysql=/usr/local/mysql --without-pear
+make
+make install
+编译参数解释：
+--prefix=/usr/local/php:设置安装路径
+--with-apxs2=/usr/local/apache/bin/apxs:编译共享的 Apache 2.0 模块
+--with-config-file-path=/etc:指定配置文件php.ini地址
+--with-config-file-scan-dir=/etc/php.d:指定额外的ini文件目录
+--with-openssl:编译OpenSSL支持
+--with-zlib:编译zlib支持
+--enable-bcmath:启用BC风格精度数学函数
+--with-bz2:BZip2支持
+--with-curl:CRUL支持
+--enable-ftp:FTP支持
+--with-gd:GD支持
+--enable-gd-native-ttf:启用TrueType字符串函数
+--with-gettext:启用GNU gettext支持
+--with-mhash:mhash支持
+--enable-mbstring:启用支持多字节字符串
+--with-mcrypt:编译mcrypt加密支持
+--enable-soap:SOAP支持
+--enable-zip:启用zip 读/写支持
+--with-iconv=/usr/local/libiconv:iconv支持
+--with-mysql=/usr/local/mysql:启用mysql支持
+--without-pear:不安装PEAR
+更多编译参数解释参考http://www.php.net/manual/zh/configure.about.php或者./configure --help查看。
+-
+cp php.ini-dist /usr/local/php/etc/php.ini //复制配置文件php.ini
+在/etc/httpd/conf/httpd.conf文件中加入php文件类型解析：
+Addtype application/x-httpd-php .php
+重启httpd:
+service httpd restart
+
+---
+
+安装ZendOptimizer-3.3.9(可选)
+ZendOptimizer的作用是分析,优化由Zend 编译器加密产生的代码的程序，对不是Zend编译器加密过的程序，没有必要安装这个。
+64位：http://downloads.zend.com/optimizer/3.3.9/ZendOptimizer-3.3.9-linux-glibc23-x86_64.tar.gz
+32位：http://downloads.zend.com/optimizer/3.3.9/ZendOptimizer-3.3.9-linux-glibc23-i386.tar.gz
+cd /tmp
+wget http://downloads.zend.com/optimizer/3.3.9/ZendOptimizer-3.3.9-linux-glibc23-i386.tar.gz
+tar xzf ZendOptimizer-3.3.9-linux-glibc23-i386.tar.gz
+cd /tmp/ZendOptimizer-3.3.9-linux-glibc23-i386/data/5_2_x_comp/
+mkdir -p /usr/local/Zend/lib/
+cp ZendOptimizer.so /usr/local/Zend/lib
+加载zendoptimizer，建立/etc/php.d/zend.ini文件，加入如下代码加载：
+[zend]
+zend_optimizer.optimization_level=15
+zend_extension=/usr/local/Zend/lib/ZendOptimizer.so
+重启httpd生效：
+service httpd restart
+--
+安装eAccelerator-0.9.6.1(可选)
+eAccelerator是一个自由开放源码php加速器，优化和动态内容缓存，提高了php脚本的缓存性能，使得PHP脚本在编译的状态下，对服务器的开销几乎完全消除。 它还有对脚本起优化作用，以加快其执行效率。使您的PHP程序代码执效率能提高1-10倍。类似的php加速器有：Xcache,APC等。下面是安装方法：
+cd /tmp
+wget http://voxel.dl.sourceforge.net/project/eaccelerator/eaccelerator/eAccelerator%200.9.6.1/eaccelerator-0.9.6.1.zip
+unzip eaccelerator-0.9.6.1.zip
+cd eaccelerator-0.9.6.1
+export PHP_PREFIX="/usr/local/php"
+$PHP_PREFIX/bin/phpize
+./configure -enable-eaccelerator=shared -with-php-config=$PHP_PREFIX/bin/php-config
+make && make install
+cd /tmp
+mkdir eaccelerator
+chmod 0777 eaccelerator
+加载eAccelerator,创建/ec/php.d/ea.ini文件，加入如下代码加载：
+[eaccelerator]
+zend_extension="/usr/local/php/lib/php/extensions/no-debug-non-zts-20060613/eaccelerator.so"
+eaccelerator.shm_size="32"
+eaccelerator.cache_dir="/tmp/eaccelerator"
+eaccelerator.enable="1"
+eaccelerator.optimizer="1"
+eaccelerator.check_mtime="1"
+eaccelerator.debug="0"
+eaccelerator.filter=""
+eaccelerator.shm_max="0"
+eaccelerator.shm_ttl="0"
+eaccelerator.shm_prune_period="0"
+eaccelerator.shm_only="0"
+eaccelerator.compress="1"
+eaccelerator.compress_level="9"
+eaccelerator参数设置参考：http://www.centos.bz/2012/03/eaccelerator-parameter/
+重启httpd生效：
+service httpd restart
+
+
+
+#===
+LAMP一件安装包 for linux
+http://www.apachefriends.org/zh_cn/index.html
+

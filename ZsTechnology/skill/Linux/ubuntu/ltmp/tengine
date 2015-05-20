@@ -1,0 +1,83 @@
+# Tengine for nginx
+# chmod +x /etc/init.d/tengine
+# zs测试可用
+#!/bin/sh
+#
+# nginx - this script start and stop the nginx daemon
+#
+# chkconfig: 2345 55 25
+# description: Startup script for nginx
+# processname: nginx
+# config: /usr/local/nginx/conf/nginx.conf
+# pidfile: /var/run/nginx.pid
+#
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+                                                   
+#DAEMON=/usr/local/nginx/sbin/nginx
+DAEMON=/usr/local/tengine/sbin/nginx	#nginx可执行文件目录
+CONFIGFILE=/usr/local/tengine/conf/nginx.conf	#tengine配置文件
+PIDFILE=/var/run/nginx.pid
+#SCRIPTNAME=/etc/init.d/nginx
+SCRIPTNAME=/etc/init.d/tengine
+LOCKFILE=/var/lock/nginx.lock
+                                                   
+set -e
+[ -x "$DAEMON" ] || exit 0
+                                                   
+start() {
+    echo "Startting Nginx......"
+    [ -x $DAEMON ] || exit 5
+    [ -f $CONFIGFILE ] || exit 6
+    $DAEMON -c $CONFIGFILE || echo -n "Nginx already running!"
+    [ $? -eq 0 ] && touch $LOCKFILE
+}
+                                                   
+stop() {
+    echo "Stopping Nginx......"
+    MPID=`ps aux | grep nginx | awk '/master/{print $2}'`
+                                                      
+    if [ "${MPID}X" != "X" ]; then
+        kill -QUIT $MPID
+        [ $? -eq 0 ] && rm -f $LOCKFILE
+    else
+        echo "Nginx server is not running!"
+    fi
+}
+                                                   
+reload() {
+    echo "Reloading Nginx......"
+    MPID=`ps aux | grep nginx | awk '/master/{print $2}'`
+                                                      
+    if [ "${MPID}X" != "X" ]; then
+        kill -HUP $MPID
+    else
+        echo "Nginx can't reload!"
+    fi
+}
+                                                   
+case "$1" in
+start)
+    start
+    ;;
+                                                      
+stop)
+    stop
+    ;;
+                                                      
+reload)
+    reload
+    ;;
+                                                      
+restart)
+    stop
+    sleep 1
+    start
+    ;;
+                                                      
+*)
+    echo "Usage: $SCRIPTNAME {start|stop|reload|restart}"
+    exit 3
+    ;;
+esac
+                                                   
+exit 0

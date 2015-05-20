@@ -1,0 +1,8 @@
+#/etc/resolvconf/resolv.conf.d/base
+#ubuntu上网配置
+#设置 DNS
+# form b5m demo
+nameserver 172.16.99.254
+nameserver 172.16.0.160
+# form b5m demo
+

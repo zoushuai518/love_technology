@@ -1,0 +1,87 @@
+#!/bin/bash
+# /etc/init.d/nginx
+# sudo chmod +x /etc/init.d/nginx
+#nginx 启动脚本
+#ubuntu 13.04平台
+#zs测试可用
+
+# nginx Startup script for the Nginx HTTP Server
+# it is v.0.0.2 version.
+# chkconfig: - 85 15
+# description: Nginx is a high-performance web and proxy server.
+#              It has a lot of features, but it's not for everyone.
+# processname: nginx
+# pidfile: /var/run/nginx.pid
+# config: /usr/local/nginx/conf/nginx.conf
+nginxd=/usr/local/nginx/nginx	#nginx可执行文件目录
+nginx_config=/usr/local/nginx/nginx.conf	#nginx配置文件目录
+nginx_pid=/var/run/nginx.pid	#nginx.pid文件目录
+RETVAL=0
+prog="nginx"
+# Source function library.
+#. /etc/rc.d/init.d/functions
+# ubuntu系统函数
+. /lib/lsb/init-functions
+# Source networking configuration.
+#. /etc/sysconfig/network
+# Check that networking is up.
+#[ ${NETWORKING} = "no" ] && exit 0
+[ -x $nginxd ] || exit 0
+# Start nginx daemons functions.
+start() {
+if [ -e $nginx_pid ];then
+   echo "nginx already running...."
+   exit 1
+fi
+   echo -n $"Starting $prog: "
+   $nginxd -c ${nginx_config}
+   RETVAL=$?
+   echo
+   #[ $RETVAL = 0 ] && touch /var/lock/subsys/nginx
+   return $RETVAL
+}
+# Stop nginx daemons functions.
+stop() {
+	echo 'Stoping nginx:'
+	#input=`cat /usr/local/nginx/logs/nginx.pid`
+	input=`cat /usr/local/nginx/nginx.pid`		#nginx.pid文件目录
+	pids=`ps -ef|grep nginx|awk '{if('$input'==$3){print $2}}'`
+	for pid in ${pids}
+	do
+ 		kill ${pid}
+	done
+	kill ${input}
+}
+# reload nginx service functions.
+reload() {
+    echo -n $"Reloading $prog: "
+    #kill -HUP `cat ${nginx_pid}`
+    killproc $nginxd -HUP
+    RETVAL=$?
+    echo
+}
+# See how we were called.
+case "$1" in
+start)
+        start
+        ;;
+stop)
+        stop
+        ;;
+reload)
+        reload
+        ;;
+restart)
+        stop
+	sleep 0.5
+        start
+        ;;
+status)
+        status $prog
+        RETVAL=$?
+        ;;
+*)
+        echo $"Usage: $prog {start|stop|restart|reload|status|help}"
+        exit 1
+esac
+exit $RETVAL

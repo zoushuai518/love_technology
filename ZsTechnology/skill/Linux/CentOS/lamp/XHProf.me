@@ -1,0 +1,25 @@
+一，什么是XHProf
+XHProf是一个分层PHP性能分析工具。它报告函数级别的请求次数和各种指标，包括阻塞时间，CPU时间和内存使用情况。一个函数的开销，可细分成调用者和被调用者的开销，XHProf数据收集阶段，它记录调用次数的追踪和包容性的指标弧在动态callgraph的一个程序。它独有的数据计算的报告/后处理阶段。在数据收集时，XHProfd通过检测循环来处理递归的函数调用，并通过给递归调用中每个深度的调用一个有用的命名来避开死循环。XHProf分析报告有助于理解被执行的代码的结构，它有一个简单的HTML的用户界面（ PHP写成的）。基于浏览器的性能分析用户界面能更容易查看，或是与同行们分享成果。也能绘制调用关系图。
+
+二，安装XHProf扩展模块
+1，安装
+wget http://pecl.php.net/get/xhprof-0.9.2.tgz  
+tar zxvf  xhprof-0.9.2.tgz  
+cp ./xhprof-0.9.2.tgz ./www         //xhprof自身带有一个web版的分析页面，放到我的web服务器下面  
+cd xhprof-0.9.2/extension  
+/usr/local/php/bin/phpize  
+./configure --enable-xhprof --with-php-config=/usr/local/php/bin/php-config  
+make && make install  
+-
+2，配置
+[xhprof]  
+ extension=xhprof.so  
+ xhprof.output_dir=/home/zhangy/xhprof  //如果不加存放目录的话，默认是放在/tmp下面
+-
+
+===
+
+xdebug, xhprof：php性能调试工具
+
+-
+xhprof生成图形报告(xhprof绘制图表时依赖与此graphviz)  [yum install graphviz]

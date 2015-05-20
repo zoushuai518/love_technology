@@ -1,0 +1,60 @@
+Linux
+#===
+Linux是一种自由和开放源码的类Unix操作系统。
+
+#===
+Linux发型版列表：
+
+基于Debian:		Debian/Ubuntu/Linux Mint/Knoppix/MEPIS/sidux/CrunchBang Linux/Chromium OS/Google Chrome OS
+基于Red Hat:	Red Hat Enterprise Linux/Fedora/CentOS/Scientific Linux/Oracle Linux
+基于Mandriva:	Mandriva Linux/PCLinuxOS/Unity Linux/Mageia
+基于Gentoo:		Gentoo Linux/Sabayon Linux/Calculate Linux/Funtoo Linux
+基于Slackware:	Slackware/Zenwalk/VectorLinux
+其它:			SUSE/Arch Linux/Puppy Linux/Damn Small Linux/MeeGo/Slitaz/Tizen/StartOS
+
+#===
+linux 文件颜色:
+蓝色表示目录；
+绿色表示可执行文件；
+红色表示压缩文件；
+浅蓝色表示链接文件；
+灰色表示其它文件；
+红色闪烁表示链接的文件有问题了；
+黄色是设备文件，包括block, char, fifo。
+用dircolors -p看到缺省的颜色设置，包括各种颜色和“粗体”，下划线，闪烁等定义。 
+在环境变量$LS_COLORS上修改就行
+[/etc/DIR_COLORS]
+
+
+#===
+补充资料：
+/etc/init.d/里存放了所有的启动脚本，我们平时可以通过/etc/init.d/脚本名 启动模式 来启动某个应用。 例如输入命令“/etc/init.d/smb start”来启动smb服务。 如果是在RedHat系统下，还可以通过service smb start来启动某个服务。
+尽管/etc/init.d目录中的脚本可以启动和停止各个服务，但在系统引导时，init并不是直接在/etc/init.d目录下找各个服务的启动脚本，而是在/etc/rc.d/目录下查找，该目录包含rc0.d、rc1.d等分别代表不同的init启动级别的子目录。
+你可以用Runlevel命令查看当前你的系统是在那个运行级
+#--
+#Runlevel
+  N  2
+  注：我当前的系统是2级
+#--
+接着来看看这些rcx.d的目录下所包含的内容，内容全是一些符号链接，链接到上一级init目录中的脚本上。 这些符号链接名称都以S或K开头，后面跟一个数字以及该脚本所控制的服务名，例如S10network。 当init从低的运行级向高的运行级过渡时，它按照数字递增的顺序运行所有以S开头的脚本，S=start，即启动脚本对应的服务；K=kill，即杀死脚本对应服务。
+前面介绍到rcx.d目录下指向启动脚本的符号链接是由 "K或S+数字+服务名" 所组成，中间这个数字十分重要，系统启动时按照这个数字递增执行所有S开头的脚本，系统关闭时按照这个数字递减执行所有K开头的脚本。
+如何自定义符号链接？ 启动脚本： 因为我刚才的运行级是2级 所以在/etc/rc.d/rc2.d 目录下运行
+#ln -s /etc/init.d/nginx S99nginx       //重新定义nginx服务的脚本启动顺序
+
+
+#===
+Linux 发行版本:
+{
+
+	Ubuntu:
+	{
+	
+	}
+
+
+	CentOS:
+	{
+	
+	}
+}
+

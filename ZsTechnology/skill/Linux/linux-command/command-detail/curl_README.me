@@ -1,0 +1,35 @@
+curl命令:
+
+1.监控网页的响应时间
+curl -o /dev/null -s -w "time_connect: %{time_connect}\ntime_starttransfer: %{time_starttransfer}\ntime_total: %{time_total}\n" "http://www.b5m.com"
+---
+[time_connect:连接时间 | time_starttransfer:程序执行时间 | time_total:总时间 {time_starttransfer - time_connect : 建立连接的时间}{time_starttransfer - time_connect : 程序代码执行时间}{time_total - time_starttransfer : 服务器数据返回客户端时间}]
+---
+[curl -o /dev/null -s -w  %{http_code}:%{time_namelookup}:%{time_connect}:%{time_starttransfer}:%{time_total} http://10.10.99.214/portal.php]
+
+2.监控站点可用性
+curl -o /dev/null -s -w %{http_code} "http://www.kklinux.com"
+
+3.以http1.0协议请求（默认为http1.1）
+    curl -0 ..............
+    1) 读取网页
+　　$ curl linuxidc.com">http://www.linuxidc.com
+　　2) 保存网页
+　　$ curl http://www.linuxidc.com > page.html $ curl -o page.html http://www.linuxidc.com
+　　3) 使用的proxy服务器及其端口：-x
+　　$ curl -x 123.45.67.89：1080 -o page.html http://www.linuxidc.com
+　　4) 使用cookie来记录session信息
+　　$ curl -x 123.45.67.89：1080 -o page.html -D cookie0001.txt http://www.linuxidc.com
+option： -D 是把http的response里面的cookie信息存到一个特别的文件中去，这样，当页面被存到page.html的同时，cookie信息也被存到了cookie0001.txt里面了
+    5)那么，下一次访问的时候，如何继续使用上次留下的cookie信息呢？
+　　使用option来把上次的cookie信息追加到http request里面去：-b
+　　$ curl -x 123.45.67.89：1080 -o page1.html -D cookie0002.txt -b cookie0001.txt http://www.linuxidc.com
+
+4. curl模拟http请求
+    1) POST方式
+    curl -X POST -H "Cache-Control: no-cache" -H "Postman-Token: 8b56eaee-2d07-4228-35b6-e6683461ffff" -d '{
+        "so_id": "276",
+        "goods_id": "28908049"
+    }' http://weisite.dev.com/goods/buyDetail
+
+

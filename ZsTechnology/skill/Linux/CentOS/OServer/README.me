@@ -1,0 +1,33 @@
+#===
+memcached 安装	[CentOS 6.4 平台]
+
+yum -y install memcached
+
+[root@localhost cms-admin]# more memcached
+memcached: 没有那个文件或目录
+[root@localhost cms-admin]# cd /etc/sysconfig/
+[root@localhost sysconfig]# more memcached
+PORT="11211"
+USER="memcached"
+MAXCONN="1024"
+CACHESIZE="64"
+OPTIONS=""
+[root@localhost sysconfig]# memcached -d -u root -m 64 -c 1024
+
+#查看当前的memcache连接数
+[root@localhost sysconfig]# netstat -n | grep :11211 | wc -l
+0
+
+#===
+openssh   [ssh服务]
+
+
+#===
+lumanager:
+安装:
+wget http://down.zijidelu.org/zijidelu_install.sh;
+chmod 740 zijidelu_install.sh
+./zijidelu_install.sh -y
+
+
+#===

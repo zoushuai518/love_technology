@@ -1,0 +1,899 @@
+#来自互联网
+demo:
+http://sofar.blog.51cto.com/353572/1289681
+
+
+基于Tengine的WEB服务环境配置
+
+
+系统环境：
+SUSE Linux Enterprise Server 10 SP1 (x86_64)
+
+注意：
+本次安装所涉及到软件包都放置在“/data/software”目录下
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+一、基础库安装
+libtool、expat、zlib、libpng、libxml2、libxslt、libiconv、libmcrypt、mhash
+mcrypt、curl、libjpeg、freetype、gd、gmp、openssl、pcre、libunwind、gperftools
+注：安装过程略，就是简单的三步曲
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+二、MySQL 编译安装
+1、基础设置及安装
+# tar -xvzf cmake-2.8.7.tar.gz
+# cd cmake-2.8.7
+# ./bootstrap --prefix=/usr/local
+# gmake && gmake install
+
+# groupadd mysql
+# useradd mysql -g mysql -s /sbin/nologin
+
+# mkdir -p /data/dbdata/{data,binlog,relaylog,otherlog} /var/run/mysql
+# chown -R mysql:mysql /data/dbdata /var/run/mysql
+
+# tar -xvzf mysql-5.5.23.tar.gz
+# cd mysql-5.5.23
+# rm -f CMakeCache.txt
+# cmake -DCMAKE_INSTALL_PREFIX=/usr/local/mysql \
+-DMYSQL_UNIX_ADDR=/var/run/mysql/mysql.sock \
+-DDEFAULT_CHARSET=utf8 \
+-DDEFAULT_COLLATION=utf8_general_ci \
+-DEXTRA_CHARSETS=all \
+-DWITH_MYISAM_STORAGE_ENGINE=1 \
+-DWITH_INNOBASE_STORAGE_ENGINE=1 \
+-DENABLED_LOCAL_INFILE=1 \
+-DWITH_EMBEDDED_SERVER=1 \
+-DMYSQL_DATADIR=/data/dbdata/data \
+-DMYSQL_TCP_PORT=3306
+
+# make && make install
+
+# chmod +w /usr/local/mysql
+# chown -R mysql:mysql /usr/local/mysql
+# ln -s /usr/local/mysql/lib/libmysqlclient.so.18 /usr/lib/libmysqlclient.so.18
+
+2、MySQL主配置
+# vim /etc/my.cnf
+[client]
+port = 3306
+socket = /var/run/mysql/mysql.sock
+                                                                                                                                     
+[mysqld]
+port = 3306
+socket = /var/run/mysql/mysql.sock
+                                                                                                                                     
+user = mysql
+bind-address = 内网IP
+                                                                                                                                     
+character-set-server = utf8
+collation-server = utf8_general_ci
+                                                                                                                                     
+basedir = /usr/local/mysql
+datadir = /data/dbdata/data
+                                                                                                                                     
+log-error = /data/dbdata/otherlog/mysql_error.log
+pid-file = /var/run/mysql/mysql.pid
+                                                                                                                                     
+key_buffer_size = 384M
+sort_buffer_size = 2M
+read_buffer_size = 4M
+join_buffer_size = 2M
+read_rnd_buffer_size = 8M
+                                                                                                                                     
+query_cache_type = 1
+query_cache_size = 64M
+query_cache_limit = 2M
+query_cache_min_res_unit = 2k
+                                                                                                                                     
+table_definition_cache = 1024
+open_files_limit = 40960
+back_log = 600
+max_connections = 1200
+max_user_connections = 1200
+max_connect_errors = 100000
+                                                                                                                                     
+max_allowed_packet = 16M
+table_open_cache = 512
+tmp_table_size = 256M
+max_heap_table_size = 512M
+thread_stack = 256K
+thread_cache_size = 256
+                                                                                                                                     
+bulk_insert_buffer_size = 64M
+myisam_sort_buffer_size = 64M
+myisam_max_sort_file_size = 2G
+myisam_repair_threads = 1
+myisam_recover = 1
+                                                                                                                                     
+log-short-format = 1
+slow_query_log = 1
+slow_query_log_file = /data/dbdata/otherlog/slow_query.log
+long_query_time = 3
+log-queries-not-using-indexes = 1
+                                                                                                                                     
+relay_log_purge = 1
+relay_log_recovery = 1
+max_relay_log_size = 1024M
+relay-log-index = /data/dbdata/relaylog/mysql-relay.index
+relay-log-info-file = /data/dbdata/relaylog/mysql-relay.info
+relay-log = /data/dbdata/relaylog/mysql-relay
+                                                                                                                                     
+log-bin = /data/dbdata/binlog/mysql-bin
+binlog_format = MIXED
+binlog_cache_size = 4M
+max_binlog_cache_size = 256M
+max_binlog_size = 1024M
+expire_logs_days = 5
+log-slave-updates
+                                                                                                                                     
+binlog-ignore-db = mysql
+binlog-ignore-db = information_schema
+                                                                                                                                     
+thread_concurrency = 8
+interactive_timeout = 120
+wait_timeout = 120
+                                                                                                                                     
+server-id = 1
+                                                                                                                                     
+skip-external-locking
+skip-name-resolve
+                                                                                                                                     
+performance_schema = 1
+performance_schema_events_waits_history_size = 100
+performance_schema_events_waits_history_long_size = 30000
+                                                                                                                                     
+default-storage-engine = InnoDB
+innodb_file_format = Barracuda
+innodb_additional_mem_pool_size = 16M
+innodb_buffer_pool_size = 4096M
+innodb_data_home_dir = /data/dbdata/data
+innodb_log_group_home_dir = /data/dbdata/data
+innodb_data_file_path = ibdata1:1024M:autoextend
+innodb_flush_log_at_trx_commit = 2
+innodb_log_buffer_size = 16M
+innodb_log_file_size = 512M
+innodb_log_files_in_group = 3
+innodb_max_dirty_pages_pct = 60
+innodb_lock_wait_timeout = 120
+innodb_file_per_table = 1
+innodb_table_locks = 0
+innodb_flush_method = O_DIRECT
+innodb_thread_concurrency = 8
+innodb_file_io_threads = 4
+innodb_read_io_threads = 2
+innodb_write_io_threads = 8
+innodb_io_capacity = 2000
+innodb_adaptive_flushing = 1
+innodb_sync_spin_loops = 100
+innodb_spin_wait_delay = 30
+innodb_old_blocks_pct = 75
+innodb_open_files = 40960
+transaction_isolation = READ-COMMITTED
+                                                                                                                                     
+[mysqldump]
+quick
+max_allowed_packet = 32M
+                                                                                                                                     
+[mysql]
+no-auto-rehash
+                                                                                                                                     
+[myisamchk]
+key_buffer_size = 256M
+sort_buffer_size = 256M
+read_buffer = 2M
+write_buffer = 2M
+                                                                                                                                     
+[mysqlhotcopy]
+interactive-timeout
+注：线程数、缓冲池大小等参数需根据服务器配置进行调整
+
+
+3、MySQL初始化
+# cd /usr/local/mysql
+# ./scripts/mysql_install_db --datadir=/data/dbdata/data --user=mysql
+
+4、启动脚本设置
+# cp /usr/local/mysql/support-files/mysql.server /etc/init.d/mysqld
+# vim /etc/init.d/mysqld
+basedir=/usr/local/mysql
+datadir=/data/dbdata/data
+......
+
+# chmod 700 /etc/init.d/mysqld
+# /sbin/chkconfig --add mysqld
+
+# echo "/usr/local/mysql/lib" >> /etc/ld.so.conf
+# /sbin/ldconfig
+
+# echo 'export PATH=$PATH:/usr/local/mysql/bin' >> /etc/profile
+# source /etc/profile
+
+# /sbin/service mysqld start
+
+5、删除无用信息
+# mysql -uroot -e "DROP DATABASE test;"
+# mysql -uroot mysql -e "DELETE FROM user WHERE host <> '' and user ='';"
+# mysql -uroot -e "FLUSH PRIVILEGES;"
+# mysqladmin -u root password 'XXXXXXXX'
+
+
+三、MEMCACHE编译安装
+1、编译安装
+# tar -xvzf libevent-2.0.18-stable.tar.gz
+# cd libevent-2.0.18-stable
+# ./configure --prefix=/usr/local
+# make && make install
+
+# tar -xvzf memcached-1.4.13.tar.gz
+# cd memcached-1.4.13
+# ./configure --prefix=/usr/local/memcached --with-libevent=/usr/local
+# make && make install
+
+2、服务启动
+# /usr/local/memcached/bin/memcached -d -m 2048 -u nobody -l 内网IP -p 11211
+# echo "/usr/local/memcached/bin/memcached -d -m 2048 -u nobody -l 内网IP -p 11211" >> /etc/init.d/rc.local
+
+3、启动脚本
+参考：http://sofar.blog.51cto.com/353572/974883
+
+
+四、PHP编译安装
+1、PHP编译
+# tar xvzf php-5.3.13.tar.gz
+# cd php-5.3.13
+# ./configure --prefix=/usr/local/php \
+--with-config-file-path=/usr/local/php/etc \
+--enable-fpm \
+--with-fpm-user=nobody \
+--with-fpm-group=nogroup \
+--with-mysql=/usr/local/mysql \
+--with-mysqli=/usr/local/mysql/bin/mysql_config \
+--with-pdo-mysql=/usr/local/mysql/bin/mysql_config \
+--with-iconv-dir=/usr/local \
+--with-freetype-dir=/usr/local \
+--with-jpeg-dir=/usr/local \
+--with-png-dir=/usr/local \
+--with-zlib=/usr/local \
+--with-libxml-dir=/usr/local \
+--enable-xml \
+--with-libexpat-dir=/usr/local \
+--disable-rpath \
+--enable-bcmath \
+--enable-shmop \
+--enable-sysvsem \
+--enable-sysvmsg \
+--enable-sysvshm \
+--enable-inline-optimization \
+--with-curl=/usr/local \
+--with-curlwrappers \
+--enable-mbregex \
+--enable-mbstring=all \
+--with-mcrypt=/usr/local \
+--with-gd=/usr/local \
+--enable-gd-native-ttf \
+--with-mhash=/usr/local \
+--enable-pcntl \
+--enable-sockets \
+--with-xsl \
+--enable-ftp \
+--with-xmlrpc \
+--enable-zip \
+--enable-soap \
+--enable-debug=no \
+--with-gmp \
+--with-config-file-scan-dir=/usr/local/php/etc/subconfig \
+--disable-ipv6
+
+# make ZEND_EXTRA_LIBS='-liconv'
+# make install
+# cp php.ini-production /usr/local/php/etc/php.ini
+# mkdir -p /data/logs/php
+
+2、PHP主配置及子配置
+# vim /usr/local/php/etc/php.ini
+expose_php = Off
+error_reporting = E_ALL & ~E_NOTICE
+display_errors = Off
+log_errors = On
+error_log = /data/logs/php/php_error.log
+                                                                                                                       
+register_globals = Off
+register_long_arrays = Off
+                                                                                                                       
+allow_url_fopen = Off
+allow_url_include = Off
+date.timezone = "Asia/Chongqing"
+extension_dir = "/usr/local/php/lib/php/extensions/no-debug-non-zts-20090626/"
+
+# vim /usr/local/php/etc/subconfig/memcache.ini
+extension = "memcache.so"
+
+# vim /usr/local/php/etc/subconfig/redis.ini
+extension = "redis.so"
+
+# vim /usr/local/php/etc/subconfig/apc.ini
+extension = "apc.so"
+                                                                                                        
+[APC]
+apc.enabled = 1
+apc.cache_by_default = on
+apc.shm_segments = 1
+apc.shm_size = 128M
+apc.ttl = 7200
+apc.user_ttl = 7200
+apc.num_files_hint = 1024
+apc.write_lock = On
+apc.gc_ttl = 3600
+apc.mmap_file_mask = /tmp/apc.XXXXXX
+
+3、PHP FPM 配置
+# vim /usr/local/php/etc/php-fpm.conf
+;include=etc/fpm.d/*.conf
+                                                                                                   
+[global]
+pid = /var/run/php-fpm.pid
+error_log = /data/logs/php/php-fpm.log
+                                                                                                   
+;syslog.facility = daemon
+;syslog.ident = php-fpm
+;log_level = notice
+                                                                                                   
+emergency_restart_threshold = 10
+emergency_restart_interval = 1m
+process_control_timeout = 5s
+                                                                                                   
+; process.max = 128
+; process.priority = -19
+;daemonize = yes
+rlimit_files = 65535
+;rlimit_core = 0
+events.mechanism = epoll
+                                                                                                   
+[www]
+prefix = /usr/local/php
+                                                                                                   
+user = nobody
+group = nogroup
+                                                                                                   
+listen = 127.0.0.1:9000
+                                                                                                   
+;listen.backlog = 128
+;listen.owner = nobody
+;listen.group = nogroup
+;listen.mode = 0666
+;listen.allowed_clients = 127.0.0.1
+                                                                                                   
+; priority = -19
+;pm = dynamic
+pm = static
+pm.max_children = 128
+pm.start_servers = 20
+pm.min_spare_servers = 5
+pm.max_spare_servers = 35
+pm.process_idle_timeout = 10s;
+pm.max_requests = 1024
+                                                                                                   
+;pm.status_path = /status
+;ping.path = /ping
+;ping.response = pong
+access.log = /data/logs/php/$pool.access.log
+                                                                                                   
+;access.format = "%R - %u %t \"%m %r%Q%q\" %s %f %{mili}d %{kilo}M %C%%"
+slowlog = /data/logs/php/$pool.log.slow
+;request_slowlog_timeout = 0
+request_terminate_timeout = 600
+                                                                                                   
+rlimit_files = 65535
+;rlimit_core = 0
+                                                                                                   
+;chroot =
+;chdir = /var/www
+                                                                                                   
+;catch_workers_output = yes
+;security.limit_extensions = .php .php3 .php4 .php5
+                                                                                                   
+;env[HOSTNAME] = $HOSTNAME
+;env[PATH] = /usr/local/bin:/usr/bin:/bin
+;env[TMP] = /tmp
+;env[TMPDIR] = /tmp
+;env[TEMP] = /tmp
+                                                                                                   
+;php_admin_value[sendmail_path] = /usr/sbin/sendmail -t -i -f www@my.domain.com
+;php_flag[display_errors] = off
+php_admin_value[error_log] = /data/logs/php/fpm-php.www.log
+;php_admin_flag[log_errors] = on
+;php_admin_value[memory_limit] = 32M
+
+4、PHP FPM启动脚本
+# vim /etc/init.d/php-fpm
+参考：http://sofar.blog.51cto.com/353572/1253208
+
+# chmod 700 /etc/init.d/php-fpm
+# /sbin/chkconfig --add php-fpm
+# /sbin/service php-fpm start
+
+5、php-fpm日志切割与清理
+# vim /data/scripts/cut_php-fpm_log.sh
+#!/bin/bash
+PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin:/usr/local/sbin
+                                                                                            
+## the php-fpm access logs base path
+PHPLOG_PATH="/data/logs/php"
+                                                                                            
+if [[ `ps aux | grep php-fpm: | grep -v grep | wc -l` -eq 0 ]]; then
+    echo "The php-fpm is not running."
+    exit 1
+fi
+                                                                                            
+## cut php-fpm access logs
+mv ${PHPLOG_PATH}/www.access.log ${PHPLOG_PATH}/www.access_$(date -d "yesterday" +"%Y-%m-%d").log
+                                                                                            
+if [[ -f /var/run/php-fpm.pid ]]; then
+    kill -USR1 `cat /var/run/php-fpm.pid`
+else
+    kill -USR1 `ps aux | grep php-fpm | awk '/master/{print $2}'`
+fi
+                                                                                            
+## clear 7 days ago's php-fpm access logs
+rm -f ${PHPLOG_PATH}/www.access_$(date -d "7 days ago" +"%Y-%m-%d").log
+
+-
+# chmod +x /data/scripts/cut_php-fpm_log.sh
+
+# crontab -e
+00 00 * * * /data/scripts/cut_php-fpm_log.sh >/dev/null 2>&1
+
+6、php-fpm健康检查
+# vim /data/scripts/check_php-fpm.sh
+#!/bin/sh
+PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin:/usr/local/sbin
+                                                                                       
+PORT='9000'
+IPADDR='127.0.0.1'
+                                                                                       
+retval=`nmap --system-dns -sT -p ${PORT} ${IPADDR} | grep open`
+if [[ "${retval}X" = "X" ]]; then
+    killall -9 php-fpm >/dev/null 2>&1
+    /sbin/service php-fpm start
+fi
+-
+# chmod +x /data/scripts/check_php-fpm.sh
+
+# crontab -e
+*/5 * * * * /data/scripts/check_php-fpm.sh >/dev/null 2>&1
+
+
+五、PHP扩展安装
+1、memcache扩展安装
+# tar xvzf memcache-2.2.6.tar.gz
+# cd memcache-2.2.6
+# /usr/local/php/bin/phpize
+# ./configure --with-php-config=/usr/local/php/bin/php-config \
+--with-gettext \
+--enable-socket \
+--enable-memcache \
+--enable-sysvshm \
+--enable-shmop
+# make && make install
+
+2、APC扩展安装
+# tar xvzf APC-3.1.9.tgz
+# cd APC-3.1.9
+# /usr/local/php/bin/phpize
+# ./configure --with-php-config=/usr/local/php/bin/php-config \
+--enable-apc \
+--enable-mmap \
+--enable-apc-spinlocks \
+--disable-apc-pthreadmutex
+# make && make install
+
+3、redis扩展安装
+# unzip phpredis-master.zip
+# cd phpredis-master
+# /usr/local/php/bin/phpize
+# ./configure --with-php-config=/usr/local/php/bin/php-config
+# make && make install
+
+
+六、Tengine编译安装 |zs测试可用,参考ltmp.me.me文件,zs记录
+1、编译安装
+# mkdir -p /data/nginx_temp/{nginx_client,nginx_proxy,nginx_fastcgi,nginx_temp}
+# tar xvzf tengine-1.4.6.tar.gz
+# cd tengine-1.4.6
+# ./configure --prefix=/usr/local/nginx \
+--lock-path=/var/lock/nginx.lock \
+--pid-path=/var/run/nginx.pid \
+--error-log-path=/data/logs/nginx/error.log \
+--http-log-path=/data/logs/nginx/access.log \
+--user=nobody \
+--group=nogroup \
+--with-pcre=../pcre-8.32 \
+--with-openssl=../openssl-1.0.1a \
+--with-backtrace_module \
+--with-http_stub_status_module \
+--with-http_gzip_static_module \
+--with-http_realip_module \
+--without-select_module \
+--without-poll_module \
+--with-http_concat_module=shared \
+--with-http_sysguard_module=shared \
+--with-http_limit_conn_module=shared \
+--with-http_limit_req_module=shared \
+--with-http_split_clients_module=shared \
+--with-http_footer_filter_module=shared \
+--with-http_sub_module=shared \
+--with-http_access_module=shared \
+--with-http_addition_module=shared \
+--with-http_referer_module=shared \
+--with-http_rewrite_module=shared \
+--with-http_memcached_module=shared \
+--without-http_upstream_check_module \
+--without-http_upstream_least_conn_module \
+--without-http_upstream_keepalive_module \
+--without-http_upstream_ip_hash_module \
+--without-http_geo_module \
+--with-google_perftools_module \
+--with-ld-opt='-ltcmalloc_minimal' \
+--http-client-body-temp-path=/data/nginx_temp/nginx_client \
+--http-proxy-temp-path=/data/nginx_temp/nginx_proxy \
+--http-fastcgi-temp-path=/data/nginx_temp/nginx_fastcgi
+
+# make && make install
+
+2、网页加速组件安装
+# unzip ngx_pagespeed-master.zip
+# cd ngx_pagespeed-master
+# wget https://dl.google.com/dl/page-speed/psol/1.6.29.5.tar.gz
+# tar -xzvf 1.6.29.5.tar.gz
+# cd /usr/local/nginx/sbin
+# ./dso_tool --add-module=/data/software/ngx_pagespeed-master
+
+3、Tengine主配置
+# mkdir -p /data/nginx_temp/ngx_pagespeed_cache
+# mkdir -p /data/web/conf /data/logs/nginx
+
+# vim /usr/local/nginx/conf/nginx.conf
+user nobody nogroup;
+                                                                              
+worker_processes auto;
+worker_cpu_affinity auto;
+                                                                              
+error_log /data/logs/nginx/error.log crit;
+pid /var/run/nginx.pid;
+                                                                              
+google_perftools_profiles /var/tmp/tcmalloc;
+                                                                              
+worker_rlimit_nofile 65535;
+                                                                              
+dso {
+    load ngx_pagespeed.so;
+    load ngx_http_rewrite_module.so;
+    load ngx_http_access_module.so;
+    load ngx_http_concat_module.so;
+    load ngx_http_limit_conn_module.so;
+    load ngx_http_limit_req_module.so;
+    load ngx_http_sysguard_module.so;
+}
+                                                                              
+events {
+    use epoll;
+    worker_connections 10240;
+}
+                                                                              
+http {
+    server_tokens off;
+    server_tag off;
+    autoindex off;
+    access_log off;
+    include mime.types;
+    default_type application/octet-stream;
+                                                                                 
+    server_names_hash_bucket_size 128;
+    client_header_buffer_size 32k;
+    large_client_header_buffers 4 32k;
+    client_max_body_size 10m;
+    client_body_buffer_size 256k;
+                                                                                 
+    sendfile on;
+    tcp_nopush on;
+    keepalive_timeout 60;
+    tcp_nodelay on;
+                                                                                 
+    gzip on;
+    gzip_min_length 1k;
+    gzip_buffers 4 16k;
+    gzip_http_version 1.0;
+    gzip_comp_level 2;
+    gzip_types text/plain application/x-javascript text/css application/xml;
+    gzip_vary on;
+                                                                                 
+    fastcgi_connect_timeout 1800;
+    fastcgi_read_timeout 1800;
+    fastcgi_send_timeout 1800;
+    fastcgi_buffer_size 1024k;
+    fastcgi_buffers 32 1024k;
+    fastcgi_busy_buffers_size 2048k;
+    fastcgi_temp_file_write_size 2048k;
+                                                                                 
+    fastcgi_temp_path /data/nginx_temp/nginx_temp;
+                                                                                 
+    log_format access '$remote_addr - $remote_user [$time_local] "$request"'
+        '$status $body_bytes_sent "$http_referer"'
+        '"$http_user_agent" $http_x_forwarded_for';
+                                                                                 
+    # webpage add speed
+    pagespeed on;
+    pagespeed FileCachePath /data/nginx_temp/ngx_pagespeed_cache;
+                                                                                 
+    # system resource overload protect
+    server {
+        sysguard on;
+                                                                                     
+        sysguard_load load=10.5 action=/loadlimit;
+        sysguard_mem swapratio=20% action=/swaplimit;
+        sysguard_mem free=100M action=/freelimit;
+                                                                                     
+        location /loadlimit {
+            return 503;
+        }
+                                                                                     
+        location /swaplimit {
+            return 503;
+        }
+                                                                                     
+        location /freelimit {
+            return 503;
+        }
+    }
+                                                                                 
+    server {
+        server_name _;
+        return 404;
+    }
+                                                                                 
+    include /data/web/conf/*.conf;
+}
+
+-
+
+4、Tengine vhost文件（样例）
+# mkdir -p /data/web/data /data/logs/web
+# vim /data/web/conf/test1.qq.com.conf
+server {
+    listen 80;
+    server_name test1.qq.com;
+    index index.html index.htm index.php;
+    root /data/web/data/test1.qq.com;
+    access_log off;
+                                                                            
+    if (!-f $request_filename) {
+        rewrite ^/(.*)$ /index.php last;
+    }
+                                                                            
+    location ~ .*\.(php)?$ {
+        fastcgi_pass 127.0.0.1:9000;
+        fastcgi_index index.php;
+        include fastcgi.conf;
+    }
+                                                                            
+    location ~ .*\.(htm|html|gif|jpg|jpeg|png|bmp|ico|swf|flv)$ {
+        expires 30m;
+    }
+                                                                            
+    location ~ .*\.(js|css)?$ {
+        expires 1h;
+    }
+                                                                            
+    location ~ /\.ht {
+        deny all;
+    }
+                                                                            
+    access_log /data/logs/web/test1.qq.com/access.log access;
+}
+
+
+5、Tengine日志切割与清理
+# vim /usr/local/nginx/sbin/cut_nginx_log.sh
+#!/bin/bash
+PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin:/usr/local/sbin
+                                                                   
+## the nginx access logs base path
+WEBLOG_PATH="/data/logs/web"
+                                                                   
+retval=`ps aux | grep ngin[x] | wc -l`
+if [[ ${retval} -eq 0 ]]; then
+    echo "The daemon process for nginx has no found."
+    exit 1
+fi
+                                                                   
+#---------------------------------------------------------------------------------------------------
+## avoid errors for USR1 signal, and modify 750 privilege
+chown -R nobody:nogroup /data/logs/{nginx,web}
+chmod -R 750 /data/logs/{nginx,web}
+                                                                   
+## cut nginx access logs
+for LOGFILE in `find ${WEBLOG_PATH} -type f -name access.log`
+do
+    LOGPATH=`dirname ${LOGFILE}`
+    mv ${LOGPATH}/access.log ${LOGPATH}/access_$(date -d "yesterday" +"%Y-%m-%d").log
+done
+                                                                   
+kill -USR1 `ps aux | grep nginx | awk '/master/{print $2}'`
+                                                                   
+## and then modify original privileges
+chown -R nobody:nogroup /data/logs/{nginx,web}
+chmod -R 640 /data/logs/{nginx,web}
+                                                                   
+#---------------------------------------------------------------------------------------------------
+## clear 10 days ago's nginx access logs
+LOGFILE=access_$(date -d "10 days ago" +"%Y-%m-%d").log
+find ${WEBLOG_PATH} -type f -name ${LOGFILE} -exec rm -f {} \;
+
+# chmod +x /usr/local/nginx/sbin/cut_nginx_log.sh
+# crontab -e
+00 00 * * * /usr/local/nginx/sbin/cut_nginx_log.sh >/dev/null 2>&1
+
+6、Tengine健康检查
+# mkdir -p /data/web/data/mycheckweb.act.qq.com
+
+# vim /data/web/conf/checkweb_for_nginx.conf
+server {
+    listen 80;
+    server_name mycheckweb.act.qq.com;
+    access_log off;
+                                                                   
+    location / {
+        root /data/web/data/mycheckweb.act.qq.com;
+        index index.html;
+    }
+}
+
+# echo "OK" > /data/web/data/mycheckweb.act.qq.com/index.html
+# echo "内网IP    mycheckweb.act.qq.com" >> /etc/hosts
+
+
+# vim /usr/local/nginx/sbin/check_web.sh
+#!/bin/sh
+PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin:/usr/local/sbin
+                                                         
+retval=`ping -c 3 mycheckweb.act.qq.com | awk '/received/ {print $4}'`
+if [[ ${retval} -eq 0 ]]; then
+    exit 1
+fi
+                                                         
+retval=`curl -I -s "http://mycheckweb.act.qq.com" | grep "200 OK"`
+if [[ "${retval}x" = "x" ]]; then
+    if [ -e /usr/local/nginx ]; then
+        /sbin/service nginx restart >/dev/null 2>&1
+    fi
+fi
+# chmod +x /usr/local/nginx/sbin/check_web.sh
+# crontab -e
+*/5 * * * * /usr/local/nginx/sbin/cut_nginx_log.sh >/dev/null 2>&1
+
+7、Tengine启动脚本
+#vim /etc/init.d/nginx
+#!/bin/sh
+#
+# nginx - this script start and stop the nginx daemon
+#
+# chkconfig: 2345 55 25
+# description: Startup script for nginx
+# processname: nginx
+# config: /usr/local/nginx/conf/nginx.conf
+# pidfile: /var/run/nginx.pid
+#
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+                                                   
+DAEMON=/usr/local/nginx/sbin/nginx
+CONFIGFILE=/usr/local/nginx/conf/nginx.conf
+PIDFILE=/var/run/nginx.pid
+SCRIPTNAME=/etc/init.d/nginx
+LOCKFILE=/var/lock/nginx.lock
+                                                   
+set -e
+[[ -x "$DAEMON" ]] || exit 0
+                                                   
+start() {
+    echo "Startting Nginx......"
+    [[ -x $DAEMON ]] || exit 5
+    [[ -f $CONFIGFILE ]] || exit 6
+    $DAEMON -c $CONFIGFILE || echo -n "Nginx already running!"
+    [[ $? -eq 0 ]] && touch $LOCKFILE
+}
+                                                   
+stop() {
+    echo "Stopping Nginx......"
+    MPID=`ps aux | grep nginx | awk '/master/{print $2}'`
+                                                      
+    if [[ "${MPID}X" != "X" ]]; then
+        kill -QUIT $MPID
+        [[ $? -eq 0 ]] && rm -f $LOCKFILE
+    else
+        echo "Nginx server is not running!"
+    fi
+}
+                                                   
+reload() {
+    echo "Reloading Nginx......"
+    MPID=`ps aux | grep nginx | awk '/master/{print $2}'`
+                                                      
+    if [[ "${MPID}X" != "X" ]]; then
+        kill -HUP $MPID
+    else
+        echo "Nginx can't reload!"
+    fi
+}
+                                                   
+case "$1" in
+start)
+    start
+    ;;
+                                                      
+stop)
+    stop
+    ;;
+                                                      
+reload)
+    reload
+    ;;
+                                                      
+restart)
+    stop
+    sleep 1
+    start
+    ;;
+                                                      
+*)
+    echo "Usage: $SCRIPTNAME {start|stop|reload|restart}"
+    exit 3
+    ;;
+esac
+                                                   
+exit 0
+-
+# chmod 700 /etc/init.d/nginx
+# /sbin/chkconfig --add nginx
+# /sbin/service nginx start
+
+
+七、系统优化
+1、最大文件描述符修改
+# echo "ulimit -SHn 65535" >> /etc/profile
+# source /etc/profile
+
+2、网络参数优化
+# vim /etc/sysctl.conf
+net.ipv4.tcp_syncookies = 1
+net.ipv4.tcp_tw_reuse = 1
+net.ipv4.tcp_tw_recycle = 1
+net.ipv4.tcp_fin_timeout = 30
+net.ipv4.tcp_keepalive_time = 1200
+                                 
+net.ipv4.ip_local_port_range = 1024 65000
+net.ipv4.tcp_max_syn_backlog = 8192
+net.ipv4.tcp_max_tw_buckets = 12000
+                                 
+net.core.somaxconn = 32768
+                                 
+net.ipv4.tcp_keepalive_probes = 5
+net.ipv4.tcp_keepalive_intvl = 20
+net.core.wmem_default = 8388608
+net.core.rmem_default = 8388608
+net.core.rmem_max = 16777216
+net.core.wmem_max = 16777216
+                                 
+net.ipv4.tcp_rmem = 4096 87380 16777216
+net.ipv4.tcp_wmem = 4096 16384 16777216
+                                 
+net.core.netdev_max_backlog = 32768
+                                 
+net.ipv4.tcp_timestamps = 0
+net.ipv4.tcp_synack_retries = 2
+net.ipv4.tcp_syn_retries = 2
+                                 
+net.ipv4.tcp_mem = 41943040 73400320 94371840
+net.ipv4.tcp_max_orphans = 3276800
+
+# /sbin/sysctl –p
