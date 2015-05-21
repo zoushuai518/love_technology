@@ -154,7 +154,7 @@ CentOS
     29.ln   ln -s ../yii yii
     30.ls
     31.test
-    32.tail     |tail 命令从指定点开始将文件写到标准输出.使用tail命令的-f选项可以方便的查阅正在改变的日志文件,tail -f filename会把filename里最尾部的内容显示在屏幕上,并且不但刷新,使你看到最新的文件内容.   tail -f /usr/local/nginx/logs/access.log | tailf /usr/local/nginx/logs/access.log
+    32.tail     |tail 命令从指定点开始将文件写到标准输出.使用tail命令的-f选项可以方便的查阅正在改变的日志文件,tail -f filename会把filename里最尾部的内容显示在屏幕上,并且不但刷新,使你看到最新的文件内容.   tail -f /usr/local/nginx/logs/access.log | tailf /usr/local/nginx/logs/access.log | tail -f logs/daemonTest.log | grep '偶数'
     33.lsblk    |"lsblk"就是列出块设备。除了RAM外，以标准的树状输出格式，整齐地显示块设备。
     34.md5sum   |"md5sum"就是计算和检验MD5信息签名。md5 checksum(通常叫做哈希)使用匹配或者验证文件的文件的完整性，因为文件可能因为传输错误，磁盘错误或者无恶意的干扰等原因而发生改变。
     35.dd命令   |带研究
