@@ -55,10 +55,6 @@ CentOS
     du -sh ./ :查看文件夹大小   [du -sh ./zs]
     du -h ./  :遍历显示文件夹下文件大小 [du -h ./zs]
     ---
-    grep "关键词" ./* -R
-    grep "关键词" ./ -R  |  grep -R '关键词' ./  |  grep -R '100300329_49461' /data/tmp/vd/dataflow_*
-    grep -rn "关键词" ./; -r递归查找,-n显示行号
-    ---
     Ctrl + r
     ---
 }
@@ -148,13 +144,13 @@ CentOS
     23.rsync    | [用法带研究]
     24.diff | [用法带研究]
     25.kill | killall  [{简单使用流程:ps -ef |grep apache|80  |  netstat -lnp|grep 80 -> kill -9 进程ID | killall -9 正在运行的程序名称}]
-    26.grep | [搜索:{grep 'search name' dir -R | grep 'tsung' ./ -R }]
+    26.grep
     27.dstat    | Linux 监控工具
     28.find,locate,whereis,which,type   | Linux五个查找命令
     29.ln   ln -s ../yii yii
     30.ls
     31.test
-    32.tail     |tail 命令从指定点开始将文件写到标准输出.使用tail命令的-f选项可以方便的查阅正在改变的日志文件,tail -f filename会把filename里最尾部的内容显示在屏幕上,并且不但刷新,使你看到最新的文件内容.   tail -f /usr/local/nginx/logs/access.log | tailf /usr/local/nginx/logs/access.log | tail -f logs/daemonTest.log | grep '偶数'
+    32.tail
     33.lsblk    |"lsblk"就是列出块设备。除了RAM外，以标准的树状输出格式，整齐地显示块设备。
     34.md5sum   |"md5sum"就是计算和检验MD5信息签名。md5 checksum(通常叫做哈希)使用匹配或者验证文件的文件的完整性，因为文件可能因为传输错误，磁盘错误或者无恶意的干扰等原因而发生改变。
     35.dd命令   |带研究
@@ -177,6 +173,7 @@ CentOS
     52.gdb
     53.jobs
     54.nohup    |有nohup,或执行命令时加&,用jobs来查看,或者在执行时按下ctrl+z,然后打bg(background 的意思)就能看到程序在运行,很多的定时的任务
+    55.perl
 
 }
 

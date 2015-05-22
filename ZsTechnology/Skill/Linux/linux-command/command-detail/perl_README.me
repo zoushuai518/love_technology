@@ -1,0 +1,22 @@
+
+对linux下的文件内容进行替换，有时不用编写perl脚本，用perl命令就可以实现。
+
+perl 命令可以批量替换文件中的一些内容，操作起来非常高效。
+
+
+几个例子:
+
+perl -pi -e "s/aaa/bbb/gi" test.txt
+把test.txt文件中的字符aaa替换成bbb
+
+perl -pi.bak -e "s/aaa/bbb/gi" test.txt
+把test.txt文件中的字符aaa替换成bbb,并生成一个test.txt.bak的备份文件
+
+find ./ -name "*.txt" | xargs perl -pi.bak -e "s/aaa/bbb/gi"
+把当前目录下所有的.txt文件中的字符aaa替换成bbb,并生成相应的.bak的备份文件 
+
+
+ext:
+{
+    linux批量替换文件内容的三种方法: perl, sed, grep
+}

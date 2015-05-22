@@ -164,6 +164,16 @@ ubuntu 使用心的 & 技巧:
             zs使用 第一种方式解决
         }
 
+        Linux的管道命令竖线(|)
+        {
+            管道符号，是unix功能强大的一个地方,符号是一条竖线:"|"，
+            用法: command 1 | command 2 他的功能是把第一个命令command 1执行的结果作为command 2的输入传给command 2，
+            例如:
+            ls -l | more
+            该命令列出当前目录中的任何文档，并把输出送给more命令作为输入，more命令分页显示文件列表。
+            又如 rpm -aq | less
+        }
+
         ubuntu添加环境变量
         {
             全局变量:
@@ -226,7 +236,6 @@ ubuntu 使用心的 & 技巧:
         #sudo ln -s /etc/init.d/mysqld S99mysqld | S99mysql -> /usr/local/mysql/support-files/mysql.server* #仅供参考
 
 
-        #======
         ubuntu 可执行文件放在以下三个目录,全局可以访问到:
         /usr/local/bin/
         /usr/local/sbin
@@ -234,29 +243,25 @@ ubuntu 使用心的 & 技巧:
         /bin
         /sbin
 
-        #======
         ls  | grep -v "cms-web" | xargs rm -rf      #删除当前目录下,除了cms-web目录之外的目录
 
-        #======
-        killall ibus-daemon // killall  杀死进程 ， ibus-daemon 进程名
-        ibus-daemon -d // -d 后台运行 | &
 
-        #======
+        ibus-daemon -d          //-d | & 后台运行
+
+
         ps -ef |grep nginx
         netstat -lnp|grep httpd
+        sudo netstat -lnp|grep 9000
         kill -9 进程ID | killall -9 正在运行的程序名称
 
-        #======
-        sudo netstat -lnp|grep 9000
 
-        #======
         重启命令：
         1、reboot
         2、shutdown -r now 立刻重启(root用户使用)
         3、shutdown -r 10 过10分钟自动重启(root用户使用)
         4、shutdown -r 20:35 在时间为20:35时候重启(root用户使用)
         如果是通过shutdown命令设置重启的话，可以用shutdown -c命令取消重启
-         
+
         关机命令：
         1、halt 立刻关机
         2、poweroff 立刻关机
@@ -305,7 +310,7 @@ Mysql
 
         }
 
-        #======
+
         source命令:
         {
             #source导入sql文件
@@ -339,7 +344,7 @@ Mysql
             }
         }
 
-        #======
+
         max_binlog_cache_size
     }
 
@@ -355,21 +360,20 @@ Mysql
         update user set password=PASSWORD('www.linuxidc.com') where user='root' and host='localhost';           #更新root密码
         flush privileges;
 
-        #--
+        ----
         mysql插入用户:
         insert into user(host,user,password) values('local',jun,PASSWORD('xxxxxx'));
         {
 
-        INSERT INTO `user` (`Host`, `User`, `Password`, `Select_priv`, `Insert_priv`, `Update_priv`, `Delete_priv`, `Create_priv`, `Drop_priv`, `Reload_priv`, `Shutdown_priv`, `Process_priv`, `File_priv`, `Grant_priv`, `References_priv`, `Index_priv`, `Alter_priv`, `Show_db_priv`, `Super_priv`, `Create_tmp_table_priv`, `Lock_tables_priv`, `Execute_priv`, `Repl_slave_priv`, `Repl_client_priv`, `Create_view_priv`, `Show_view_priv`, `Create_routine_priv`, `Alter_routine_priv`, `Create_user_priv`, `Event_priv`, `Trigger_priv`, `Create_tablespace_priv`, `ssl_type`, `ssl_cipher`, `x509_issuer`, `x509_subject`, `max_questions`, `max_updates`, `max_connections`, `max_user_connections`, `plugin`, `authentication_string`, `password_expired`) VALUES
+            INSERT INTO `user` (`Host`, `User`, `Password`, `Select_priv`, `Insert_priv`, `Update_priv`, `Delete_priv`, `Create_priv`, `Drop_priv`, `Reload_priv`, `Shutdown_priv`, `Process_priv`, `File_priv`, `Grant_priv`, `References_priv`, `Index_priv`, `Alter_priv`, `Show_db_priv`, `Super_priv`, `Create_tmp_table_priv`, `Lock_tables_priv`, `Execute_priv`, `Repl_slave_priv`, `Repl_client_priv`, `Create_view_priv`, `Show_view_priv`, `Create_routine_priv`, `Alter_routine_priv`, `Create_user_priv`, `Event_priv`, `Trigger_priv`, `Create_tablespace_priv`, `ssl_type`, `ssl_cipher`, `x509_issuer`, `x509_subject`, `max_questions`, `max_updates`, `max_connections`, `max_user_connections`, `plugin`, `authentication_string`, `password_expired`) VALUES
     ('localhost', 'root', '*36614794E82EFEA8F2BD78B4DFAF0DCB7A8C223C', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', '', '', '', '', 0, 0, 0, 0, '', '', 'N'),
     ('weiyan-PC', 'root', '*36614794E82EFEA8F2BD78B4DFAF0DCB7A8C223C', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', '', '', '', '', 0, 0, 0, 0, '', '', 'N'),
 ('127.0.0.1', 'root', '*36614794E82EFEA8F2BD78B4DFAF0DCB7A8C223C', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', '', '', '', '', 0, 0, 0, 0, '', '', 'N'),
 ('::1', 'root', '*36614794E82EFEA8F2BD78B4DFAF0DCB7A8C223C', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', '', '', '', '', 0, 0, 0, 0, '', '', 'N');
 
-
         }
 
-        #--
+        ----
         即：mysql的用户都存放在 mysql.user中
 
     }

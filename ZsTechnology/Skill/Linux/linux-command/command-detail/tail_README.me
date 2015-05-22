@@ -1,2 +1,43 @@
 
 tail 命令从指定点开始将File 参数指定的文件写到标准输出。如果没有指定文件，则会使用标准输入
+
+tail 命令从指定点开始将文件写到标准输出.使用tail命令的-f选项可以方便的查阅正在改变的日志文件,tail -f filename会把filename里最尾部的内容显示在屏幕上,并且不但刷新,使你看到最新的文件内容.
+
+
+tail -f 高亮关键字
+{
+    如果你在linux下工作，那用tail -f跟踪一个日志文件的输出内容应该是家常便饭了。
+    但是，有时你更关心的是一些敏感字词，希望能够在动态跟踪的同时，把这些字词高亮出来，比如日志中的ERROR关键字。
+    那么，一种思路就是把你tail输出的东西再做一次包装处理，这个很符合linux管道处理的思想。以高亮Log中的ERROR为例，你可以这样：
+
+    Shell代码:
+    tail -f xxx.log | perl -pe 's/(ERROR)/\e[1;31m$1\e[0m/g'
+
+    其中，xxx.log是你要跟踪的文件。这里假设了你的Linux的PATH中有perl。perl在这里干的事情，就是通过命令行的方式进行动态的替换ERROR字符串的操作，替换过程中，主要使用了Linux的console_codes的语法结构。（具体关于console_codes的细节，可以通过man console_codes进行了解）这里，\e主要进行转移说明。
+    如果你手头有server log之类的日志，试试上面的命令，是不是把ERROR全部标红了。
+    利用这个原理，你完全可以按照你所需要的颜色高亮你感兴趣的输出，具体的颜色说明，可以在man console_codes中查到。
+
+    另外，less本身也支持类似于tail -f的操作，就是在你用less打开一个文件之后，按住SHIFT+F键，这样就直接进入follow的模式了。看上去跟tail -f效果是一致的。利用这点，你想达到高亮的tail -f的效果，就拢共分为以下3步了：
+    less xxx.log
+    中/${key_work}的方式搜索你要高亮的关键字。（即使目前文件中没有也没关系）
+    SHIFT+F，进入follow模式
+
+}
+
+
+ag:
+{
+    tail -f /usr/local/nginx/logs/access.log
+    tailf /usr/local/nginx/logs/access.log
+
+    tail -f | grep 使用
+    tail -f logs/daemonTest.log | grep '偶数'
+    tailf daemonTest.log | grep '偶数' --color=auto
+    tailf daemonTest.log | grep '偶数' --color=never
+    tailf daemonTest.log | grep '偶数' --color=always
+    tailf /tmp/update-0.log | grep 'INFO' --color=auto
+
+    tail -f |grep perl 使用
+    tail -f daemonTest.log | perl -pe 's/(偶数)/\e[1;31m$1\e[0m/g'
+    tail -f daemonTest.log | perl -pe 's/(偶数)/\033[1;31m$1\033[0m/g'
+}
