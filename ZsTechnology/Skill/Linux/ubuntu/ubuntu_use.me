@@ -134,18 +134,29 @@ ubuntu 使用心的 & 技巧:
 
     Tool:
     {
-        terminator : 终端多窗口
         GooglePinyin 汉语, Ubuntu下ibus-sunpinyin       iBus
         sudo apt-get install ibus-googlepinyin
+
+        terminator : 终端多窗口
         tree:查看目录
         hardinfo:查看硬件信息
-        alien: 把.rpm文件转换成.deb文件 #sudo apt-get install alien {转换sudo alien --scripts nerolinux-3.5.2.0-x86.rpm执行完毕后会发现同目录下多了一个文件nerolinux_3.5.2.0-2_i386.deb}
         gparted:磁盘管理工具,相当与windows下的分区魔法师
-        nethogs: 监控当前网络情况, ag:nethogs eth0
-        GNU nano编辑器
-        ubuntu ppa:个人软件包档案
-        GIMP: 图形编辑器
         dstat: Linux终端下dstat监控工具; http://linux.cn/article-3215-1.html
+
+        系统监控:
+        {
+            htop 增强版的top
+        }
+
+        网络监控:
+        {
+            监控总体带宽使用――nload、bmon、slurm、bwm-ng、cbm、speedometer和netload
+            监控总体带宽使用（批量式输出）――vnstat、ifstat、dstat和collectl
+            每个套接字连接的带宽使用――iftop、iptraf、tcptrack、pktstat、netwatch和trafshow
+            每个进程的带宽使用――nethogs
+
+            nethogs: 监控当前网络情况, ag:nethogs eth0
+        }
 
         ubuntu解压zip文件乱码问题:
         {
@@ -211,6 +222,14 @@ ubuntu 使用心的 & 技巧:
             sudo apt-get install links
             links http://www.google.com
             使用CTRL + Z退出
+        }
+
+        other:
+        {
+            GNU nano编辑器
+            ubuntu ppa:个人软件包档案
+            GIMP: 图形编辑器
+            alien: 把.rpm文件转换成.deb文件 #sudo apt-get install alien {转换sudo alien --scripts nerolinux-3.5.2.0-x86.rpm执行完毕后会发现同目录下多了一个文件nerolinux_3.5.2.0-2_i386.deb}
         }
 
         切换用户
