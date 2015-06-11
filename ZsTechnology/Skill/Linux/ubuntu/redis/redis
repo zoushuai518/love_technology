@@ -4,6 +4,7 @@
 #nginx 启动脚本
 #ubuntu 14.04平台
 #zs测试可用
+#学习shell编程; 部分自己编写,逻辑可能不够紧密; 2015-06-11
 #weimob
 
 #Configurationsinjected by install_server below....
@@ -11,10 +12,11 @@
 #CLIEXEC=/usr/local/redis/bin/redis-cli
 EXEC=/usr/local/bin/redis-server
 CLIEXEC=/usr/local/bin/redis-cli
-PIDFILE=/var/run/redis_6379.pid
+PIDFILE=/var/run/redis.pid
 #CONF="/usr/local/redis/etc/redis.conf"
 CONF="/etc/redis.conf"
 REDISPORT="6379"
+NAME="redis-server"
 ###############
 # SysVInit Information
 #chkconfig: - 58 74
@@ -30,6 +32,8 @@ REDISPORT="6379"
 #Short-Description: start and stop redis_6379
 #Description: Redis daemon
 ### ENDINIT INFO
+
+
 case "$1" in
     start)
         if [ -f $PIDFILE ]
@@ -37,6 +41,9 @@ case "$1" in
             echo "$PIDFILE exists, processis already running or crashed"
         else
             echo "Starting Redisserver..."
+            PID=`ps -ef|grep $REDISPORT |grep -v grep |awk '{print $2}'`
+            touch $PIDFILE |cat ${PID} >> $PIDFILE
+            #chown redis:redis $PIDFILE
             $EXEC $CONF
         fi
         ;;
@@ -50,21 +57,30 @@ case "$1" in
             $CLIEXEC -p $REDISPORT shutdown
             while [ -x /proc/${PID} ]
             do
-                echo "Waiting for Redis toshutdown ..."
+               echo "Waiting for Redis toshutdown ..."
                sleep 1
             done
             echo "Redis stopped"
         fi
         ;;
     status)
-        PID=$(cat $PIDFILE)
-        if [ ! -x /proc/${PID} ]
+        if [ ! -f $PIDFILE ]
         then
-            echo 'Redis is not running'
+            echo "$PIDFILE does not exist,process is not running"
         else
+            PID=$(cat $PIDFILE)
             echo "Redis is running($PID)"
         fi
         ;;
+
+        #PID=$(cat $PIDFILE)
+        #if [ ! -x /proc/${PID} ]
+        #then
+        #    echo 'Redis is not running'
+        #else
+        #    echo "Redis is running($PID)"
+        #fi
+        #;;
     restart)
         $0 stop
         $0 start
