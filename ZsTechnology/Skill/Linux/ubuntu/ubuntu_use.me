@@ -50,7 +50,10 @@ ubuntu 常用快捷键:
         nginx -V    |/usr/local/nginx/ngxin -V
         php -i |grep configure
         mysqlbug |grep configure
-        ...
+
+        linux 获取pid的命令
+        [root@quan]# ps -ef|grep 'python test.py' |grep -v grep |awk '{print $2}'   要用单引号
+        [zs@zs-weimob]$ ps -ef|grep '6379' |grep -v grep |awk '{print $2}'   要用单引号
 
     }
 
