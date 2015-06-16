@@ -44,6 +44,8 @@ Linux (CentOS)
     ---
     查找命令:find / -name package-name
     ---
+    find ./ -type f |wc -l  :查看当前目录下的文件总数
+    ---
     pwd
     ---
     ls -lht命令显示当前目录下的所有文件，其中有一列就是显示这个文件的大小; ls -lht | ls -lht ./dir/test.php
@@ -54,6 +56,7 @@ Linux (CentOS)
     df -h | df -h ./ :查看磁盘空间使用情况
     du -sh ./ :查看文件夹大小   [du -sh ./zs]
     du -h ./  :遍历显示文件夹下文件大小 [du -h ./zs]
+    du -sh ./*  :列出当前目录下每个文件的大小
     ---
     Ctrl + r
     ---
