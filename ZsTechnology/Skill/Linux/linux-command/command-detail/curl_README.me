@@ -7,8 +7,10 @@ curl -o /dev/null -s -w "time_connect: %{time_connect}\ntime_starttransfer: %{ti
 ---
 [curl -o /dev/null -s -w  %{http_code}:%{time_namelookup}:%{time_connect}:%{time_starttransfer}:%{time_total} http://10.10.99.214/portal.php]
 
+
 2.监控站点可用性
 curl -o /dev/null -s -w %{http_code} "http://www.kklinux.com"
+
 
 3.以http1.0协议请求（默认为http1.1）
     curl -0 ..............
@@ -25,11 +27,21 @@ option： -D 是把http的response里面的cookie信息存到一个特别的文�
 　　使用option来把上次的cookie信息追加到http request里面去：-b
 　　$ curl -x 123.45.67.89：1080 -o page1.html -D cookie0002.txt -b cookie0001.txt http://www.linuxidc.com
 
+
 4. curl模拟http请求
     1) POST方式
+    curl -d "param1=value1&param2=value2" "http://www.baidu.com"
+
     curl -X POST -H "Cache-Control: no-cache" -H "Postman-Token: 8b56eaee-2d07-4228-35b6-e6683461ffff" -d '{
         "so_id": "276",
         "goods_id": "28908049"
     }' http://weisite.dev.com/goods/buyDetail
 
+
+5. get请求
+
+curl "http://www.baidu.com"  如果这里的URL指向的是一个文件或者一幅图都可以直接下载到本地
+curl -i "http://www.baidu.com"  显示全部信息
+curl -l "http://www.baidu.com" 只显示头部信息
+curl -v "http://www.baidu.com" 显示get请求全过程解析
 
