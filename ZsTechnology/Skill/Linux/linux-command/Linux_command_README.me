@@ -195,6 +195,7 @@ Linux (CentOS)
     58.sar
     59.wc       | wc -l filename 显示文件总行数
     60.start-stop-daemon
+    61.dd
 
 }
 
@@ -227,19 +228,19 @@ Linux (CentOS)
     如果没有
 
     先用临时环境变量（重启后消失）
-#export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+    #export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
     然后就可以用那些命令了，进去修改永久环境变量：
 
     1。修改profile文件：（所有用户）
 
-#vi /etc/profile
+    #vi /etc/profile
     加入：export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
     保存退出。
 
     2。修改.bashrc文件：（单独用户）
 
-#vi /~/.bashrc （每个用户目录下都有，ls -all）
+    #vi /~/.bashrc （每个用户目录下都有，ls -all）
     加入：export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
     保存退出。
