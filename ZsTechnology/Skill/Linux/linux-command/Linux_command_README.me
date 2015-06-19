@@ -60,6 +60,7 @@ Linux (CentOS)
     ---
     Ctrl + r
     ---
+    主要是管道命令中的几个命令: grep，sed，awk，cut，wc，split，printf
 }
 
 {
@@ -117,23 +118,22 @@ Linux (CentOS)
 }
 
 
-
 {
 
-    #Linux常用命令列表
+    Linux常用命令列表
 
-    1.rpm               # rpm软件管理包,centos自带 ; rpm -qa[-qi][-ql][-e] |grep package-name[samba
-    2.chkconfig         # 把安装的软件加入到系统服务,这样就可以使用 service命令来进行启动/停止;useing demo:service package[d] start|restart|stop|status ->packaged对应软件的守护进程
-    3.service           # service --status-all,查看linux系统都安装了那些服务[软件]
+    1.rpm       | rpm软件管理包,centos自带 ; rpm -qa[-qi][-ql][-e] |grep package-name[samba
+    2.chkconfig | 把安装的软件加入到系统服务,这样就可以使用 service命令来进行启动/停止;useing demo:service package[d] start|restart|stop|status ->packaged对应软件的守护进程
+    3.service   | service --status-all,查看linux系统都安装了那些服务[软件]
     4.top
     5.curl
-    6.ps                #查看服务进程 ps aux  #用法,有待研究    |ps -ef[aux]|grep memcache|11211
-    7.pstree            #显示进程状态树
+    6.ps        |查看服务进程 ps aux  #用法,有待研究    |ps -ef[aux]|grep memcache|11211
+    7.pstree    |显示进程状态树
     8.scp
-    9.netstat           #用法,有待研究
-    10.mount            #挂载外接设备
-    11.unzip  | unzip filename -d /usr/share/vim/  [解压 .zip]
-    12.tar    | tar zxf[zxvf] filename[解压 .tar.gz]   |  tar zxvf /bbs.tar.gz -C /zzz/bbs   | tar [-xjf]-vxjf bbs.tar.bz2[tar vxjf pcre-8.34.tar.bz2 -C /usr/local/pcre  | {tar xvf test.tar && mv test 123} ]
+    9.netstat   |用法,有待研究
+    10.mount    |挂载外接设备
+    11.unzip    | unzip filename -d /usr/share/vim/  [解压 .zip]
+    12.tar      | tar zxf[zxvf] filename[解压 .tar.gz]   |  tar zxvf /bbs.tar.gz -C /zzz/bbs   | tar [-xjf]-vxjf bbs.tar.bz2[tar vxjf pcre-8.34.tar.bz2 -C /usr/local/pcre  | {tar xvf test.tar && mv test 123} ]
     13.route
     14.rm       | rm -rf * | rm -rf -R /var/www/html/zs | rm -rf .git .gitignore .gitmodules  |  rm -rf nerdtree/ plugin/  |  rm -rf pre_bean*  | rm -rf dataflow_*/20150603*
     15.cp       | cp test1 test2  |  cp -R /var/www/html  /usr/local/ [{dir:/home/zs-centos/zs/nerdtree/}{cp -R * /usr/share/vim/vim72}]  | cp -r test  /usr/local/  | cp -r apr-1.4.6 httpd-2.4.3/srclib/apr  | sudo cp -R ./cms-web/* /var/www/html/cms/cms-web/
@@ -151,19 +151,19 @@ Linux (CentOS)
         移动时创建备份：mv -bv *.txt /home/pungki/office
         无条件覆盖已经存在的文件： mv -f *.txt /home/pungki/office
     }
-    17.chmod | chown | chgrp   | chmod 755 -R /var/www/html/ | sudo chmod -R 777 /var/www/html/cms/cms-web/protected/runtime/  | sudo chown weiyan:weiyan -R ./
+    17.chmod,chown,chgrp   | chmod 755 -R /var/www/html/ | sudo chmod -R 777 /var/www/html/cms/cms-web/protected/runtime/  | sudo chown weiyan:weiyan -R ./
     18.whereis  | whereis package-name
-    19.date | [{date}{date -s "19:22:00 2014-01-11"}{date -s "2014-01-11 19:22:00"}]
+    19.date     | [{date}{date -s "19:22:00 2014-01-11"}{date -s "2014-01-11 19:22:00"}]
     20.mkdir    | [{mkdir dirName}{mkdir -p /usr/local/mysql} |{sudo mkdir -p cms/cms-web}]
     21.touch    | [touch fileName]
     22.cat      | [cat ./ip]    |"cat"代表了连结（Concatenation），连接两个或者更多文本文件或者以标准输出形式打印文件的内容
     23.rsync    | [用法带研究]
-    24.diff | [用法带研究]
-    25.kill | killall  [{简单使用流程:ps -ef |grep apache|80  |  netstat -lnp|grep 80 -> kill -9 进程ID | killall -9 正在运行的程序名称}]
-    26.grep
+    24.diff     | [用法带研究]
+    25.kill     | killall  [{简单使用流程:ps -ef |grep apache|80  |  netstat -lnp|grep 80 -> kill -9 进程ID | killall -9 正在运行的程序名称}]
+    26.grep     | 同时关注:42,43命令
     27.dstat    | Linux 监控工具
     28.find,locate,whereis,which,type   | Linux五个查找命令
-    29.ln   ln -s ../yii yii
+    29.ln       | ln -s ../yii yii
     30.ls
     31.test
     32.tail
@@ -179,9 +179,9 @@ Linux (CentOS)
     42.sed
     43.awk
     44.cut
-    45.strace   strace常用来跟踪进程执行时的系统调用和所接收的信号。 在Linux世界，进程不能直接访问硬件设备，当进程需要访问硬件设备(比如读取磁盘文件，接收网络数据等等)时，必须由用户态模式切换至内核态模式，通 过系统调用访问硬件设备。strace可以跟踪到一个进程产生的系统调用,包括参数，返回值，执行消耗的时间。
+    45.strace   |strace常用来跟踪进程执行时的系统调用和所接收的信号。 在Linux世界，进程不能直接访问硬件设备，当进程需要访问硬件设备(比如读取磁盘文件，接收网络数据等等)时，必须由用户态模式切换至内核态模式，通 过系统调用访问硬件设备。strace可以跟踪到一个进程产生的系统调用,包括参数，返回值，执行消耗的时间。
     46.source
-    47.xargs
+    47.xargs    | ls | grep -v "cms-web" | xargs rm -rf     #删除当前目录下,除了cms-web目录之外的目录
     48.last
     49.wget
     50.head     | head -n 10030 application.log | tail -n +10000  #输出application.log的10000行至10030行内容
@@ -201,8 +201,7 @@ Linux (CentOS)
 
 
 {
-    #Linux命令详解：
-
+    Linux命令详解：
     cd /command-detail/
 }
 　　
