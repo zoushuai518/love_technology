@@ -214,7 +214,7 @@ zs ext:
 }
 
 
-phpng(php7)编译安装, 仅供参考(2015-06-23):
+phpng(php7-dev)编译安装, 仅供参考(2015-06-23):
 {
     http://wiki.php.net/phpng
 
