@@ -152,7 +152,7 @@ Linux (CentOS)
         无条件覆盖已经存在的文件： mv -f *.txt /home/pungki/office
     }
     17.chmod,chown,chgrp   | chmod 755 -R /var/www/html/ | sudo chmod -R 777 /var/www/html/cms/cms-web/protected/runtime/  | sudo chown weiyan:weiyan -R ./
-    18.whereis  | whereis package-name
+    18.whereis  | whereis package-name; 查找文件安装路径
     19.date     | [{date}{date -s "19:22:00 2014-01-11"}{date -s "2014-01-11 19:22:00"}]
     20.mkdir    | [{mkdir dirName}{mkdir -p /usr/local/mysql} |{sudo mkdir -p cms/cms-web}]
     21.touch    | [touch fileName]
@@ -162,7 +162,7 @@ Linux (CentOS)
     25.kill     | killall  [{简单使用流程:ps -ef |grep apache|80  |  netstat -lnp|grep 80 -> kill -9 进程ID | killall -9 正在运行的程序名称}]
     26.grep     | 同时关注:42,43命令
     27.dstat    | Linux 监控工具
-    28.find,locate,whereis,which,type   | Linux五个查找命令
+    28.find,locate,whereis,which,type   | Linux五个查找命令; which: 查询安装包的运行文件所在地址(如果是源码安装的话, 只适合安装路径加入PATH里, 你可以使用-prefix指定安装路径)
     29.ln       | ln -s ../yii yii
     30.ls
     31.test
