@@ -1,0 +1,78 @@
+
+ubuntu 14.04 32bit 安装 java ee development env
+
+1.安装JDK(内置jre(jvm))
+    1.1. 官网下载JDK
+
+    1.2. 创建安装目录
+        sudo mkdir /usr/lib/java7
+
+    1.3. 解压缩文件包
+        sudo tar zxvf jdk-7u79-linux-i586.tar.gztar.gz -C /usr/lib/java7/
+
+    1.4. 配置系统环境变量: gedit ~/.bashrc
+        export JAVA_HOME=/usr/lib/java7/jdk1.7.0_79
+        export JRE_HOME=${JAVA_HOME}/jre
+        export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib
+        export PATH=${JAVA_HOME}/bin:$PATH
+
+    1.5. 关闭终端重新打开(source ~/.bashrc),输入以下命令:
+        update-alternatives --install /usr/bin/java java /usr/lib/java7/jdk1.7.0_79/bin/java 300
+        update-alternatives --install /usr/bin/javac javac /usr/lib/java7/jdk1.7.0_79/bin/javac 300
+
+    1.6. 选择指定的JDK: update-alternatives --config java
+
+    1.7. 在终端输入: java -version
+
+
+2.安装eclipse/intellij idea
+    2.1. 解压 intellij idea
+        tar zxvf IntelliJ IDEA 14.1.4.tar.gz
+
+    2.2. 移动 intellij idea 到 /usr/local/intellij/
+        sudo mkdir /usr/local/intellij &&  mv idea-IU-141.1532.4/* /usr/local/intellij/
+
+    2.3. 添加环境变量
+        vim ~/.profile(~/.bashrc)
+        export PATH=$PATH:/usr/local/intellij/bin
+        source ~/.profile
+
+    2.4. 运行安装向导,进行安装
+    idea.sh &
+
+
+3.安装Tomcat
+    3.1. 解包,移动目录
+        tar zxvf apache-tomcat-8.0.24.tar.gz
+        sudo mv apache-tomcat-8.0.24 /usr/local/tomcat
+
+    3.2. 添加环境变量
+        vim ~/.bashrc
+        export TOMCAT_HOME=/usr/local/tomcat
+        source ~/.bashrc
+
+    3.3. 服务管理
+        cd /usr/local/tomcat/bin
+        启动
+        ./startup.sh
+        关闭
+        ./shutdown.sh
+        查看版本
+        ./version.sh
+        查看是否启动
+        ps -ef|grep tomcat
+
+        配置全局命令
+        sudo ln -s /usr/local/tomcat/bin/catalina.sh /usr/local/bin/tomcat
+        经过以上命令,可以通过
+        tomcat start #启动tomcat服务
+        tomcat stop #关闭tomcat服务
+
+备: 经过以上三步配置,浏览器输入: http://localhost:8080就可以访问tomcat(默认端口8080)
+
+4. 配置
+    4.1. Tomcat配置: ./weimob-tomcat-config/*
+    4.2. Nginx,Tomcat配置; 通过Nginx转发http请求到Tomcat: ./weimob-nginx-config/*
+
+
+

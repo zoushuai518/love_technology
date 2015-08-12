@@ -1,0 +1,50 @@
+server {
+    listen       80;
+    server_name  ee.weimob.com;
+
+    #url 转发
+    #rewrite ^(.*) https://ee-test-project.weimob.com$1 permanent;
+
+    set $web_root /var/www/html/zsdemosite/java/ee-test-project/;
+
+    #charset koi8-r;
+
+    location / {
+        root   $web_root;
+        index  index.html index.htm index.jsp;
+        #proxy_pass http://ee-test-project.weimob.com:8082; #转向tomcat处理
+        #重定向规则
+        #try_files $uri $uri/ /index.php?$args;
+
+    }
+
+    #error_page  404              /404.html;
+
+    # redirect server error pages to the static page /50x.html
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   html;
+    }
+
+    #location ~ \.jsp$ {
+    location ~ .*.jsp$ { #所有jsp的页面均交由tomcat处理
+        index index.jsp;
+        #proxy_pass http://localhost:8080; #转向tomcat处理
+        proxy_pass http://ee-test-project.weimob.com:8082; #转向tomcat处理
+    }
+
+    location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$ #设定访问静态文件直接读取不经过tomcat
+    {
+        expires      30d;
+    }
+    location ~ .*\.(js|css)?$
+    {
+        expires      1h;
+    }
+
+    #定义访问日志的写入格式
+    #log_format  access '$remote_addr - $remote_user [$time_local] "$request" '
+    #        '$status $body_bytes_sent "$http_referer" '
+    #        '"$http_user_agent" $http_x_forwarded_for';
+    #access_log  /usr/local/nginx/logs/localhost.log access;#设定访问日志的存放路径
+}
