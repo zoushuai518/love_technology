@@ -165,7 +165,7 @@ ubuntu 使用心的 & 技巧:
         uname -a
     }
 
-    Tool:
+    Tool/Command:
     {
         GooglePinyin 汉语, Ubuntu下ibus-sunpinyin       iBus
         sudo apt-get install ibus-googlepinyin
@@ -181,6 +181,7 @@ ubuntu 使用心的 & 技巧:
             dstat: Linux终端下dstat监控工具; http://linux.cn/article-3215-1.html
             glances
             ifstat: 查看网络流量的小工具
+            sar  | sar -n DEV 1 10000; sudo apt-get install sysstat
         }
 
         网络监控:
@@ -238,8 +239,8 @@ ubuntu 使用心的 & 技巧:
 
             当前用户变量:
             {
-                sudo gedit ~/.bashrc
-                source ~/.bashrc
+                sudo gedit ~/.bashrc(~/.profile)
+                source ~/.bashrc(~/.profile)
             }
         }
 

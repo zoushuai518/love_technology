@@ -185,21 +185,20 @@ Linux (CentOS)
     48.last     | 显示近期用户或终端的登录情况
     49.wget
     50.head     | head -n 10030 application.log | tail -n +10000  #输出application.log的10000行至10030行内容
-    51.sar      | sar -n DEV 1 10000
+    51.sar      | sar -n DEV 1 10000; sudo apt-get install sysstat
     52.gdb
     53.jobs
     54.nohup    |有nohup,或执行命令时加&,用jobs来查看,或者在执行时按下ctrl+z,然后打bg(background 的意思)就能看到程序在运行,很多的定时的任务
     55.perl
     56.rz/sz
     57.ss
-    58.sar
-    59.wc       | wc -l filename 显示文件总行数
-    60.start-stop-daemon
-    61.dd
-    62.hexdump
-    63.rename   | cd ./cd && rename 's/[(\d)-]*//' *  使用正则匹配 rename 's/[(\d)-]*/1-/'
-    64.alias    | 定义shell命令别名
-    65.uptime
+    58.wc       | wc -l filename 显示文件总行数
+    59.start-stop-daemon
+    60.dd
+    61.hexdump
+    62.rename   | cd ./cd && rename 's/[(\d)-]*//' *  使用正则匹配 rename 's/[(\d)-]*/1-/'
+    63.alias    | 定义shell命令别名
+    64.uptime
 
 }
 
