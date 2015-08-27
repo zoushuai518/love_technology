@@ -33,12 +33,18 @@ ubuntu 常用快捷键:
         3.运行history -r /home/yajiu/history.txt，可以将history.txt文件存储的常用命令读进来作为当前bash的历史记录
         (注意：常用命令当成文本写进history.txt必须每个命令占一行)
 
-        grep -rn "关键词" ./
-
         sudo : "sudo"(super user do)命令允许授权用户执行超级用户或者其它用户的命令。通过在sudoers列表的安全策略来指定。
+
+        grep -rn "关键词" ./
 
         删除当前目录下除了js.js文件之外的所有文件
         ls | grep -v "js.js" | xargs rm -rf *
+
+        监控php线程数：
+        ps -eLf | grep java | wc -l
+
+        监控网络客户连接数：
+        netstat -n | grep tcp | grep 侦听端口 | wc -l
 
         ubuntu 挂载 U盘
 
@@ -136,7 +142,6 @@ ubuntu 使用心的 & 技巧:
         在ubuntu下用aptitude代替apt-get处理依赖性问题。
         aptitude 与 apt-get 一样，是 Debian 及其衍生系统中功能极其强大的包管理工具。与 apt-get 不同的是，aptitude 在处理依赖问题上更佳一些。举例来说，aptitude 在删除一个包时，会同时删除本身所依赖的包。这样，系统中不会残留无用的包，整个系统更为干净。
     }
-
 
     dpkg:
     {
