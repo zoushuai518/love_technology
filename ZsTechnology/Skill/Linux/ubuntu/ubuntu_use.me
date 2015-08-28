@@ -27,48 +27,6 @@ ubuntu 常用快捷键:
         clear
         reset
 
-        history:
-        1.运行history，可以得到一个整洁的Linux终端命令历史记录的列表
-        2.运行history -c，可以清除杂乱的历史记录
-        3.运行history -r /home/yajiu/history.txt，可以将history.txt文件存储的常用命令读进来作为当前bash的历史记录
-        (注意：常用命令当成文本写进history.txt必须每个命令占一行)
-
-        sudo : "sudo"(super user do)命令允许授权用户执行超级用户或者其它用户的命令。通过在sudoers列表的安全策略来指定。
-
-        grep -rn "关键词" ./
-
-        删除当前目录下除了js.js文件之外的所有文件
-        ls | grep -v "js.js" | xargs rm -rf *
-
-        监控php线程数：
-        ps -eLf | grep php| wc -l
-
-        监控网络客户连接数：
-        netstat -n | grep tcp | grep 侦听端口 | wc -l
-
-        查看linux支持的shell:
-        cat /etc/shells
-        查看当前使用的shell:
-        echo $SHELL
-
-        ubuntu 挂载 U盘
-
-        快速查看服务器安装时的编译参数：
-        nginx -V    |/usr/local/nginx/ngxin -V
-        php -i |grep configure
-        mysqlbug |grep configure
-
-        linux 获取pid的命令
-        [root@quan]# ps -ef|grep 'python test.py' |grep -v grep |awk '{print $2}'   要用单引号
-        [zs@zs-weimob]$ ps -ef|grep '6379' |grep -v grep |awk '{print $2}'   要用单引号
-
-        alias: 自定义shell命令别名; 可在/etc/profile或自己的~/.bashrc中设定指令的别名;
-        {
-            ag:
-            alias sc="source ~/.bash_profile";
-            alias zs='cd ~'
-        }
-
     }
 
     来自互联网
@@ -298,32 +256,42 @@ ubuntu 使用心的 & 技巧:
     Other:
     {
 
-        创建 服务 随机启动:
+        {
+            创建 服务 随机启动:
+            /etc/init.d/ #ubuntu系统服务目录,此目录下的脚本可以通过 service来进行管理
+            /etc/rcn.d/ #随机启动目录; n为数字,从0开始
 
-        /etc/init.d/ #ubuntu系统服务目录,此目录下的脚本可以通过 service来进行管理
-        /etc/rcn.d/ #随机启动目录; n为数字,从0开始
+            demo:
+            #ln -s 源文件位置(即:启动脚本位置,此启动脚本必须在 /etc/init.d/文件夹下,即:此脚本要用 service服务可以管理方可) 目标文件名(可以自己定义,需要按照 Sn开头,n为数字代表启动顺序)
+            cd /etc/rc2.d/
+            #sudo ln -s /etc/init.d/tengine S99tengine
+            #sudo ln -s /etc/init.d/nginx S99nginx
+            #sudo ln -s /etc/init.d/php-fpm S99php-fpm
+            #sudo ln -s /etc/init.d/mysqld S99mysqld | S99mysql -> /usr/local/mysql/support-files/mysql.server* #仅供参考
+        }
 
-        demo:
-        #ln -s 源文件位置(即:启动脚本位置,此启动脚本必须在 /etc/init.d/文件夹下,即:此脚本要用 service服务可以管理方可) 目标文件名(可以自己定义,需要按照 Sn开头,n为数字代表启动顺序)
-        cd /etc/rc2.d/
-        #sudo ln -s /etc/init.d/tengine S99tengine
-        #sudo ln -s /etc/init.d/nginx S99nginx
-        #sudo ln -s /etc/init.d/php-fpm S99php-fpm
-        #sudo ln -s /etc/init.d/mysqld S99mysqld | S99mysql -> /usr/local/mysql/support-files/mysql.server* #仅供参考
+        {
+            ubuntu 可执行文件放在以下三个目录,全局可以访问到:
+            /usr/local/bin/
+            /usr/local/sbin
+            /usr/bin
+            /bin
+            /sbin
+        }
 
+        {
+            history:
+            1.运行history，可以得到一个整洁的Linux终端命令历史记录的列表
+            2.运行history -c，可以清除杂乱的历史记录
+            3.运行history -r /home/yajiu/history.txt，可以将history.txt文件存储的常用命令读进来作为当前bash的历史记录
+            (注意：常用命令当成文本写进history.txt必须每个命令占一行)
+        }
 
-        ubuntu 可执行文件放在以下三个目录,全局可以访问到:
-        /usr/local/bin/
-        /usr/local/sbin
-        /usr/bin
-        /bin
-        /sbin
+        sudo : "sudo"(super user do)命令允许授权用户执行超级用户或者其它用户的命令。通过在sudoers列表的安全策略来指定。
 
         ls  | grep -v "cms-web" | xargs rm -rf      #删除当前目录下,除了cms-web目录之外的目录
 
-
         ibus-daemon -d          //-d | & 后台运行
-
 
         ps -ef |grep nginx
         ps aux |grep nginx
@@ -331,6 +299,39 @@ ubuntu 使用心的 & 技巧:
         sudo netstat -lnp|grep 9000
         kill -9 进程ID | killall -9 正在运行的程序名称
 
+        grep -rn "关键词" ./
+
+        删除当前目录下除了js.js文件之外的所有文件
+        ls | grep -v "js.js" | xargs rm -rf *
+
+        监控php线程数：
+        ps -eLf | grep php| wc -l
+
+        监控网络客户连接数：
+        netstat -n | grep tcp | grep 侦听端口 | wc -l
+
+        查看linux支持的shell:
+        cat /etc/shells
+        查看当前使用的shell:
+        echo $SHELL
+        改变系统当前shell(ubuntu 默认shell, /bin/bash):
+        chsh -s /bin/zsh
+
+        快速查看服务器安装时的编译参数：
+        nginx -V    |/usr/local/nginx/ngxin -V
+        php -i |grep configure
+        mysqlbug |grep configure
+
+        linux 获取pid的命令
+        [root@quan]# ps -ef|grep 'python test.py' |grep -v grep |awk '{print $2}'   要用单引号
+        [zs@zs-weimob]$ ps -ef|grep '6379' |grep -v grep |awk '{print $2}'   要用单引号
+
+        alias: 自定义shell命令别名; 可在/etc/profile或自己的~/.bashrc中设定指令的别名;
+        {
+            ag:
+            alias sc="source ~/.bash_profile";
+            alias zs='cd ~'
+        }
 
         重启命令：
         1、reboot
@@ -345,7 +346,6 @@ ubuntu 使用心的 & 技巧:
         3、shutdown -h now 立刻关机(root用户使用)
         4、shutdown -h 10 10分钟后自动关机
         如果是通过shutdown命令设置关机的话，可以用shutdown -c命令取消重启
-
     }
 
 }
