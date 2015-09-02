@@ -1,31 +1,72 @@
 ubuntu vbox
 
 {
-	1.安装 VirtualBox
+    1.安装 VirtualBox
 
-	2.创建 虚拟机 安装 win7 OS | winxp OS
+    2.创建 虚拟机 安装 win7 OS | winxp OS
 
-	3.ubuntu install VirtualBox:
-	sudo apt-cache search virtualbox
-	sudo apt-get install virtualbox-guest-*		|安装对应版本的 vbox增强包,注意 x86|x64
+    3.ubuntu install VirtualBox:
+    sudo apt-cache search virtualbox
+    sudo apt-get install virtualbox-guest-*     |安装对应版本的 vbox增强包,注意 x86|x64
 
-	4.安装增强功能；增强功能安装完成后，最大化后，即可自适应大小
-	winxp |2014-11-06
-	{
-		虚拟机管理界面 -> 设备 -> 安装增强功能(如果没有VBoxGuestAdditions.iso，vbox会提示从网络下载，安装即可)
-		进入 ubuntu -> mkdir /home/zs/share_winxp -> 虚拟机管理界面 -> 选中指定虚拟机(winxp) -> 设置 -> 共享文件夹 -> 添加共享文件夹 | 指定路径{即:/home/zs/share_winxp};共享文件夹名称:winxp | 选着:自动挂载,只读分配
-		我的电脑 -> 工具 -> 映射网络驱动器 -> VirtualBox Shared Folders -> \\Vboxsvr -> \\VBOXSVR\winxp
-	}
-	win7 |2014-11-16
-	{
-		挂载 win7.iso
-		虚拟机管理界面 -> 设备 -> 安装增强功能 -> 进入虚拟机 -> 我的电脑 -> VirtualBox Guest Additions(光驱已经加载)双击安装 -> 直到成功
-		进入 ubuntu -> mkdir /home/weiyan/share_win7 -> 打开虚拟主机窗口 -> 鼠标右击右下角 共享文件夹图标 -> 添加共享文件夹 | 指定路径{即:/home/weiyan/share_win7};共享文件夹名称:win7 | 选着:自动挂载,固定分配 [注意不要选择, "只读分配" 否则虚拟机中的文件无法写入到共享文件夹中] [此步骤也可在 虚拟机管理界面 -> 设备(菜单中进行)] [可以参考 winxp的配置来进行]
-		我的电脑 -> 映射网络驱动器 -> \\VBOXSVR\win7
-	}
+    4.安装增强功能, 增强功能安装完成后, 最大化后, 即可自适应大小
 
-	#==
-	VirtualBox -> 选中win7|winxp -> 设置 -> 常规 -> 高级TAB -> 共享粘帖板|双向 - 托放|双向
 
-	OK! 到此 你的 ubuntu & 虚拟机中的win7|winxp 系统 可以 实现 {文件共享|虚拟机窗口自适应大小|ubuntu & 虚拟机中win7|winxp双向复制}
+    vbox虚拟机配置:
+    {
+        winxp |2014-11-06
+        {
+            虚拟机管理界面 -> 设备 -> 安装增强功能(如果没有VBoxGuestAdditions.iso，vbox会提示从网络下载，安装即可)
+            进入 ubuntu -> mkdir /home/zs/share_winxp -> 虚拟机管理界面 -> 选中指定虚拟机(winxp) -> 设置 -> 共享文件夹 -> 添加共享文件夹 | 指定路径{即:/home/zs/share_winxp};共享文件夹名称:winxp | 选着:自动挂载,只读分配
+            我的电脑 -> 工具 -> 映射网络驱动器 -> VirtualBox Shared Folders -> \\Vboxsvr -> \\VBOXSVR\winxp
+        }
+        win7 |2014-11-16
+        {
+            挂载 win7.iso
+            虚拟机管理界面 -> 设备 -> 安装增强功能 -> 进入虚拟机 -> 我的电脑 -> VirtualBox Guest Additions(光驱已经加载)双击安装 -> 直到成功
+            进入 ubuntu -> mkdir /home/weiyan/share_win7 -> 打开虚拟主机窗口 -> 鼠标右击右下角 共享文件夹图标 -> 添加共享文件夹 | 指定路径{即:/home/weiyan/share_win7};共享文件夹名称:win7 | 选着:自动挂载,固定分配 [注意不要选择, "只读分配" 否则虚拟机中的文件无法写入到共享文件夹中] [此步骤也可在 虚拟机管理界面 -> 设备(菜单中进行)] [可以参考 winxp的配置来进行]
+            我的电脑 -> 映射网络驱动器 -> \\VBOXSVR\win7
+        }
+
+        other config |2015-09-02
+        {
+            VirtualBox -> 选中win7|winxp -> 设置 -> 常规 -> 高级TAB -> 共享粘帖板|双向 - 托放|双向
+        }
+
+        OK! 到此 你的 ubuntu & 虚拟机中的win7|winxp 系统 可以 实现 {文件共享|虚拟机窗口自适应大小|ubuntu & 虚拟机中win7|winxp双向复制}
+    }
+
+    vbox扩容VDI磁盘大小 |2015-09-02
+    {
+        扩容，首先要了解VBOX虚拟硬盘的方式方法以及格式，这里所说的是动态分配，以VBOX的虚拟硬盘格式为主。
+
+        固定大小就不说，直接占用硬盘空间，唯一的好处就是性能上比动态好，这个要扩容还是直接再挂盘比较方便。
+
+        动态分配扩容的办法有多种：
+
+        1.添加另一块虚拟硬盘，这个就不多说了，相当于多加个硬盘；
+
+        2.可以使用VBoxManage扩容，只对动态分配的VDI 和 VHD格式映像有效。
+
+        为虚拟机硬盘扩容（Oracle VM VirtualBox）命令：
+
+        VBoxManage modifyhd <uuid>|<filename> [--resize <megabytes>|--resizebyte <bytes>]
+
+        --resize 可以用来修改已经存在的硬盘映像文件的大小，它仅仅影响虚拟硬盘的逻辑大小，而不会影响物理硬盘的大小。
+
+        例如原来已创建了一个10G大小的磁盘，现在要扩充到20G，可以使用命令 --resize 20480增加10G的容量，具体操作如下：
+
+        首先要获知要增加容量的映像的uuid，可使用命令: VBoxManage list hdds
+
+        VBoxManage modifyhd a77cd873-3778-4f9f-91d1-9fd17b4c8049   --resize 20480
+
+        操作成功后该虚拟的硬盘即增加到了20G，但要注意了，此增加的10G空间还没有分配，进入虚拟机系统后需要进一步分配才能满足要求在系统中使用
+
+        ext: 磁盘空间增加了之后,对于虚拟机相当于未分配的磁盘空间通过虚拟机中不同操作系统对应的磁盘管理来把未分配的磁盘空间重新分配即可(ag: winxp -> 我的电脑 -> 管理 -> 磁盘管理 -> ...)
+
+        ----
+        ag:
+        winxp VDI磁盘大小调整到40G
+        vboxmanage modifyhd winxp.vdi --resize 40960
+    }
 }
