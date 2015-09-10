@@ -184,6 +184,18 @@ ubuntu 使用心的 & 技巧:
             zs使用 第一种方式解决
         }
 
+        ubuntu 修改apt-get源:
+        {
+            cp /etc/apt/sources.list /etc/apt/sources.list.bak
+            vim /etc/apt/sources.list
+        }
+
+        天气信息指示器(weather):
+        {
+            sudo add-apt-repository ppa:atareao/atareao
+            sudo apt-get update && sudo apt-get install my-weather-indicator
+        }
+
         Linux的管道命令竖线(|)
         {
             管道符号，是unix功能强大的一个地方,符号是一条竖线:"|"，
