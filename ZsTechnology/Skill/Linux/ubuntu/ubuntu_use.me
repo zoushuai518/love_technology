@@ -167,21 +167,31 @@ ubuntu 使用心的 & 技巧:
             nethogs: nethogs是一款小巧的"net top"工具，可以显示每个进程所使用的带宽，并对列表排序，将耗用带宽最多的进程排在最上面。万一出现带宽使用突然激增的情况，用户迅速打开nethogs，就可以找到导致带宽使用激增的进程。nethogs可以报告程序的进程编号（PID）、用户和路径; ag:nethogs eth0; zs use
         }
 
-        ubuntu解压zip文件乱码问题:
+        ubuntu解压:
         {
-            有2种方式解决问题：
+            解压rar文件:
+            {
+                sudo apt-get install unrar
+            }
 
-            1. 通过unzip行命令解压，指定字符集
-            unzip -O CP936 xxx.zip (用GBK, GB18030也可以)
-            有趣的是unzip的manual中并无这个选项的说明, unzip --help对这个参数有一行简单的说明。
+            解压zip文件, 并解决乱码问题:
+            {
+                sudo apt-get install unzip
 
-            2. 在环境变量中，指定unzip参数，总是以指定的字符集显示和解压文件
-            /etc/environment中加入2行
-            UNZIP="-O CP936"
-            ZIPINFO="-O CP936"
-            这样Gnome桌面的归档文件管理器(file-roller)可以正常使用unzip解压中文，但是file-roller本身并不能设置编码传递给unzip。
+                有2种方式解决问题：
 
-            zs使用 第一种方式解决
+                1. 通过unzip行命令解压，指定字符集
+                unzip -O CP936 xxx.zip (用GBK, GB18030也可以)
+                有趣的是unzip的manual中并无这个选项的说明, unzip --help对这个参数有一行简单的说明。
+
+                2. 在环境变量中，指定unzip参数，总是以指定的字符集显示和解压文件
+                /etc/environment中加入2行
+                UNZIP="-O CP936"
+                ZIPINFO="-O CP936"
+                这样Gnome桌面的归档文件管理器(file-roller)可以正常使用unzip解压中文，但是file-roller本身并不能设置编码传递给unzip。
+
+                zs使用 第一种方式解决
+            }
         }
 
         ubuntu 修改apt-get源:
