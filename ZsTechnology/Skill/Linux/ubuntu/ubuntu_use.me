@@ -171,20 +171,25 @@ ubuntu 使用心的 & 技巧:
 
         抓包工具:
         {
-            wireshark
+            wireshark(ethereal):
+            {
+                use:
+                sudo wireshark #图形界面
+                sudo tshark #wireshark命令行
 
-            use:
-            sudo wireshark #图形界面
-            sudo tshark #wireshark命令行
 
+                demo:
+                sudo tshark -D 查看network(网卡)
+                --
+                截获sql语句:
+                sudo tshark -s 512 -i lo -n -f 'tcp dst port 3306' -R 'mysql.query' -T fields -e mysql.query
+                sudo tshark -s 512 -i any -n -f 'tcp dst port 3306' -R 'mysql.query' -T fields -e mysql.query
+            }
 
-            demo:
-            sudo tshark -D 查看network(网卡)
-            --
-            截获sql语句:
-            sudo tshark -s 512 -i lo -n -f 'tcp dst port 3306' -R 'mysql.query' -T fields -e mysql.query
-            sudo tshark -s 512 -i any -n -f 'tcp dst port 3306' -R 'mysql.query' -T fields -e mysql.query
+            tcpdump:
+            {
 
+            }
         }
 
         ubuntu解压:
