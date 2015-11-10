@@ -119,9 +119,10 @@ sudo ./configure --prefix=/usr/local/php --mandir=/usr/share/man --infodir=/usr/
         git clone https://github.com/krakjoe/phpdbg
         cd ../
         ./buildconf --force
+        ./configure --prefix ...
         ./config.nice
-        make -j8
-        make install -phpdbg
+        make |make -j8
+        make intall |make install-phpdbg
     ]
     ./configure --prefix=/usr/local/php5.5 --mandir=/usr/share/man --infodir=/usr/share/info --sysconfdir=/etc --enable-cli --with-config-file-path=/usr/local/php5.5/etc --with-openssl --with-kerberos --with-zlib --with-bz2 --enable-bcmath --enable-calendar --with-curl --enable-exif --enable-ftp --with-gd --enable-magic-quotes --enable-mbstring --enable-mbregex --enable-json --with-mysql=mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-mysql-sock=mysqlnd --with-sqlite --with-pdo-sqlite --enable-pdo --enable-dba --enable-shmop --enable-soap --enable-sockets --enable-wddx --enable-fpm --with-mhash --with-mcrypt=/usr/local/libmcrypt --with-iconv --with-xsl --enable-zend-multibyte --enable-zip --with-pcre-regex --enable-dom --enable-gd-native-ttf --enable-posix --enable-fileinfo --enable-sysvmsg --enable-sysvsem --enable-sysvshm --with-libxml --with-xmlrpc --enable-xml --enable-xmlwriter --enable-xmlreader --enable-debug --enable-maintainer-zts --enable-phpdbg --with-readline
 }
