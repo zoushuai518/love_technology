@@ -95,7 +95,7 @@ ubuntu 使用心的 & 技巧:
         gnome-screensaver-command
 
         zs useing 2015-03-30
-        Eyerest:
+        eyerest:
         https://github.com/zoushuai518/eyerest
         https://github.com/zlbruce/eyerest
     }
@@ -147,11 +147,9 @@ ubuntu 使用心的 & 技巧:
 
         系统监控:
         {
-            htop 增强版的top
+            htop 增强版的top; zs use
             dstat: Linux终端下dstat监控工具; http://linux.cn/article-3215-1.html
             glances
-            ifstat: 查看网络流量的小工具
-            sar  | sar -n DEV 1 10000; sudo apt-get install sysstat
         }
 
         网络监控:
@@ -163,10 +161,10 @@ ubuntu 使用心的 & 技巧:
 
             nload: 你只需要快速查看总带宽使用情况，无需每个进程的详细情况，那么nload用起来很方便; zs use
             bmon: bmon（带宽监控器）是一款类似nload的工具，它可以显示系统上所有网络接口的流量负载。输出结果还含有图表和剖面，附有数据包层面的详细信息
-
             iptraf: iptraf是一款交互式、色彩鲜艳的IP局域网监控工具。它可以显示每个连接以及主机之间传输的数据量
-
             nethogs: nethogs是一款小巧的"net top"工具，可以显示每个进程所使用的带宽，并对列表排序，将耗用带宽最多的进程排在最上面。万一出现带宽使用突然激增的情况，用户迅速打开nethogs，就可以找到导致带宽使用激增的进程。nethogs可以报告程序的进程编号（PID）、用户和路径; ag:nethogs eth0; zs use
+            ifstat: 查看网络流量的小工具
+            sar  | sar -n DEV 1 10000; sudo apt-get install sysstat
         }
 
         抓包工具:
@@ -292,6 +290,7 @@ ubuntu 使用心的 & 技巧:
         切换用户
         {
             sudo su root
+            sudo su -
         }
     }
 
@@ -309,7 +308,7 @@ ubuntu 使用心的 & 技巧:
             /etc/rcn.d/ #随机启动目录; n为数字,从0开始
 
             demo:
-            #ln -s 源文件位置(即:启动脚本位置,此启动脚本必须在 /etc/init.d/文件夹下,即:此脚本要用 service服务可以管理方可) 目标文件名(可以自己定义,需要按照 Sn开头,n为数字代表启动顺序)
+            #ln -s 源文件位置(即:启动脚本位置,此启动脚本必须在 /etc/init.d/文件夹下,即:此脚本要用service服务可以管理方可) 目标文件名(可以自己定义,需要按照 Sn开头,n为数字代表启动顺序)
             cd /etc/rc2.d/
             #sudo ln -s /etc/init.d/tengine S99tengine
             #sudo ln -s /etc/init.d/nginx S99nginx
@@ -344,7 +343,7 @@ ubuntu 使用心的 & 技巧:
         ps aux |grep nginx
         netstat -lnp|grep httpd
         sudo netstat -lnp|grep 9000
-        kill -9 进程ID | killall -9 正在运行的程序名称
+        kill -9 进程ID | killall -9 正在运行的程序名称 | pkill 正在运行的程序名称
 
         grep -rn "关键词" ./
 
@@ -388,7 +387,7 @@ ubuntu 使用心的 & 技巧:
         如果是通过shutdown命令设置重启的话，可以用shutdown -c命令取消重启
 
         关机命令：
-        1、halt 立刻关机
+        1、halt 立刻关机 | sudo init 0
         2、poweroff 立刻关机
         3、shutdown -h now 立刻关机(root用户使用)
         4、shutdown -h 10 10分钟后自动关机
