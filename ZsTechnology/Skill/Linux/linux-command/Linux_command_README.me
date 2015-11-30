@@ -58,8 +58,6 @@ Linux (CentOS)
     du -h ./  :遍历显示文件夹下文件大小 [du -h ./zs]
     du -sh ./*  :列出当前目录下每个文件的大小
     ---
-    Ctrl + r
-    ---
     主要是管道命令中的几个命令: grep，sed，awk，cut，wc，split，printf
 }
 
@@ -93,7 +91,7 @@ Linux (CentOS)
         /etc/group文件包含所有组
         /etc/shadow和/etc/passwd系统存在的所有用户名
         -
-        1./etc/group 解说；
+        1./etc/group 解说;
 
         /etc/group 文件是用户组的配置文件，内容包括用户和用户组，并且能显示出用户是归属哪个用户组或哪几个用户组，因为一个用户可以归属一个或多个不同的用户组；同一用 户组的用户之间具有相似的特征。比如我们把某一用户加入到root用户组，那么这个用户就可以浏览root用户家目录的文件，如果root用户把某个文件 的读写执行权限开放，root用户组的所有用户都可以修改此文件，如果是可执行的文件（比如脚本），root用户组的用户也是可以执行的；
 
@@ -125,7 +123,7 @@ Linux (CentOS)
     1.rpm       | rpm软件管理包,centos自带 ; rpm -qa[-qi][-ql][-e] |grep package-name[samba
     2.chkconfig | 把安装的软件加入到系统服务,这样就可以使用 service命令来进行启动/停止;useing demo:service package[d] start|restart|stop|status ->packaged对应软件的守护进程
     3.service   | service --status-all,查看linux系统都安装了那些服务[软件]
-    4.top
+    4.top       | htop
     5.curl
     6.ps        |查看服务进程 ps aux  #用法,有待研究    |ps -ef[aux]|grep memcache|11211
     7.pstree    |显示进程状态树
@@ -161,7 +159,7 @@ Linux (CentOS)
     24.diff     | [用法带研究]
     25.kill     | kill, killall, pkill, xkill[{简单使用流程:ps -ef |grep apache|80  |  netstat -lnp|grep 80 -> kill -9 进程ID | killall -9 正在运行的程序名称}]
     26.grep     | 同时关注:42,43命令
-    27.dstat    | Linux 监控工具
+    27.dstat(nicstat,iostat,mpstat,vmstat,pidstat)    | Linux 监控工具
     28.find,locate,whereis,which,type   | Linux五个查找命令; which: 查询安装包的运行文件所在地址(如果是源码安装的话, 只适合安装路径加入PATH里, 你可以使用-prefix指定安装路径)
     29.ln       | ln -s ../yii yii
     30.ls
@@ -179,7 +177,7 @@ Linux (CentOS)
     42.sed
     43.awk
     44.cut
-    45.strace,pstack   |strace常用来跟踪进程执行时的系统调用和所接收的信号。 在Linux世界，进程不能直接访问硬件设备，当进程需要访问硬件设备(比如读取磁盘文件，接收网络数据等等)时，必须由用户态模式切换至内核态模式，通 过系统调用访问硬件设备。strace可以跟踪到一个进程产生的系统调用,包括参数，返回值，执行消耗的时间。
+    45.strace,pstack,blktrace   |strace常用来跟踪进程执行时的系统调用和所接收的信号。 在Linux世界，进程不能直接访问硬件设备，当进程需要访问硬件设备(比如读取磁盘文件，接收网络数据等等)时，必须由用户态模式切换至内核态模式，通 过系统调用访问硬件设备。strace可以跟踪到一个进程产生的系统调用,包括参数，返回值，执行消耗的时间。
     46.source
     47.xargs    | ls | grep -v "cms-web" | xargs rm -rf     #删除当前目录下,除了cms-web目录之外的目录
     48.last     | 显示近期用户或终端的登录情况
@@ -200,6 +198,8 @@ Linux (CentOS)
     63.uptime
     64.chsh
     65.pmap
+    66.sysctl
+    67.slabtop
 
 }
 

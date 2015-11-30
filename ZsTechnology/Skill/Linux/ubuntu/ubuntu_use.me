@@ -145,12 +145,20 @@ ubuntu 使用心的 & 技巧:
         tmux: 开启多个控制台的终端复用软件
         meld diff viewer: 差异查看器
 
+        --
+        sudo strace -fp 进程号: 能看到进程具体在干什么
+        sudo lsof |grep 进程号: lsof是看到进程挂载哪些文件(io)
+        --
+
         系统监控:
         {
             htop 增强版的top; zs use
             dstat(nicstat,iostat,mpstat,vmstat,pidstat)
             glances
             free
+
+            iotop: iotop命令是专门显示硬盘IO的命令，界面风格类似top命令。这个命令只有在kernelv2.6.20及以后的版本中才有
+            slabtop
         }
 
         网络监控:
