@@ -235,7 +235,7 @@ zs ext:
 }
 
 
-phpng(php7-dev)编译安装, 仅供参考(2015-06-23):
+phpng(php7)编译安装, 仅供参考(2015-06-23):
 {
     http://wiki.php.net/phpng
 
@@ -379,11 +379,19 @@ phpng(php7-dev)编译安装, 仅供参考(2015-06-23):
         ./buildconf
 
 
-        #仅作为参考
-        ./configure --prefix=/usr/local/phpng --sysconfdir=/usr/local/phpng/etc --with-config-file-path=/usr/local/phpng/etc --enable-mbstring --enable-zip --enable-bcmath --enable-pcntl --enable-ftp --enable-exif --enable-calendar --enable-sysvmsg --enable-sysvsem --enable-sysvshm --enable-wddx --with-curl --with-mcrypt --with-iconv --with-gmp --with-pspell --with-gd --with-jpeg-dir=/usr --with-png-dir=/usr --with-zlib-dir=/usr --with-xpm-dir=/usr --with-freetype-dir=/usr --with-t1lib --enable-gd-native-ttf --enable-gd-jis-conv --with-openssl --with-mysql=mysqlnd --with-pdo-mysql=mysqlnd --with-mysqli=mysqlnd --with-gettext --with-zlib --with-bz2 --with-recode
+        #./configure --help
 
         #zs use
-        ./configure --prefix=/usr/local/php7 --exec-prefix=/usr/local/php7 --bindir=/usr/local/php7/bin --sbindir=/usr/local/php7/sbin --includedir=/usr/local/php7/include --libdir=/usr/local/php7/lib/php --mandir=/usr/local/php7/php/man --with-config-file-path=/usr/local/php7/etc --with-mysql-sock=/var/run/mysql/mysql.sock --with-mcrypt=/usr/include --with-mhash --with-openssl --with-mysql=shared,mysqlnd --with-mysqli=shared,mysqlnd --with-pdo-mysql=shared,mysqlnd --with-gd --with-iconv --with-zlib --enable-zip --enable-inline-optimization --disable-debug --disable-rpath --enable-shared --enable-xml --enable-bcmath --enable-shmop --enable-sysvsem --enable-mbregex --enable-mbstring --enable-ftp --enable-gd-native-ttf --enable-pcntl --enable-sockets --with-xmlrpc --enable-soap --without-pear --with-gettext --enable-session --with-curl --with-jpeg-dir --with-freetype-dir --enable-opcache --enable-fpm --enable-fastcgi --with-fpm-user=www --with-fpm-group=www --without-gdbm --disable-fileinfo
+        ./configure --prefix=/usr/local/php7 --exec-prefix=/usr/local/php7 --bindir=/usr/local/php7/bin --sbindir=/usr/local/php7/sbin --includedir=/usr/local/php7/include --libdir=/usr/local/php7/lib/php --mandir=/usr/local/php7/php/man --with-config-file-path=/usr/local/php7/etc --with-mysql-sock=/var/run/mysql/mysql.sock --with-mcrypt=/usr/include --with-mhash --with-openssl --with-mysql=shared,mysqlnd --with-pdo-mysql=shared,mysqlnd --with-gd --with-iconv --with-zlib --enable-zip --enable-inline-optimization --disable-debug --disable-rpath --enable-shared --enable-xml --enable-bcmath --enable-shmop --enable-sysvsem --enable-mbregex --enable-mbstring --enable-ftp --enable-gd-native-ttf --enable-pcntl --enable-sockets --with-xmlrpc --enable-soap --without-pear --with-gettext --enable-session --with-curl --with-jpeg-dir --with-freetype-dir --enable-opcache --enable-fpm --with-fpm-user=www --with-fpm-group=www --without-gdbm --disable-fileinfo
+
+        [
+            #zs use 2; 2015-12-03:
+            ./configure --prefix=/usr/local/php7 --exec-prefix=/usr/local/php7 --bindir=/usr/local/php7/bin --sbindir=/usr/local/php7/sbin --includedir=/usr/local/php7/include --libdir=/usr/local/php7/lib/php --mandir=/usr/local/php7/php/man --with-config-file-path=/usr/local/php7/etc --with-mysql-sock=/var/run/mysql/mysql.sock --with-mcrypt=/usr/include --with-mhash --with-openssl --with-pdo-mysql=shared,mysqlnd --with-gd --with-iconv --with-zlib --enable-zip --enable-inline-optimization --disable-debug --disable-rpath --enable-shared --enable-xml --enable-bcmath --enable-shmop --enable-sysvsem --enable-mbregex --enable-mbstring --enable-ftp --enable-gd-native-ttf --enable-pcntl --enable-sockets --with-xmlrpc --enable-soap --without-pear --with-gettext --enable-session --with-curl --with-jpeg-dir --with-freetype-dir --enable-opcache --enable-fpm --with-fpm-user=www --with-fpm-group=www --without-gdbm --disable-fileinfo  --enable-phpdbg --with-readline
+            注意:
+            1、如果你的php版本是php5.6或者更高的版本，phpdbg已经集成在php的代码包中，无需单独下载了。
+            2、编译参数中记得要加 –enable-phpdbg。
+            3、编译时参数，–with-readline 可以选择性添加。如果不添加，phpdbg的history等功能无法使用。
+        ]
 
         make test
         sudo make clean && sudo make && sudo make install
@@ -401,7 +409,7 @@ phpng(php7-dev)编译安装, 仅供参考(2015-06-23):
         #使php7命令全局可用
         sudo ln -sf /usr/local/php7/bin/php /usr/local/bin/php7
         #将php编译生成的bin目录添加到当前Linux系统的环境变量中
-        echo -e '\nexport PATH=/usr/local/php7/bin:/usr/local/php7/sbin:$PATH\n' >> /etc/profile && source /etc/profile
+        #echo -e '\nexport PATH=/usr/local/php7/bin:/usr/local/php7/sbin:$PATH\n' >> /etc/profile && source /etc/profile
 
         配置:
         1.php-fpm配置
@@ -487,7 +495,6 @@ phpng(php7-dev)编译安装, 仅供参考(2015-06-23):
 
         zs备注:
         ubuntu 下的依赖包都是以 lib*开头
-
     }
 }
 
