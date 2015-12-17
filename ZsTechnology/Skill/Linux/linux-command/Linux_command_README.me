@@ -86,7 +86,7 @@ Linux (CentOS)
     {
         groups 查看当前登录用户的组内成员
         groups gliethttp 查看gliethttp用户所在的组,以及组内成员
-        whoami 查看当前登录用户名
+        whoami/who 查看当前登录用户名
         -
         /etc/group文件包含所有组
         /etc/shadow和/etc/passwd系统存在的所有用户名
@@ -157,7 +157,7 @@ Linux (CentOS)
     22.cat      | [cat ./ip]    |"cat"代表了连结（Concatenation），连接两个或者更多文本文件或者以标准输出形式打印文件的内容
     23.rsync    | [用法带研究]
     24.diff     | [用法带研究]
-    25.kill     | kill, killall, pkill, xkill[{简单使用流程:ps -ef |grep apache|80  |  netstat -lnp|grep 80 -> kill -9 进程ID | killall -9 正在运行的程序名称}]
+    25.kill     | killall, pkill/pgrep, xkill[{简单使用流程:ps -ef |grep apache|80  |  netstat -lnp|grep 80 -> kill -9 进程ID | killall -9 正在运行的程序名称}]
     26.grep     | 同时关注:42,43命令
     27.dstat(nicstat,iostat,mpstat,vmstat,pidstat)    | Linux 监控工具
     28.find,locate,whereis,which,type   | Linux五个查找命令; which: 查询安装包的运行文件所在地址(如果是源码安装的话, 只适合安装路径加入PATH里, 你可以使用-prefix指定安装路径)
@@ -189,7 +189,7 @@ Linux (CentOS)
     54.nohup    |有nohup,或执行命令时加&,用jobs来查看,或者在执行时按下ctrl+z,然后打bg(background 的意思)就能看到程序在运行,很多的定时的任务
     55.perl
     56.sz/rz    |用途说明: sz命令是利用ZModem协议来从Linux服务器传送文件到本地，一次可以传送一个或多个文件。相对应的从本地上传文件到Linux服务器，可以使用rz命令 | 备注: sz/rz命令需要通过SecureCRT客户端登录到linux机器上执行, 客户端主机安装SecureCRT
-    57.ss
+    57.ss       |显示socket的汇总信息
     58.wc       | wc -l filename 显示文件总行数
     59.start-stop-daemon
     60.hexdump
@@ -200,6 +200,10 @@ Linux (CentOS)
     65.pmap
     66.sysctl
     67.slabtop
+    68.watch
+    69.except
+    70.nc
+    71.who/whoami
 
 }
 
