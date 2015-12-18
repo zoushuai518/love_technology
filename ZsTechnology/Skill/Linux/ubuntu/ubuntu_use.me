@@ -485,9 +485,15 @@ Mysql
     {
         mysql -u root -p
         输入密码之后，错误提示如下：ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)，意思是root的密码不正确
+
+        解决:
+        1.sudo vim /etc/my.cnf
+        [mysqld] 下面加上:
         skip-grant-tables                   #免口令登录
-        sudo /etc/init.d/mysql restart
-        mysql -uroot
+        2.重启mysql
+        使得参数生效:
+        service mysqld restart (sudo /etc/init.d/mysql restart)
+        mysql [-hlocalhost ] -uroot [-p]
         use mysql
         update user set password=PASSWORD('www.linuxidc.com') where user='root' and host='localhost';           #更新root密码
         flush privileges;
