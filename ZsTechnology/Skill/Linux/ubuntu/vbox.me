@@ -23,7 +23,7 @@ ubuntu vbox
         win7 |2014-11-16
         {
             挂载 win7.iso
-            虚拟机管理界面 -> 设备 -> 安装增强功能 -> 进入虚拟机 -> 我的电脑 -> VirtualBox Guest Additions(光驱已经加载)双击安装 -> 直到成功
+            虚拟机管理界面 -> 设备 -> 安装增强功能(如果没有VBoxGuestAdditions.iso，vbox会提示从网络下载，安装即可) -> 进入虚拟机 -> 我的电脑 -> VirtualBox Guest Additions(光驱已经加载)双击安装 -> 直到成功
             进入 ubuntu -> mkdir /home/weiyan/share_win7 -> 打开虚拟主机窗口 -> 鼠标右击右下角 共享文件夹图标 -> 添加共享文件夹 | 指定路径{即:/home/weiyan/share_win7};共享文件夹名称:win7 | 选着:自动挂载,固定分配 [注意不要选择, "只读分配" 否则虚拟机中的文件无法写入到共享文件夹中] [此步骤也可在 虚拟机管理界面 -> 设备(菜单中进行)] [可以参考 winxp的配置来进行]
             我的电脑 -> 映射网络驱动器 -> \\VBOXSVR\win7
         }
