@@ -60,4 +60,18 @@
         切换到普通
         su zs
     }
+
+    6. rpm
+    {
+        查询mysql的安装情况:
+        rpm -qa | grep [-i] mysql
+        将列出来的删除:
+        rpm -e mysql-server.x86_64
+        查看包安装位置:
+        rpm -ql package-name
+        查看安装了多少个软件包:
+        rpm -qa | wc -l
+        如何得知安装了那些软件包:
+        rpm -qa | sort  | grep mysql
+    }
 }
