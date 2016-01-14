@@ -156,6 +156,7 @@ ubuntu 使用心的 & 技巧:
             dstat(nicstat,iostat,mpstat,vmstat,pidstat)
             glances
             free
+            nmon: 系统监控工具(cpu,mem,io)
 
             iotop: iotop命令是专门显示硬盘IO的命令，界面风格类似top命令。这个命令只有在kernelv2.6.20及以后的版本中才有
             slabtop
@@ -165,6 +166,8 @@ ubuntu 使用心的 & 技巧:
             参数 -d 表示，显示设备（磁盘）使用状态；-k某些使用block为单位的列强制使用Kilobytes为单位；1 10表示，数据显示每隔1秒刷新一次，共显示10次
             --
             监控内存使用: vmstat [-n] [延时[次数]]
+            --
+            sudo apt-get install nmon
         }
 
         网络监控:
