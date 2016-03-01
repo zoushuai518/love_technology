@@ -67,6 +67,11 @@ ubuntu 使用心的 & 技巧:
         apt-get remove 软件包名称
         sudo apt-get --purge remove 软件包名称
 
+        sudo apt-get clean 清理所有软件缓存
+        sudo apt-get autoclean 清理旧版本的软件缓存
+        sudo apt-get autoremove 删除系统不再使用的孤立软件
+        sudo apt-get install deborphan -y 清理Linux下孤立的包
+
         系统升级:
         sudo apt-get update
         sudo apt-get dist-upgrade
@@ -88,7 +93,6 @@ ubuntu 使用心的 & 技巧:
         apt-cache rdepends package 是查看该包被哪些包依赖
         sudo apt-get build-dep package 安装相关的编译环境
         apt-get source package 下载该包的源代码
-        sudo apt-get clean && sudo apt-get autoclean 清理无用的包
         sudo apt-get check 检查是否有损坏的依赖
 
         屏幕锁定相关命令:
