@@ -133,6 +133,18 @@ ubuntu 使用心的 & 技巧:
         uname -a
     }
 
+    ubuntu系统字符集设置
+    {
+        locale -a       查看本地字符集
+        echo $LANG      查看当前系统字符集
+        export LANG="zh_CN.UTF-8"       临时修改系统字符集
+
+        永久修改系统字符集
+        vi /etc/sysconfig/i18n
+        LANG="zh_CN.UTF-8"
+        SYSFONT="latarcyrheb-sun16"
+    }
+
     Tool/Command:
     {
         GooglePinyin 汉语, Ubuntu下ibus-sunpinyin       iBus
