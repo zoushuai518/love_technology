@@ -64,8 +64,8 @@ ubuntu 使用心的 & 技巧:
     {
         apt-cache search 软件包名称 |apt-cache search zlib | grep zlib
         apt-get install 软件包名称
-        apt-get remove 软件包名称
-        sudo apt-get --purge remove 软件包名称
+        apt-get remove 软件包名称   移出软件但保留配置
+        sudo apt-get --purge remove 软件包名称      移出程序和所有配置文件
 
         sudo apt-get clean 清理所有软件缓存
         sudo apt-get autoclean 清理旧版本的软件缓存
