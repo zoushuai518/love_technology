@@ -59,7 +59,7 @@ ubuntu 14.04/16.04
 
     vbox虚拟机配置(联网方式比较):
     {
-        vbox使用的是"桥接联网"方式[这种方式，主机必须使用有线联网,如果是无线联网,CentOS配置正确也无法上网]。|zs推荐使用,这种方式 可以把虚拟机当作局域网中真实的主机。
+        vbox使用的是"桥接联网"方式[这种方式，主机必须使用有线联网,如果是无线联网,CentOS配置正确也无法上网]; 推荐使用,这种方式 可以把虚拟机当作局域网中真实的主机。
         {此时虚拟主机默认IP为: 10.0.2.15{通过route查看网关};{VirtualBox Host-Only Network IP: 192.168.56.1}}
         这种方式如果,需要ssh连接虚拟主机,或者使用虚拟主机提供的Web服务,可以使用端口转发来实现{{ssh TCP 192.168.56.1 2222 10.0.2.15 22}{web TCP 192.168.56.1 80 10.0.2.15 80}}
 
@@ -80,7 +80,7 @@ ubuntu 14.04/16.04
 
         2.可以使用VBoxManage扩容，只对动态分配的VDI 和 VHD格式映像有效。
 
-        为虚拟机硬盘扩容（Oracle VM VirtualBox）命令：
+        为虚拟机硬盘扩容(Oracle VM VirtualBox)命令：
 
         VBoxManage modifyhd <uuid>|<filename> [--resize <megabytes>|--resizebyte <bytes>]
 
