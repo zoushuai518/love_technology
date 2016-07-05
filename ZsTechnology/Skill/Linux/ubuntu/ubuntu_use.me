@@ -101,6 +101,12 @@ ubuntu 使用心的 & 技巧:
 
     }
 
+    ubuntu 修改apt-get源:
+    {
+        cp /etc/apt/sources.list /etc/apt/sources.list.bak
+        vim /etc/apt/sources.list
+    }
+
     aptitude:
     {
         在ubuntu下用aptitude代替apt-get处理依赖性问题。
@@ -290,12 +296,6 @@ ubuntu 使用心的 & 技巧:
             }
         }
 
-        ubuntu 修改apt-get源:
-        {
-            cp /etc/apt/sources.list /etc/apt/sources.list.bak
-            vim /etc/apt/sources.list
-        }
-
         天气信息指示器(weather):
         {
             sudo add-apt-repository ppa:atareao/atareao
@@ -363,6 +363,14 @@ ubuntu 使用心的 & 技巧:
         {
             sudo su root
             sudo su -
+        }
+
+        启动器(Launcher)位置切换:
+        {
+            启动器切换到底部
+            gsettings set com.canonical.Unity.Launcher launcher-position Bottom
+            启动器切换到左侧(ubuntu默认值)
+            gsettings set com.canonical.Unity.Launcher launcher-position Left
         }
     }
 
