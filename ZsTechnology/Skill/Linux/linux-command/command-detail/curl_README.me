@@ -2,10 +2,17 @@ curl命令:
 
 1.监控网页的响应时间
 curl -o /dev/null -s -w "time_connect: %{time_connect}\ntime_starttransfer: %{time_starttransfer}\ntime_total: %{time_total}\n" "http://www.b5m.com"
----
-[time_connect:连接时间 | time_starttransfer:程序执行时间 | time_total:总时间 {time_starttransfer - time_connect : 建立连接的时间}{time_starttransfer - time_connect : 程序代码执行时间}{time_total - time_starttransfer : 服务器数据返回客户端时间}]
----
+--
 [curl -o /dev/null -s -w  %{http_code}:%{time_namelookup}:%{time_connect}:%{time_starttransfer}:%{time_total} http://10.10.99.214/portal.php]
+---
+[time_connect:连接时间 | time_starttransfer:程序执行时间 | time_total:总时间 {time_starttransfer - time_connect : 程序代码执行时间}{time_total - time_starttransfer : 服务器数据返回客户端时间}]
+
+ -w：按照后面的格式写出rt(单位是秒)
+ time_namelookup：DNS 解析域名[www.taobao.com]的时间 
+ time_commect：client和server端建立TCP 连接的时间
+ time_starttransfer：从client发出请求；到web的server 响应第一个字节的时间
+ time_total：client发出请求；到web的server发送会所有的相应数据的时间
+ speed_download：下周速度  单位 byte/s
 
 
 2.监控站点可用性
