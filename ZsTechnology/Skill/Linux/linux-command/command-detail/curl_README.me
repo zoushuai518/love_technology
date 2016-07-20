@@ -11,6 +11,7 @@ curl "http://109.14.36.218/goods/detail" -d '{"goods_id":"3382","aid":1005008}' 
 [time_connect:连接时间 | time_starttransfer:程序执行时间 | time_total:总时间 {time_starttransfer - time_connect : 程序代码执行时间}{time_total - time_starttransfer : 服务器数据返回客户端时间}]
 
  -w：按照后面的格式写出rt(单位是秒)
+ http_code: http状态吗
  time_namelookup：DNS 解析域名[www.taobao.com]的时间 
  time_commect：client和server端建立TCP 连接的时间
  time_starttransfer：从client发出请求；到web的server 响应第一个字节的时间
