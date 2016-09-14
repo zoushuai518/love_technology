@@ -429,7 +429,7 @@ ubuntu 使用心的 & 技巧:
         ps -ef |grep nginx
         ps aux |grep nginx
         netstat -lnp|grep httpd
-        sudo netstat -lnp|grep 9000
+        netstat -anp|grep httpd
         kill -9 进程ID | killall -9 正在运行的程序名称 | pkill 正在运行的程序名称
 
         grep -rn "关键词" ./
