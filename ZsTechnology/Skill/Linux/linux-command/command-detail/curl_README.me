@@ -7,6 +7,10 @@ curl -o /dev/null -s -w "time_connect: %{time_connect}\ntime_starttransfer: %{ti
 --
 curl "http://109.14.36.218/goods/detail" -d '{"goods_id":"3382","aid":1005008}' -w "time_connect: %{time_connect}\ntime_starttransfer: %{time_starttransfer}\ntime_total: %{time_total}\n"
 curl "http://109.14.36.218/goods/detail" -d '{"goods_id":"3382","aid":1005008}' -o /dev/null -w "time_connect: %{time_connect}\ntime_starttransfer: %{time_starttransfer}\ntime_total: %{time_total}\n"
+--
+#weimob
+curl -H "Content-Type: application/json"  -X POST --data @./grouponRequestParams.txt http://10.252.215.230/order/modifygroupstatus -w "time_connect: %{time_connect}\ntime_starttransfer: %{time_starttransfer}\ntime_total: %{time_total}\n"
+curl -H "Content-Type: application/json"  -X POST --data @grouponRequestParams.txt http://10.252.215.230/order/modifygroupstatus -w "time_connect: %{time_connect}\ntime_starttransfer: %{time_starttransfer}\ntime_total: %{time_total}\n"
 ---
 [time_connect:连接时间 | time_starttransfer:程序执行时间 | time_total:总时间 {time_starttransfer - time_connect : 程序代码执行时间}{time_total - time_starttransfer : 服务器数据返回客户端时间}]
 
