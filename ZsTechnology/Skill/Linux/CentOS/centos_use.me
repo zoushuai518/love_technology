@@ -80,6 +80,24 @@
         rpm -qa | sort  | grep mysql
     }
 
+    7. 查看linux版本信息
+    {
+        查看cpu信息:
+        cat /proc/cpuinfo
+
+        查看正在运行的内核版本
+        cat /proc/version
+
+        显示的是发行版本信息
+        cat /etc/issue
+
+        适用于所有的linux，包括Redhat/CentOS/SuSE/Debian等发行版，但是在debian下要安装lsb
+        yum install redhat-lsb
+        lsb_release -a
+
+        uname -a
+    }
+
     ext:
     {
         iptables
