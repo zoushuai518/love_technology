@@ -1,5 +1,4 @@
 Linux (CentOS)
-===
 
 {
     linux 查看命令帮助:
@@ -8,8 +7,7 @@ Linux (CentOS)
     adduser --help 这个告诉你一些常用参数
     info adduesr
 
-     ---
-    chkconfig   ***  chkconfig --help
+    chkconfig
     {
         chkconfig sshd on       [设置服务{sshd}开机启动]
         chkconfig sshd off
@@ -61,59 +59,36 @@ Linux (CentOS)
     主要是管道命令中的几个命令: grep，sed，awk，cut，wc，split，printf
 }
 
+
 {
-    linux下查看所有用户及所有用户组：
-    {
-        cat /etc/passwd
-    }
+    groups 查看当前登录用户的组内成员
+    groups gliethttp 查看gliethttp用户所在的组,以及组内成员
+    whoami/who 查看当前登录用户名
+    -
+    /etc/group文件包含所有组
+    /etc/shadow和/etc/passwd系统存在的所有用户名
+    -
+    1./etc/group 解说;
 
-    查看linux版本信息
-    {
-        查看cpu信息:
-        cat /proc/cpuinfo
+    /etc/group 文件是用户组的配置文件，内容包括用户和用户组，并且能显示出用户是归属哪个用户组或哪几个用户组，因为一个用户可以归属一个或多个不同的用户组；同一用 户组的用户之间具有相似的特征。比如我们把某一用户加入到root用户组，那么这个用户就可以浏览root用户家目录的文件，如果root用户把某个文件 的读写执行权限开放，root用户组的所有用户都可以修改此文件，如果是可执行的文件（比如脚本），root用户组的用户也是可以执行的；
 
-        查看正在运行的内核版本
-        cat /proc/version
+    用户组的特性在系统管理中为系统管理员提供了极大的方便，但安全性也是值得关注的，如某个用户下有对系统管理有最重要的内容，最好让用户拥有独立的用户组，或者是把用户下的文件的权限设置为完全私有；另外root用户组一般不要轻易把普通用户加入进去，
 
-        显示的是发行版本信息
-        cat /etc/issue
+    2./etc/group 内容具体分析
 
-        适用于所有的linux，包括Redhat/CentOS/SuSE/Debian等发行版，但是在debian下要安装lsb
-        lsb_release -a
+    /etc/group 的内容包括用户组（Group）、用户组口令、GID及该用户组所包含的用户（User），每个用户组一条记录；格式如下：
 
-        uname -a
-    }
+    group_name:passwd:GID:user_list
 
-    {
-        groups 查看当前登录用户的组内成员
-        groups gliethttp 查看gliethttp用户所在的组,以及组内成员
-        whoami/who 查看当前登录用户名
-        -
-        /etc/group文件包含所有组
-        /etc/shadow和/etc/passwd系统存在的所有用户名
-        -
-        1./etc/group 解说;
+    在/etc/group 中的每条记录分四个字段：
 
-        /etc/group 文件是用户组的配置文件，内容包括用户和用户组，并且能显示出用户是归属哪个用户组或哪几个用户组，因为一个用户可以归属一个或多个不同的用户组；同一用 户组的用户之间具有相似的特征。比如我们把某一用户加入到root用户组，那么这个用户就可以浏览root用户家目录的文件，如果root用户把某个文件 的读写执行权限开放，root用户组的所有用户都可以修改此文件，如果是可执行的文件（比如脚本），root用户组的用户也是可以执行的；
+    第一字段：用户组名称；
 
-        用户组的特性在系统管理中为系统管理员提供了极大的方便，但安全性也是值得关注的，如某个用户下有对系统管理有最重要的内容，最好让用户拥有独立的用户组，或者是把用户下的文件的权限设置为完全私有；另外root用户组一般不要轻易把普通用户加入进去，
+    第二字段：用户组密码；
 
-        2./etc/group 内容具体分析
+    第三字段：GID
 
-        /etc/group 的内容包括用户组（Group）、用户组口令、GID及该用户组所包含的用户（User），每个用户组一条记录；格式如下：
-
-        group_name:passwd:GID:user_list
-
-        在/etc/group 中的每条记录分四个字段：
-
-        第一字段：用户组名称；
-
-        第二字段：用户组密码；
-
-        第三字段：GID
-
-        第四字段：用户列表，每个用户之间用,号分割；本字段可以为空；如果字段为空表示用户组为GID的用户名；
-    }
+    第四字段：用户列表，每个用户之间用,号分割；本字段可以为空；如果字段为空表示用户组为GID的用户名；
 }
 
 
@@ -160,7 +135,7 @@ Linux (CentOS)
     24.diff     | [用法带研究]
     25.kill     | killall, pkill/pgrep, xkill[{简单使用流程:ps -ef |grep apache|80  |  netstat -lnp|grep 80 -> kill -9 进程ID | killall -9 正在运行的程序名称}]
     26.grep     | 同时关注:42,43命令
-    27.dstat(nicstat,iostat,mpstat,vmstat,pidstat)    | Linux 监控工具
+    27.dstat(nicstat,iostat,mpstat,vmstat,pidstat)    Linux 监控工具
     28.find,locate,whereis,which,type   | Linux五个查找命令; which: 查询安装包的运行文件所在地址(如果是源码安装的话, 只适合安装路径加入PATH里, 你可以使用-prefix指定安装路径)
     29.ln       | ln -s ../yii yii
     30.ls
