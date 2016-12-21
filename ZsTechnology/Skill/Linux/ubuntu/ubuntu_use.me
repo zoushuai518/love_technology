@@ -237,15 +237,19 @@ ubuntu 使用心的 & 技巧:
         网络监控:
         {
             监控总体带宽使用――nload、bmon、slurm、bwm-ng、cbm、speedometer和netload
-            监控总体带宽使用（批量式输出）――vnstat、ifstat、dstat和collectl
+            监控总体带宽使用(批量式输出)――vnstat、ifstat、dstat和collectl
             每个套接字连接的带宽使用――iftop、iptraf、tcptrack、pktstat、netwatch和trafshow
             每个进程的带宽使用――nethogs
 
+            ss: 连接查看工具
+            --
+
+
             nload: 你只需要快速查看总带宽使用情况，无需每个进程的详细情况，那么nload用起来很方便; zs use
             bmon: bmon（带宽监控器）是一款类似nload的工具，它可以显示系统上所有网络接口的流量负载。输出结果还含有图表和剖面，附有数据包层面的详细信息
-            iptraf: iptraf是一款交互式、色彩鲜艳的IP局域网监控工具。它可以显示每个连接以及主机之间传输的数据量
+            iptraf: 按连接/端口查看流量; iptraf是一款交互式、色彩鲜艳的IP局域网监控工具。它可以显示每个连接以及主机之间传输的数据量
             nethogs: nethogs是一款小巧的"net top"工具，可以显示每个进程所使用的带宽，并对列表排序，将耗用带宽最多的进程排在最上面。万一出现带宽使用突然激增的情况，用户迅速打开nethogs，就可以找到导致带宽使用激增的进程。nethogs可以报告程序的进程编号（PID）、用户和路径; ag:nethogs eth0; zs use
-            ifstat: 查看网络流量的小工具
+            ifstat: 按设备查看流量
             sar  | sar -n DEV 1 10000; sudo apt-get install sysstat
 
             nmcli | nmcli dev show
