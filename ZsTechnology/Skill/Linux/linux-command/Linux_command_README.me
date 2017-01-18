@@ -143,6 +143,7 @@ Linux (CentOS)
     30.ls
     31.test
     32.tail
+    33.head     | head -n 10030 application.log | tail -n +10000  #输出application.log的10000行至10030行内容
     33.lsblk    |"lsblk"就是列出块设备。除了RAM外，以标准的树状输出格式，整齐地显示块设备。
     34.md5sum   |"md5sum"就是计算和检验MD5信息签名。md5 checksum(通常叫做哈希)使用匹配或者验证文件的文件的完整性，因为文件可能因为传输错误，磁盘错误或者无恶意的干扰等原因而发生改变。
     35.dd命令   |可用于,简单的测试磁盘I/O(读/写)性能
@@ -160,16 +161,16 @@ Linux (CentOS)
     47.xargs    | ls | grep -v "cms-web" | xargs rm -rf     #删除当前目录下,除了cms-web目录之外的目录
     48.last     | 显示近期用户或终端的登录情况
     49.wget
-    50.head     | head -n 10030 application.log | tail -n +10000  #输出application.log的10000行至10030行内容
-    51.sar      | sar -n DEV 1 10000; sudo apt-get install sysstat
-    52.gdb
-    53.jobs
-    54.nohup    |有nohup,或执行命令时加&,用jobs来查看,或者在执行时按下ctrl+z,然后打bg(background 的意思)就能看到程序在运行,很多的定时的任务
-    55.perl
-    56.sz/rz    |用途说明: sz命令是利用ZModem协议来从Linux服务器传送文件到本地，一次可以传送一个或多个文件。相对应的从本地上传文件到Linux服务器，可以使用rz命令 | 备注: sz/rz命令需要通过SecureCRT客户端登录到linux机器上执行, 客户端主机安装SecureCRT; SecureCRT中,选择菜单项“选项(O)”下的“会话选项(S)”,左边切到“Xmodem/Ymodem/Zmodem”,即可看到上传和下载目录设置,也可更改. 默认上传目录为 C:\Program Files\SecureCRT\upload,下载目录为 C:\Program Files\SecureCRT\download
-    57.ss       |显示socket的汇总信息
-    58.wc       | wc -l filename 显示文件总行数
-    59.start-stop-daemon
+    50.sar      | sar -n DEV 1 10000; sudo apt-get install sysstat
+    51.gdb
+    52.jobs
+    53.nohup    |有nohup,或执行命令时加&,用jobs来查看,或者在执行时按下ctrl+z,然后打bg(background 的意思)就能看到程序在运行,很多的定时的任务
+    54.perl
+    55.sz/rz    |用途说明: sz命令是利用ZModem协议来从Linux服务器传送文件到本地，一次可以传送一个或多个文件。相对应的从本地上传文件到Linux服务器，可以使用rz命令 | 备注: sz/rz命令需要通过SecureCRT客户端登录到linux机器上执行, 客户端主机安装SecureCRT; SecureCRT中,选择菜单项“选项(O)”下的“会话选项(S)”,左边切到“Xmodem/Ymodem/Zmodem”,即可看到上传和下载目录设置,也可更改. 默认上传目录为 C:\Program Files\SecureCRT\upload,下载目录为 C:\Program Files\SecureCRT\download
+    56.ss       |显示socket的汇总信息
+    57.wc       | wc -l filename 显示文件总行数
+    58.start-stop-daemon
+    59.du
     60.hexdump
     61.rename   | cd ./cd && rename 's/[(\d)-]*//' *  使用正则匹配 rename 's/[(\d)-]*/1-/'
     62.alias    | 定义shell命令别名
