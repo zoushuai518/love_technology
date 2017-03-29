@@ -68,7 +68,7 @@ ubuntu 14.04/16.04
     }
 
 
-    vbox扩容VDI磁盘大小 |2015-09-02
+    vbox扩容VDI磁盘大小 |2017-03-29
     {
         扩容，首先要了解VBOX虚拟硬盘的方式方法以及格式，这里所说的是动态分配，以VBOX的虚拟硬盘格式为主。
 
@@ -98,7 +98,13 @@ ubuntu 14.04/16.04
 
         ----
         ag:
-        winxp VDI磁盘大小调整到40G
-        vboxmanage modifyhd winxp.vdi --resize 40960
+        1. 调整虚拟机磁盘大小:
+            winxp VDI磁盘大小调整到40G
+            vboxmanage modifyhd winxp.vdi --resize 40960
+            VBoxManage modifyhd a77cd873-3778-4f9f-91d1-9fd17b4c8049   --resize 40960
+        2. 进入虚拟机:
+            电脑->管理->磁盘管理->扩展卷|格式化
+
+
     }
 }
