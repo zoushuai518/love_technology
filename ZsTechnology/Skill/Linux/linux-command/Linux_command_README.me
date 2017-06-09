@@ -135,7 +135,7 @@ Linux (CentOS)
     22.cat/zcat | [cat ./ip]    |"cat"代表了连结（Concatenation），连接两个或者更多文本文件或者以标准输出形式打印文件的内容
     23.rsync    | [用法带研究]
     24.diff     | [用法带研究]
-    25.kill     | killall, pkill/pgrep, xkill[{简单使用流程:ps -ef |grep apache|80  |  netstat -lnp|grep 80 -> kill -9 进程ID | killall -9 正在运行的程序名称}]
+    25.kill     | killall, pkill/pgrep, xkill[{简单使用流程:ps -ef |grep apache|80  | netstat -tulnp |grep 8080|  netstat -lnp|grep 80 -> kill -9 进程ID | killall -9 正在运行的程序名称}]
     26.grep     | 同时关注:42,43命令
     27.dstat(nicstat,iostat,mpstat,vmstat,pidstat)    Linux 监控工具
     28.find,locate,whereis,which,type   | Linux五个查找命令; which: 查询安装包的运行文件所在地址(如果是源码安装的话, 只适合安装路径加入PATH里, 你可以使用-prefix指定安装路径)
